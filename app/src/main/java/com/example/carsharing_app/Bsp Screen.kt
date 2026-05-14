@@ -77,6 +77,7 @@ fun ScaffoldExample() {
 
             ) {
 
+
                 Text(
                     text = "Bottom app bar",
                     modifier = Modifier.fillMaxWidth(),
