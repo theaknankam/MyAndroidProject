@@ -19,30 +19,27 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Carsharing_appTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                ScaffoldExample() // This calls the UI you built in BspScreen.kt
             }
         }
+
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Carsharing_appTheme {
-        Greeting("Android")
-    }
-}
+//    @Composable
+//    fun Greeting(name: String, modifier: Modifier = Modifier) {
+//        Text(
+//            text = "Hello $name!",
+//            modifier = modifier
+//        )
+//
+//}
+//@Preview(showBackground = true)
+//@Composable
+//fun GreetingPreview() {
+//    Carsharing_appTheme {
+//        Greeting("Android")
+//    }
+//}
 
