@@ -21,6 +21,9 @@ class MainActivity : ComponentActivity() {
             Carsharing_appTheme {
                 ScaffoldExample() // This calls the UI you built in BspScreen.kt
             }
+            auto_auswahl{
+
+            }
         }
 
     }
