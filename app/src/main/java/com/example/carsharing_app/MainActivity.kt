@@ -22,6 +22,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             CreateRideScreen()
             }
+            auto_auswahl{
+
+            }
         }
 
     }
