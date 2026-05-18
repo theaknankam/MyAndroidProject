@@ -1,6 +1,5 @@
 package com.example.carsharing_app.ui.theme.screens
 
-import com.example.carsharing_app.ui.theme.Carsharing_appTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,8 +28,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.carsharing_app.ui.theme.Carsharing_appTheme
 
-class Autoauswahl : ComponentActivity() {
+class BspScreen : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,7 @@ fun ScaffoldExample() {
                 ),
 
                 title = {
-                    Text("hi")
+                    Text("Top app bar")
                 }
             )
         },
@@ -121,5 +121,3 @@ fun ScaffoldExample() {
         }
     }
 }
-
-

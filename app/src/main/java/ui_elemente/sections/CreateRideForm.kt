@@ -51,10 +51,10 @@ fun CreateRideForm() {
                 modifier = Modifier.weight(1f)
             )
 
-           TimePickerField(
+           /*TimePickerField(
                 modifier = Modifier.weight(1f),
                 onConfirm = {}
-            )
+            )*/
         }
 
         SeatSelector()

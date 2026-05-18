@@ -28,7 +28,7 @@ fun CreateRideScreen() {
 
         Text(
             text = "Create Ride",
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineMedium
         )
 
         Spacer(modifier = Modifier.height(16.dp))
