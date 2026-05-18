@@ -2,7 +2,10 @@ package ui_elemente.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,14 +21,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Person
 
 @Composable
 fun SeatSelector() {
     // Speichert den Zustand der Anzahl
-    var seats by remember { mutableStateOf(3) }
+    var seats by remember { mutableStateOf(1) }
 
     Column {
-        Text(text = "Seats available")
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = null
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text("Seats available")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             // Anzahl verringern (Wert kann nicht kleiner als 1 werden)

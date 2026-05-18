@@ -1,9 +1,11 @@
 package ui_elemente.components
-
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -30,6 +32,10 @@ fun DatePickerField(modifier: Modifier=Modifier) {
         onValueChange = {},
         readOnly = true,
         label = { Text("Date") },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.DateRange,
+                contentDescription = null)},
         modifier = Modifier.fillMaxWidth()
             .clickable { showDialog = true }
     )
