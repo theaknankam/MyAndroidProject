@@ -12,9 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-
 import androidx.compose.material.icons.filled.ArrowBack
-
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,39 +24,54 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ui_elemente.sections.CreateRideForm
+import ui_elemente.sections.SearchRideForm
 
 @Composable
-fun CreateRideScreen() {
+fun SearchRideScreen() {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding( 16.dp)
+            .padding(16.dp)
             .background(Color.White)
         /*verticalArrangement = Arrangement.spacedBy(10.dp)*/
-    ) { Row(modifier= Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween) {
+    ) {
 
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
 
-        Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = "back"
-        )
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "back"
+            )
+
+            Text(
+                text = "Search Rides",
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription= "Settings"
+            )
+        }
+        //Spacer(modifier = Modifier.height(3.dp))
+
+       SearchRideForm()
 
         Spacer(modifier = Modifier.height(5.dp))
 
         Text(
-            text = "Create Ride",
+            text = "Available Rides",
             modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineSmall
+            textAlign = TextAlign.Left,
+            style = MaterialTheme.typography.titleSmall
         )
-    }
-        Spacer(modifier = Modifier.height(5.dp))
-
-        CreateRideForm()
 
     }
 }

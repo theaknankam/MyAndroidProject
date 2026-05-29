@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.carsharing_app.ui.theme.Carsharing_appTheme
 import ui_elemente.screens.CreateRideScreen
+import ui_elemente.screens.SearchRideScreen
 import ui_elemente.sections.CreateRideForm
 
 class MainActivity : ComponentActivity() {
