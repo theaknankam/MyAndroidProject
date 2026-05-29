@@ -3,7 +3,7 @@ package ui_elemente.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Euro
+import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -30,7 +30,7 @@ fun PriceField() {
             modifier = Modifier.fillMaxWidth(),
             leadingIcon = {
                 Icon(
-                    imageVector = Icons.Default.Euro,
+                    imageVector = Icons.Default.AttachMoney,
                     contentDescription = null
                 )
             },
