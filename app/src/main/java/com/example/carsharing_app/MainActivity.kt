@@ -11,9 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.carsharing_app.ui.theme.Carsharing_appTheme
-import com.example.carsharing_app.ui.theme.screens.Autoauswahl
-import ui_elemente.Navigation.MyApplicationApp
+//import com.example.carsharing_app.ui.theme.Carsharing_appTheme
+//import com.example.carsharing_app.ui.theme.screens.Autoauswahl
+//import ui_elemente.Navigation.MyApplicationApp
 import ui_elemente.screens.CreateRideScreen
 import ui_elemente.screens.SearchRideScreen
 import ui_elemente.sections.CreateRideForm
@@ -23,13 +23,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            CreateRideScreen()
-            }
-        setContent {
-                Autoauswahl()
-            }
-        setContent {
-                MyApplicationApp()
+            SearchRideScreen()
             }
         }
 

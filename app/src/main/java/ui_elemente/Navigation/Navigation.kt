@@ -1,4 +1,4 @@
-package ui_elemente.Navigation
+/*package ui_elemente.Navigation
 
 import androidx.compose.material3.Text
 import android.os.Bundle
@@ -79,4 +79,4 @@ fun GreetingPreview() {
     Carsharing_appTheme {
         Greeting("Android")
     }
-}
+}*/
