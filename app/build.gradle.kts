@@ -54,6 +54,7 @@ dependencies {
 
     implementation("androidx.compose.material:material-icons-extended")
     implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.ui)
 
     testImplementation(libs.junit)
 

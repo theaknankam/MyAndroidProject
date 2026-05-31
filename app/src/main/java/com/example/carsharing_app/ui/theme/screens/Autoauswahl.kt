@@ -39,7 +39,7 @@ class Autoauswahl : ComponentActivity() {
 
         setContent {
             Carsharing_appTheme {
-                ScaffoldExample()
+                AutoauswahlScreen()
             }
         }
     }
@@ -47,7 +47,7 @@ class Autoauswahl : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScaffoldExample() {
+fun AutoauswahlScreen() {
 
     var presses by remember { mutableIntStateOf(0) }
 

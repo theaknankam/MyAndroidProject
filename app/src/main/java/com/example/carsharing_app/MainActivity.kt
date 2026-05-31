@@ -13,27 +13,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.carsharing_app.ui.theme.Carsharing_appTheme
 import com.example.carsharing_app.ui.theme.screens.Autoauswahl
-import ui_elemente.Navigation.MyApplicationApp
 import ui_elemente.screens.CreateRideScreen
 import ui_elemente.sections.CreateRideForm
+import ui_elemente.screens.HomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+//        setContent {
+//            CreateRideScreen()
+//            }
         setContent {
-            CreateRideScreen()
+            Carsharing_appTheme {
+                HomeScreen()
             }
-        setContent {
-                Autoauswahl()
-            }
-        setContent {
-                MyApplicationApp()
-            }
+//                Autoauswahl()
+//            }
+////        setContent {
+////                CarsharingApp()
+////            }
+
         }
-
-
     }
+}
+
+
+    
 
 
 
