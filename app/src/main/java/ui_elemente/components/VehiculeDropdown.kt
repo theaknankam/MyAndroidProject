@@ -1,16 +1,16 @@
 package ui_elemente.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.type
-import com.example.carsharing_app.ui.theme.Carsharing_appTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VehiculeDropdown(
     selected: String,
-    onSelected: (String) -> Unit
+    onSelected: (String) -> Unit,
+    modifier: Modifier
 ) {
 
     val options = listOf(
@@ -27,7 +27,8 @@ fun VehiculeDropdown(
         expanded = expanded,
         onExpandedChange = {
             expanded = !expanded
-        }
+        },
+        modifier = modifier
     ) {
 
         TextField(
@@ -42,7 +43,7 @@ fun VehiculeDropdown(
                     expanded = expanded
                 )
             },
-            modifier = Modifier.menuAnchor()
+            modifier = Modifier.menuAnchor().fillMaxWidth()
         )
 
         ExposedDropdownMenu(

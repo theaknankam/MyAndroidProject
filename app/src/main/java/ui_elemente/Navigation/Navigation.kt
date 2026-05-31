@@ -1,5 +1,6 @@
 package com.example.carsharing_app.Navigation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -9,11 +10,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import ui_elemente.screens.HomeScreen
-import com.example.carsharing_app.ui.theme.Carsharing_appTheme
+import ui_elemente.screens.Autoauswahl
 
 
 @Preview(showBackground = true)
@@ -54,7 +54,7 @@ fun Navigation() {
 
     ) {
 
-        HomeScreen()
+        Autoauswahl()
 
     }
 

@@ -13,18 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.carsharing_app.R
-import com.example.carsharing_app.ui.theme.Carsharing_appTheme
 
 
 @Composable
-fun SearchBar(
-//    onClick: () -> Unit
-) {
+fun SearchBar(modifier: Modifier = Modifier) {
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
+        modifier = modifier
             .clickable {
 //                onClick()
             },
