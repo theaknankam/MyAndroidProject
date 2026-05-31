@@ -20,7 +20,9 @@ import com.example.carsharing_app.R
 @Composable
 fun AutoCard(
     name: String,
-    image: Int
+    image: Int,
+//    price: String
+
 ) {
 
     Card(

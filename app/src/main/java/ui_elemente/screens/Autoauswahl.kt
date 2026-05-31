@@ -5,15 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import ui_elemente.Navigation.Topbar
 import ui_elemente.components.AutoCard
 import ui_elemente.components.AutoImages
-import ui_elemente.components.Greeting
 import ui_elemente.components.SearchBar
 import ui_elemente.components.VehiculeDropdown
 
@@ -33,7 +29,7 @@ import ui_elemente.components.VehiculeDropdown
 fun Autoauswahl() {
 
     var sortOption by remember {
-        mutableStateOf("Vehicule")
+        mutableStateOf("Categorie")
     }
 
     Column(
@@ -79,10 +75,11 @@ fun Autoauswahl() {
                 items(sortedCars) { car ->
                     AutoCard(
                         name = car.label,
-                        image = car.icon
+                        image = car.icon,
                     )
                 }
             }
         }
+
     }
 }
