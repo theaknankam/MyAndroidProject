@@ -16,10 +16,11 @@ import com.example.carsharing_app.R
 
 
 @Composable
-fun SearchBar(modifier: Modifier = Modifier) {
+fun SearchBar(modifier: Modifier) {
 
     Card(
-        modifier = modifier
+        modifier = Modifier
+            .padding(8.dp)
             .clickable {
 //                onClick()
             },

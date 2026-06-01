@@ -61,7 +61,7 @@ fun CreateRideForm() {
 
         PriceField()
 
-       RoutePreview()
+        RoutePreview()
 
         PrimaryButton(
             text = "Publish Ride",

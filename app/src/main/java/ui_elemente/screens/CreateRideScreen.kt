@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import ui_elemente.Navigation.Topbar
 import ui_elemente.sections.CreateRideForm
 
 @Composable
@@ -26,10 +27,7 @@ fun CreateRideScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
-        Text(
-            text = "Create Ride",
-            style = MaterialTheme.typography.headlineMedium
-        )
+        Topbar("Create Ride")
 
         Spacer(modifier = Modifier.height(16.dp))
 
