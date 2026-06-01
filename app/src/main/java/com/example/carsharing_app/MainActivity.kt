@@ -12,20 +12,19 @@ import com.example.carsharing_app.ui.theme.Carsharing_appTheme
 import ui_elemente.screens.Autoauswahl
 import ui_elemente.screens.CreateRideScreen
 import ui_elemente.screens.HomeScreen
-import ui_elemente.screens.SearchRideScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
-//        setContent {
-//            CreateRideScreen()
+//        enableEdgeToEdge()
+//            setContent {
+//                CreateRideScreen()
 //            }
         setContent {
             Carsharing_appTheme {
+
                 Navigation()
             }
         }
     }
 }
-

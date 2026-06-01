@@ -36,7 +36,7 @@ fun VehiculeDropdown(
             onValueChange = {},
             readOnly = true,
             label = {
-                Text("Sortieren nach")
+                Text("Sort by")
             },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(

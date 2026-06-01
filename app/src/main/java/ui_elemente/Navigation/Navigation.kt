@@ -49,7 +49,7 @@ fun Navigation() {
     ) {
         when(currentDestination) {
             AppDestinations.HOME -> HomeScreen()
-            AppDestinations.RIDE -> CreateRideScreen()
+            AppDestinations.RIDE -> Autoauswahl()
             AppDestinations.PROFILE -> Autoauswahl() // Placeholder
             AppDestinations.MESSAGE -> HomeScreen() // Placeholder
         }
