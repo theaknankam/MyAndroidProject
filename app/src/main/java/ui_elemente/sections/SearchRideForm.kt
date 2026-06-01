@@ -13,6 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.carsharing_app.Navigation.Navigation
+
 import ui_elemente.components.DatePickerField
 import ui_elemente.components.LocationInput
 import ui_elemente.components.PriceField
@@ -65,6 +67,7 @@ fun SearchRideForm() {
             text = "Search",
             onClick = {}
         )
+
 
     }
 }
