@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Carsharing_appTheme {
-                ScaffoldExample() // This calls the UI you built in BspScreen.kt
+                ProfileScreen() // This calls the UI you built in BspScreen.kt
             }
         }
 
