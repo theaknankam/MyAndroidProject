@@ -1,4 +1,4 @@
-package com.example.carsharing_app
+package com.example.carsharing_app.ui.theme.screens
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

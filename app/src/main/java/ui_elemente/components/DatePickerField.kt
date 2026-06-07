@@ -1,0 +1,65 @@
+package ui_elemente.components
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import java.util.Date
+
+
+@Composable
+fun DatePickerField(modifier: Modifier=Modifier) {
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
+    var selectedDate by remember {
+        mutableStateOf("Select date")
+    }
+    OutlinedTextField(
+        value = selectedDate,
+        onValueChange = {},
+        readOnly = true,
+        label = { Text("Date") },
+        modifier = Modifier.fillMaxWidth()
+            .clickable { showDialog = true }
+    )
+    if (showDialog) {
+        val datePickerState = rememberDatePickerState()
+
+        DatePickerDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    val millis = datePickerState.selectedDateMillis
+                    selectedDate =
+                        millis?.let {
+                            java.text.DateFormat
+                                .getDateInstance()
+                                .format(Date(it))
+                        } ?: "No date"
+
+                    showDialog = false
+                }) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+}
