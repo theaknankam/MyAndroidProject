@@ -41,9 +41,6 @@ import ui_elemente.Navigation.Topbar
 @Composable
 fun ProfileScreen() {
     Scaffold(
-        bottomBar = {
-            BottomNavigationBar()
-        }
     ) { paddingValues ->
 
         Column(
@@ -346,53 +343,3 @@ fun RideHistoryItem(
     }
 }
 
-@Composable
-fun BottomNavigationBar() {
-    NavigationBar(
-        containerColor = Color.White
-    ) {
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = {
-                Icon(Icons.Default.Home, contentDescription = "Home")
-            },
-            label = {
-                Text("Home")
-            }
-        )
-
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = {
-                Icon(Icons.Default.DirectionsCarFilled, contentDescription = "Rides")
-            },
-            label = {
-                Text("Rides")
-            }
-        )
-
-        NavigationBarItem(
-            selected = false,
-            onClick = {},
-            icon = {
-                Icon(Icons.AutoMirrored.Filled.Message, contentDescription = "Messages")
-            },
-            label = {
-                Text("Messages")
-            }
-        )
-
-        NavigationBarItem(
-            selected = true,
-            onClick = {},
-            icon = {
-                Icon(Icons.Default.Person, contentDescription = "Profile")
-            },
-            label = {
-                Text("Profile")
-            }
-        )
-    }
-}
