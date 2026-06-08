@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import ui_elemente.screens.Autoauswahl
 import ui_elemente.screens.CreateRideScreen
 import ui_elemente.screens.HomeScreen
+import ui_elemente.screens.ProfileScreen
 
 
 @Composable
@@ -50,8 +51,8 @@ fun Navigation() {
         when(currentDestination) {
             AppDestinations.HOME -> HomeScreen()
             AppDestinations.RIDE -> Autoauswahl()
-            AppDestinations.PROFILE -> Autoauswahl() // Placeholder
-            AppDestinations.MESSAGE -> HomeScreen() // Placeholder
+            AppDestinations.PROFILE -> ProfileScreen() // Placeholder
+            AppDestinations.MESSAGE -> CreateRideScreen() // Placeholder
         }
     }
 }
