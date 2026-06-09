@@ -16,12 +16,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.carsharing_app.R
+import ui_elemente.model.Vehicule
 
 
 @Composable
 fun AutoCard(
-    name: String,
-    image: Int,
+    vehicule: Vehicule
 //    price: String
 
 ) {
@@ -37,8 +37,8 @@ fun AutoCard(
         Column {
 
             Image(
-                painter = painterResource(image),
-                contentDescription = name,
+                painter = painterResource(vehicule.image),
+                contentDescription = vehicule.brand.toString(),
 
                 modifier = Modifier
                     .fillMaxWidth()
@@ -49,36 +49,9 @@ fun AutoCard(
             )
 
             Text(
-                text = name,
+                text = vehicule.brand.toString(),
                 modifier = Modifier.padding(16.dp)
             )
         }
     }
 }
-enum class AutoImages(
-    val label: String,
-    val icon: Int,
-) {
-
-    CAR1("Mazda", R.drawable.car1),
-
-    CAR2("Range Rover", R.drawable.car2),
-
-    CAR3("Twingo", R.drawable.car3),
-
-    CAR4("Umzugswagen", R.drawable.car4),
-
-    CAR5("Mazda", R.drawable.car1),
-
-    CAR6("Range Rover", R.drawable.car2),
-
-    CAR7("Twingo", R.drawable.car3),
-
-    CAR8("Umzugswagen", R.drawable.car4),
-
-    SCOOTER1("Scooter", R.drawable.scooter),
-
-    SCOOTER2("Scooter", R.drawable.scooter)
-
-}
-

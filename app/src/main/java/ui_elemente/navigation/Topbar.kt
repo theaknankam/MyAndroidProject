@@ -1,8 +1,10 @@
-package ui_elemente.Navigation
+package ui_elemente.navigation
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,8 +24,19 @@ fun Topbar(lable: String) {
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_car_black),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+
         )
         Greeting(lable)
+        Spacer(modifier = Modifier
+            .padding(horizontal = 100.dp
+            ))
+        Icon(
+            painter = painterResource(id = R.drawable.ic_setting_black),
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+
+        )
     }
 }
