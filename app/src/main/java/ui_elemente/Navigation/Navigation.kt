@@ -17,6 +17,7 @@ import ui_elemente.screens.Autoauswahl
 import ui_elemente.screens.CreateRideScreen
 import ui_elemente.screens.HomeScreen
 import ui_elemente.screens.ProfileScreen
+import ui_elemente.screens.RideDetailsScreen
 
 
 @Composable
@@ -52,7 +53,8 @@ fun Navigation() {
             AppDestinations.HOME -> HomeScreen()
             AppDestinations.RIDE -> Autoauswahl()
             AppDestinations.PROFILE -> ProfileScreen() // Placeholder
-            AppDestinations.MESSAGE -> CreateRideScreen() // Placeholder
+           // AppDestinations.MESSAGE -> CreateRideScreen()
+            AppDestinations.MESSAGE -> RideDetailsScreen()// Placeholder
         }
     }
 }

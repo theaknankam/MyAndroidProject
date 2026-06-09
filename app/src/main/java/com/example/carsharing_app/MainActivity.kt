@@ -12,19 +12,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.carsharing_app.ui.theme.Carsharing_appTheme
+import ui_elemente.screens.ProfileScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Carsharing_appTheme {
-                ScaffoldExample() // This calls the UI you built in BspScreen.kt
+
+            ProfileScreen () // This calls the UI you built in BspScreen.kt
             }
         }
 
     }
-}
+
 
 
 //    @Composable
