@@ -8,11 +8,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ui_elemente.navigation.Topbar
 import ui_elemente.sections.CreateRideForm
+import ui_elemente.viewModel.VehiculeViewmodel
 
 @Composable
 fun CreateRideScreen() {
@@ -30,6 +37,19 @@ fun CreateRideScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         CreateRideForm()
+        var showAutoauswahl by remember { mutableStateOf(false) }
+
+        Button(
+            onClick = {
+                showAutoauswahl = true
+            }
+        ) {
+            Text("Autoauswahl")
+        }
+
+        if (showAutoauswahl) {
+            Autoauswahl()
+        }
 
     }
 }

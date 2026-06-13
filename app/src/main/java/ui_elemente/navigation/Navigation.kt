@@ -20,6 +20,7 @@ import ui_elemente.screens.ProfileScreen
 import androidx.compose.runtime.LaunchedEffect
 import kotlinx.coroutines.delay
 import ui_elemente.screens.LoadingScreen
+import ui_elemente.screens.RideDetailsScreen
 
 
 @Composable
@@ -68,7 +69,7 @@ fun Navigation() {
                 AppDestinations.HOME -> HomeScreen()
                 AppDestinations.RIDE -> Autoauswahl()
                 AppDestinations.PROFILE -> ProfileScreen() // Placeholder
-                AppDestinations.MESSAGE -> CreateRideScreen() // Placeholder
+                AppDestinations.MESSAGE -> RideDetailsScreen() // Placeholder
             }
         }
     }

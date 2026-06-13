@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.carsharing_app.ui.theme.Carsharing_appTheme
+import ui_elemente.navigation.Navigation
 import ui_elemente.screens.ProfileScreen
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            ProfileScreen () // This calls the UI you built in BspScreen.kt
+            Navigation()// This calls the UI you built in BspScreen.kt
             }
         }
 

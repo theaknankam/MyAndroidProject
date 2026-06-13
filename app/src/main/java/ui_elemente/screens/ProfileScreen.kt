@@ -28,9 +28,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ui_elemente.Navigation.Topbar
 import ui_elemente.components.InfoRow
 import ui_elemente.components.RideHistoryItem
+import ui_elemente.navigation.Topbar
 
 @Composable
 fun ProfileScreen() {
