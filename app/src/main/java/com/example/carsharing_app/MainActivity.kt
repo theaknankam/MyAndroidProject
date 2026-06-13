@@ -4,8 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.carsharing_app.ui.theme.Carsharing_appTheme
-import ui_elemente.navigation.Navigation
 import ui_elemente.screens.ProfileScreen
 
 class MainActivity : ComponentActivity() {
@@ -13,13 +19,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Carsharing_appTheme {
-                Navigation()
+
+            ProfileScreen () // This calls the UI you built in BspScreen.kt
             }
         }
 
     }
-}
+
 
 
 //    @Composable
