@@ -17,6 +17,9 @@ import ui_elemente.screens.Autoauswahl
 import ui_elemente.screens.CreateRideScreen
 import ui_elemente.screens.HomeScreen
 import ui_elemente.screens.ProfileScreen
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
+import ui_elemente.screens.LoadingScreen
 
 
 @Composable
@@ -25,34 +28,48 @@ fun Navigation() {
     var currentDestination by rememberSaveable {
         mutableStateOf(AppDestinations.HOME)
     }
+    var isLoading by rememberSaveable {
+        mutableStateOf(true)
+    }
+    LaunchedEffect(Unit) {
+        delay(2000)
+        isLoading = false
+    }
 
-    NavigationSuiteScaffold(
-        navigationSuiteItems = {
-            AppDestinations.entries.forEach {
-                item(
-                    icon = {
-                        Icon(
-                            painter = painterResource(it.icon),
-                            contentDescription = it.label,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = {
-                        Text(it.label)
-                    },
-                    selected = it == currentDestination,
-                    onClick = {
-                        currentDestination = it
-                    }
-                )
+    if (isLoading) {
+
+        LoadingScreen()
+
+    } else {
+
+        NavigationSuiteScaffold(
+            navigationSuiteItems = {
+                AppDestinations.entries.forEach {
+                    item(
+                        icon = {
+                            Icon(
+                                painter = painterResource(it.icon),
+                                contentDescription = it.label,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        },
+                        label = {
+                            Text(it.label)
+                        },
+                        selected = it == currentDestination,
+                        onClick = {
+                            currentDestination = it
+                        }
+                    )
+                }
             }
-        }
-    ) {
-        when(currentDestination) {
-            AppDestinations.HOME -> HomeScreen()
-            AppDestinations.RIDE -> Autoauswahl()
-            AppDestinations.PROFILE -> ProfileScreen() // Placeholder
-            AppDestinations.MESSAGE -> CreateRideScreen() // Placeholder
+        ) {
+            when (currentDestination) {
+                AppDestinations.HOME -> HomeScreen()
+                AppDestinations.RIDE -> Autoauswahl()
+                AppDestinations.PROFILE -> ProfileScreen() // Placeholder
+                AppDestinations.MESSAGE -> CreateRideScreen() // Placeholder
+            }
         }
     }
 }
