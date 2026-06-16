@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import ui_elemente.components.AutoCard
 import ui_elemente.components.SearchBar
 import ui_elemente.components.VehiculeDropdown
@@ -31,7 +32,9 @@ import ui_elemente.viewModel.VehiculeViewmodel
 
 @Composable
 fun Autoauswahl(
-    viewModel: VehiculeViewmodel = viewModel()
+    viewModel: VehiculeViewmodel ,
+    navController : NavController
+
 
 ) {
 

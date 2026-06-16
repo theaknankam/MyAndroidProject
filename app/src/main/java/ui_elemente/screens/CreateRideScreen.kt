@@ -17,12 +17,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import ui_elemente.navigation.Topbar
 import ui_elemente.sections.CreateRideForm
 import ui_elemente.viewModel.VehiculeViewmodel
 
 @Composable
-fun CreateRideScreen() {
+fun CreateRideScreen(
+    navController : NavController
+) {
 
     Column(
         modifier = Modifier
@@ -36,20 +39,9 @@ fun CreateRideScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CreateRideForm()
-        var showAutoauswahl by remember { mutableStateOf(false) }
-
-        Button(
-            onClick = {
-                showAutoauswahl = true
-            }
-        ) {
-            Text("Autoauswahl")
-        }
-
-        if (showAutoauswahl) {
-            Autoauswahl()
-        }
+        CreateRideForm(
+            navController = navController
+        )
 
     }
 }
