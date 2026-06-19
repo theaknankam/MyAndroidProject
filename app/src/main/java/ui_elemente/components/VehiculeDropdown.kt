@@ -4,25 +4,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import ui_elemente.model.enums.VehiculeType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VehiculeDropdown(
-    selected: String,
-    onSelected: (String) -> Unit,
-    modifier: Modifier
+    selected: VehiculeType?,
+    onSelected: (VehiculeType?) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-
-    val options = listOf(
-        "Scooter",
-        "Cars",
-        "Bike"
-    )
+    val options = VehiculeType.entries
 
     var expanded by remember {
         mutableStateOf(false)
     }
-
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = {
@@ -32,18 +27,15 @@ fun VehiculeDropdown(
     ) {
 
         TextField(
-            value = selected,
+            value = selected?.name ?: "All",
             onValueChange = {},
             readOnly = true,
-            label = {
-                Text("Sort by")
-            },
             trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded
-                )
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded)
             },
-            modifier = Modifier.menuAnchor().fillMaxWidth()
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth()
         )
 
         ExposedDropdownMenu(
@@ -52,18 +44,26 @@ fun VehiculeDropdown(
                 expanded = false
             }
         ) {
+            DropdownMenuItem(
+                text = { Text("All") },
+                onClick = {
+                    onSelected(null)
+                    expanded = false
+                }
+            )
 
             options.forEach { option ->
 
                 DropdownMenuItem(
                     text = {
-                        Text(option)
+                        Text(option.name)
                     },
                     onClick = {
                         onSelected(option)
                         expanded = false
                     }
                 )
+
             }
         }
     }
