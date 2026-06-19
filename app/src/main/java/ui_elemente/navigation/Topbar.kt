@@ -30,7 +30,7 @@ fun Topbar(lable: String) {
         )
         Greeting(lable)
         Spacer(modifier = Modifier
-            .padding(horizontal = 100.dp
+            .padding(horizontal = 150.dp
             ))
         Icon(
             painter = painterResource(id = R.drawable.ic_setting_black),

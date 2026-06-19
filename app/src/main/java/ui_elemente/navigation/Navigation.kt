@@ -28,6 +28,7 @@ import ui_elemente.screens.Autoauswahl
 import ui_elemente.screens.CreateRideScreen
 import ui_elemente.screens.HomeScreen
 import ui_elemente.screens.LoadingScreen
+import ui_elemente.screens.LoginScreen
 import ui_elemente.screens.ProfileScreen
 import ui_elemente.screens.RideDetailsScreen
 
@@ -127,8 +128,16 @@ fun Navigation() {
             // Ici on déclare tous les écrans de l'application
             NavHost(
                 navController = navController,
-                startDestination = "home"
+                startDestination = "login"
             ) {
+
+                composable("login") {
+                    LoginScreen(
+                        onLoginSuccess = {
+                            navController.navigate("home")
+                        }
+                    )
+                }
 
                 composable("home") {
                     HomeScreen()
