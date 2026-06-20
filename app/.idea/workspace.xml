@@ -4,32 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2af908d-a2f5-4828-bc0b-6f9118b19078" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/SimpleMapPreview.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/StatusBadge.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/TabItem.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/TripCard.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/model/GebuchteRides.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/model/enums/TripStatus.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/model/enums/TripsTab.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/GebuchteRidesScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/viewModel/GebuchteRidesViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/deploymentTargetSelector.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/navigation/Navigation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/navigation/Navigation.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/RideDetailsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/RideDetailsScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/CreateRideForm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/CreateRideForm.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/SearchRideForm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/SearchRideForm.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/../gradle/libs.versions.toml" afterDir="false" />
-    </list>
+    <list default="true" id="a2af908d-a2f5-4828-bc0b-6f9118b19078" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
