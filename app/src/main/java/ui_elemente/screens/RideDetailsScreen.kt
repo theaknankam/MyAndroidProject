@@ -30,6 +30,7 @@ import ui_elemente.model.Ride
 
 @Composable
 fun RideDetailsScreen(
+    tripId: String,
     onBackClick: () -> Unit = {}
 ) {
     val context = LocalContext.current

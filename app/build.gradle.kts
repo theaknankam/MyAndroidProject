@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -32,14 +33,16 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
 dependencies {
-
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.x")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.1")
     implementation(platform(libs.androidx.compose.bom))
     implementation("androidx.compose.material:material-icons-extended")
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.compose.material3)
     implementation("androidx.compose.material3:material3")
     implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
@@ -49,6 +52,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.text)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.constraintlayout)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -56,6 +60,8 @@ dependencies {
 
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.ui)
+    implementation(libs.material)
+    implementation(libs.play.services.maps)
 
     testImplementation(libs.junit)
 

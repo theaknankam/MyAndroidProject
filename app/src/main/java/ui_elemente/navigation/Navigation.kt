@@ -34,6 +34,9 @@ import ui_elemente.screens.RideDetailsScreen
 
 import ui_elemente.viewModel.VehiculeViewmodel
 import kotlin.time.Duration.Companion.milliseconds
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import ui_elemente.screens.GebuchteRidesScreen
 
 @Composable
 fun Navigation() {
@@ -128,7 +131,7 @@ fun Navigation() {
             // Ici on déclare tous les écrans de l'application
             NavHost(
                 navController = navController,
-                startDestination = "login"
+                startDestination = "gebuchteRides"
             ) {
 
                 composable("login") {
@@ -161,9 +164,19 @@ fun Navigation() {
                 composable("profile") {
                     ProfileScreen()
                 }
+                composable(
+                    route = "rideDetails/{tripId}",
+                    arguments = listOf(navArgument("tripId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val tripId = backStackEntry.arguments?.getString("tripId") ?: ""
+                    RideDetailsScreen(
+                        tripId = tripId,
+                        onBackClick = { navController.popBackStack() }
+                    )
+                }
 
-                composable("rideDetails") {
-                    RideDetailsScreen()
+                composable("gebuchteRides") {
+                    GebuchteRidesScreen(navController = navController)
                 }
             }
         }

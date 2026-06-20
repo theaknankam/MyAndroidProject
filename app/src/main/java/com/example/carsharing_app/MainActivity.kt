@@ -11,8 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.carsharing_app.ui.theme.Carsharing_appTheme
 import ui_elemente.navigation.Navigation
+import ui_elemente.screens.CreateRideScreen
+import ui_elemente.screens.GebuchteRidesScreen
 import ui_elemente.screens.ProfileScreen
 
 class MainActivity : ComponentActivity() {
@@ -20,12 +24,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
-            Navigation()// This calls the UI you built in BspScreen.kt
+           Navigation() }
             }
         }
 
-    }
+
 
 
 

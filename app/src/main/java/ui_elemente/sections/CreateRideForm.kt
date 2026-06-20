@@ -21,10 +21,8 @@ import ui_elemente.components.DatePickerField
 import ui_elemente.components.LocationInput
 import ui_elemente.components.PriceField
 import ui_elemente.components.PrimaryButton
-import ui_elemente.components.RoutePreview
 import ui_elemente.components.SeatSelector
-import ui_elemente.components.TimePickerField
-import ui_elemente.screens.Autoauswahl
+import ui_elemente.components.SimpleMapPreview
 
 @Composable
 fun CreateRideForm(
@@ -67,7 +65,10 @@ fun CreateRideForm(
 
         PriceField()
 
-        RoutePreview()
+        //RoutePreview()
+        SimpleMapPreview(
+            fromLocation = location1,
+            toLocation = location2)
 
         PrimaryButton(
             text = "Publish Ride",
