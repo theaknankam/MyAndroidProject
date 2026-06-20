@@ -3,10 +3,13 @@ package ui_elemente.navigation
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import ui_elemente.screens.Autoauswahl
 import ui_elemente.screens.CreateRideScreen
+import ui_elemente.screens.GebuchteRidesScreen
 import ui_elemente.screens.HomeScreen
 import ui_elemente.screens.LoginScreen
 import ui_elemente.screens.ProfileScreen
@@ -20,7 +23,7 @@ fun AppNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = "login"
+        startDestination = "gebuchteRides"
     ) {
 
         composable("login") {
@@ -63,8 +66,19 @@ fun AppNavHost(
             ProfileScreen()
         }
 
-        composable("rideDetails") {
-            RideDetailsScreen()
+        composable("gebuchteRides") {
+            GebuchteRidesScreen(navController = navController)
+        }
+
+        composable(
+            route = "rideDetails/{tripId}",
+            arguments = listOf(navArgument("tripId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val tripId = backStackEntry.arguments?.getString("tripId") ?: ""
+            RideDetailsScreen(
+                tripId = tripId,
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }
