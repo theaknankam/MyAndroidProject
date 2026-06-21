@@ -15,6 +15,7 @@ import ui_elemente.screens.HomeScreen
 import ui_elemente.screens.LoginScreen
 import ui_elemente.screens.ProfileScreen
 import ui_elemente.screens.RideDetailsScreen
+import ui_elemente.screens.SearchRideScreen
 import ui_elemente.viewModel.VehiculeViewmodel
 
 @Composable
@@ -78,9 +79,11 @@ fun AppNavHost(
             val tripId = backStackEntry.arguments?.getString("tripId") ?: ""
             RideDetailsScreen(
                 tripId = tripId,
-                onBackClick = { navController.popBackStack() }
-            )
+                navController)
         }
 
+        composable("searchRide") {
+            SearchRideScreen(navController)
+        }
     }
 }

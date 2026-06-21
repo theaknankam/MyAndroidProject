@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,19 +35,25 @@ fun Topbar(lable: String,
             Backbutton(navController)
 
             Spacer(
-                modifier = Modifier.padding(horizontal = 10.dp)
+                modifier = Modifier
+                    .width(8.dp)
             )
+
         }
+
         Icon(
             painter = painterResource(id = R.drawable.ic_car_black),
             contentDescription = null,
             modifier = Modifier.size(24.dp)
 
         )
+
         Greeting(lable)
+
         Spacer(modifier = Modifier
-            .padding(horizontal = 150.dp
-            ))
+            .weight(1f)
+            )
+
         Icon(
             painter = painterResource(id = R.drawable.ic_setting_black),
             contentDescription = null,

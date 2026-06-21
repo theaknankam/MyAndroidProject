@@ -27,19 +27,6 @@ fun Navigation(
 
     val currentRoute = navBackStackEntry?.destination?.route
 
-    var isLoading by rememberSaveable {
-        mutableStateOf(true)
-    }
-
-    LaunchedEffect(Unit) {
-        delay(2000.milliseconds)
-        isLoading = false
-    }
-
-    if (isLoading) {
-        LoadingScreen()
-        return
-    }
 
     // Login = pas de barre de navigation
     if (currentRoute == "login" || currentRoute == null) {

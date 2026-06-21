@@ -14,9 +14,15 @@ enum class AppDestinations(
     ),
 
     RIDE(
-        route = "autoauswahl",
+        route = "searchRide",
         label = "Ride",
         icon = R.drawable.ic_car_white
+    ),
+
+    CREATERIDE(
+        route = "createRide",
+        label = "Create Ride",
+        icon = R.drawable.ic_plus
     ),
 
     MESSAGE(

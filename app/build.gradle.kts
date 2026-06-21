@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.material)
     implementation(libs.play.services.maps)
+    implementation(libs.ui)
 
     testImplementation(libs.junit)
 
