@@ -3,16 +3,29 @@ package ui_elemente.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.carsharing_app.R
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.delay
 import ui_elemente.model.Vehicule
 import ui_elemente.model.enums.Brands
 import ui_elemente.model.enums.FuelType
 import ui_elemente.model.enums.VehiculeType
+import kotlin.time.Duration.Companion.milliseconds
 
 class VehiculeViewmodel : ViewModel() {
 
-        private val _vehicles = MutableLiveData(
-            listOf(
+    private val _vehicles = MutableLiveData<List<Vehicule>>()
+    val vehicles: LiveData<List<Vehicule>> = _vehicles
+
+    fun loadCars() {
+        viewModelScope.launch {
+
+            // Simulation d'un chargement
+            delay(1000)
+
+            _vehicles.value = listOf(
                 Vehicule(
                     1,
                     Brands.Mazda,
@@ -60,7 +73,7 @@ class VehiculeViewmodel : ViewModel() {
                     R.drawable.car2
                 ),
                 Vehicule(
-                    6 ,
+                    6,
                     Brands.Scooter,
                     VehiculeType.Scooter,
                     2,
@@ -72,8 +85,7 @@ class VehiculeViewmodel : ViewModel() {
                 )
 
             )
-        )
 
-        val vehicles: LiveData<List<Vehicule>>
-            get() = _vehicles
+        }
     }
+}
