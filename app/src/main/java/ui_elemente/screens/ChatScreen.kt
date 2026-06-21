@@ -1,58 +1,57 @@
 package ui_elemente.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
-data class ChatMessage(
-    val text: String,
-    val time: String,
-    val isMe: Boolean
-)
+import androidx.lifecycle.viewmodel.compose.viewModel
+import ui_elemente.model.ChatMessage
+import ui_elemente.viewModel.ChatViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    viewModel: ChatViewModel = viewModel()
 ) {
     var messageText by remember { mutableStateOf("") }
 
-    var messages by remember {
-        mutableStateOf(
-            listOf(
-                ChatMessage(
-                    text = "Hi! Are you still available for the ride?",
-                    time = "10:30",
-                    isMe = false
-                ),
-                ChatMessage(
-                    text = "Yes, I am!",
-                    time = "10:32",
-                    isMe = true
-                ),
-                ChatMessage(
-                    text = "Great! See you at 13:45 then.",
-                    time = "10:33",
-                    isMe = false
-                ),
-                ChatMessage(
-                    text = "Perfect, thanks!",
-                    time = "10:34",
-                    isMe = true
-                )
-            )
-        )
+    LaunchedEffect(Unit) {
+        viewModel.loadMessages()
     }
 
     Scaffold(
@@ -65,7 +64,7 @@ fun ChatScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Online",
+                            text = "Driver",
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -85,28 +84,34 @@ fun ChatScreen(
                 messageText = messageText,
                 onMessageChange = { messageText = it },
                 onSendClick = {
-                    if (messageText.isNotBlank()) {
-                        messages = messages + ChatMessage(
-                            text = messageText,
-                            time = "now",
-                            isMe = true
-                        )
-                        messageText = ""
-                    }
+                    viewModel.sendMessage(messageText)
+                    messageText = ""
                 }
             )
         }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(vertical = 12.dp)
-        ) {
-            items(messages) { message ->
-                ChatBubble(message = message)
+
+        if (viewModel.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(vertical = 12.dp)
+            ) {
+                items(viewModel.messages) { message ->
+                    ChatBubble(message = message)
+                }
             }
         }
     }
@@ -118,7 +123,7 @@ fun ChatBubble(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = if (message.isMe) {
+        horizontalArrangement = if (message.isFromCurrentUser) {
             Arrangement.End
         } else {
             Arrangement.Start
@@ -128,7 +133,7 @@ fun ChatBubble(
             modifier = Modifier
                 .widthIn(max = 260.dp)
                 .background(
-                    color = if (message.isMe) {
+                    color = if (message.isFromCurrentUser) {
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant
@@ -139,7 +144,7 @@ fun ChatBubble(
         ) {
             Text(
                 text = message.text,
-                color = if (message.isMe) {
+                color = if (message.isFromCurrentUser) {
                     MaterialTheme.colorScheme.onPrimary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
@@ -151,7 +156,7 @@ fun ChatBubble(
             Text(
                 text = message.time,
                 style = MaterialTheme.typography.bodySmall,
-                color = if (message.isMe) {
+                color = if (message.isFromCurrentUser) {
                     MaterialTheme.colorScheme.onPrimary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
@@ -187,7 +192,9 @@ fun ChatInputBar(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        IconButton(onClick = onSendClick) {
+        IconButton(
+            onClick = onSendClick
+        ) {
             Icon(
                 imageVector = Icons.Default.Send,
                 contentDescription = "Send"
