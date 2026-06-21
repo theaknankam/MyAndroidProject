@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -15,14 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.carsharing_app.R
 import ui_elemente.navigation.Topbar
 import ui_elemente.components.Category
 import ui_elemente.components.CategoryCard
 import ui_elemente.components.PictureCarousel
-
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavHostController
+) {
 
     Column(
         modifier = Modifier
@@ -30,7 +34,7 @@ fun HomeScreen() {
             .verticalScroll(rememberScrollState())
     ) {
 
-        Topbar("Home Page")
+        Topbar("Home Page", navController)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -49,16 +53,16 @@ fun HomeScreen() {
         ) {
             items(Category.entries) { category ->
                 CategoryCard(
-                    title = category.label,
-                    icon = category.icon,
-                    modifier = Modifier
+                    category = category,
+                    navController = navController,
+                    modifier = Modifier.padding(8.dp)
                 )
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text("Angebote")
+        Text("Unsere Angebote")
 
         PictureCarousel()
 

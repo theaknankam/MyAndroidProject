@@ -9,6 +9,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.delay
@@ -16,9 +17,11 @@ import kotlin.time.Duration.Companion.milliseconds
 import ui_elemente.screens.LoadingScreen
 
 @Composable
-fun Navigation() {
+fun Navigation(
 
-    val navController = rememberNavController()
+) {
+    val navController: NavHostController = rememberNavController()
+
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -41,7 +44,7 @@ fun Navigation() {
     // Login = pas de barre de navigation
     if (currentRoute == "login" || currentRoute == null) {
 
-        AppNavHost(navController)
+        AppNavHost(navController,)
 
     } else {
 

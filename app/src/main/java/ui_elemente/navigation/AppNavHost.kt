@@ -1,6 +1,7 @@
 package ui_elemente.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.R
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -18,12 +19,12 @@ import ui_elemente.viewModel.VehiculeViewmodel
 
 @Composable
 fun AppNavHost(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
 
     NavHost(
         navController = navController,
-        startDestination = "gebuchteRides"
+        startDestination = "login"
     ) {
 
         composable("login") {
@@ -45,7 +46,7 @@ fun AppNavHost(
         }
 
         composable("home") {
-            HomeScreen()
+            HomeScreen(navController)
         }
 
         composable("createRide") {
@@ -57,13 +58,13 @@ fun AppNavHost(
             val viewModel: VehiculeViewmodel = viewModel()
 
             Autoauswahl(
-                viewModel = viewModel,
-                navController = navController
+                viewModel,
+                navController
             )
         }
 
         composable("profile") {
-            ProfileScreen()
+            ProfileScreen(navController)
         }
 
         composable("gebuchteRides") {
@@ -80,5 +81,6 @@ fun AppNavHost(
                 onBackClick = { navController.popBackStack() }
             )
         }
+
     }
 }

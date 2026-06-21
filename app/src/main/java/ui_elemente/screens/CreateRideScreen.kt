@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import ui_elemente.navigation.Topbar
 import ui_elemente.sections.CreateRideForm
 import ui_elemente.viewModel.VehiculeViewmodel
@@ -35,7 +36,7 @@ fun CreateRideScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
-        Topbar("Create Ride")
+        Topbar("Create Ride", navController as NavHostController)
 
         Spacer(modifier = Modifier.height(16.dp))
 

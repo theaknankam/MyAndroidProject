@@ -28,12 +28,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ui_elemente.components.InfoRow
 import ui_elemente.components.RideHistoryItem
 import ui_elemente.navigation.Topbar
+import androidx.navigation.NavController
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    navController: NavHostController
+
+) {
 
     val context = LocalContext.current
 
@@ -47,7 +52,7 @@ fun ProfileScreen() {
                 .padding(horizontal = 24.dp)
         ) {
 
-            Topbar("Profile")
+            Topbar("Profile", navController)
 
             Spacer(modifier = Modifier.height(10.dp))
 

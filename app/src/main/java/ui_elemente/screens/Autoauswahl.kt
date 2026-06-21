@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import ui_elemente.components.AutoCard
 import ui_elemente.components.SearchBar
 import ui_elemente.components.VehiculeDropdown
@@ -45,7 +46,7 @@ fun Autoauswahl(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Topbar("Carsharing")
+        Topbar("Carsharing", navController as NavHostController)
 
         Column(
             modifier = Modifier

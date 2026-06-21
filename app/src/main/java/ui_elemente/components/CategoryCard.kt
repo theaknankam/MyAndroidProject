@@ -22,18 +22,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.carsharing_app.R
 @Composable
 fun CategoryCard(
-    title: String,
-    icon: Int,
-    modifier: Modifier
-) {
+    modifier: Modifier,
+    navController: NavHostController,
+    category: Category
+
+    ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
             .height(140.dp),
+        onClick = {
+            navController.navigate(category.route)
+        },
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(
@@ -54,8 +59,8 @@ fun CategoryCard(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(icon),
-                    contentDescription = title,
+                    painter = painterResource(category.icon),
+                    contentDescription = category.label,
                     modifier = Modifier.size(28.dp)
                 )
             }
@@ -63,7 +68,7 @@ fun CategoryCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = title,
+                text = category.label,
                 textAlign = TextAlign.Center
             )
         }
@@ -72,10 +77,11 @@ fun CategoryCard(
 
 enum class Category(
     val label: String,
-    val icon: Int
+    val icon: Int,
+    val route: String
 ) {
-    BOOK("Fahrt buchen", R.drawable.ic_car_white),
-    RENT("Auto mieten", R.drawable.ic_car_white),
-    OFFER("Auto anbieten", R.drawable.ic_car_white),
-    ANNOUNCE("Fahrt ankündigen", R.drawable.ic_car_white)
+    BOOK("Fahrt buchen", R.drawable.ic_car_white, "autoauswahl"),
+    BOOKINGS("Gebuchte Fahrten", R.drawable.ic_car_white, "gebuchteRides"),
+    OFFER("Auto anbieten", R.drawable.ic_car_white,"createRide"),
+    ANNOUNCE("Fahrt ankündigen", R.drawable.ic_car_white,"")
 }
