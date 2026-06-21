@@ -86,9 +86,8 @@ fun AppNavHost(
 
         composable("chat") {
             ChatScreen(
-                onBackClick = {
-                    navController.popBackStack()
-                }
+                viewModel = viewModel(),
+                navController
             )
         }
 

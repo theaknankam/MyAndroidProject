@@ -39,14 +39,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import ui_elemente.model.ChatMessage
+import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.ChatViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
-    onBackClick: () -> Unit = {},
-    viewModel: ChatViewModel = viewModel()
+    viewModel: ChatViewModel = viewModel(),
+    navController: NavHostController
 ) {
     var messageText by remember { mutableStateOf("") }
 
@@ -59,6 +61,7 @@ fun ChatScreen(
             TopAppBar(
                 title = {
                     Column {
+                        Topbar("Chat", navController)
                         Text(
                             text = "John Doe",
                             fontWeight = FontWeight.Bold
@@ -66,14 +69,6 @@ fun ChatScreen(
                         Text(
                             text = "Driver",
                             style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
                         )
                     }
                 }
