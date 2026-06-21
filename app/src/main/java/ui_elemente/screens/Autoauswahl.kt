@@ -34,7 +34,7 @@ import ui_elemente.viewModel.VehiculeViewmodel
 @Composable
 fun Autoauswahl(
     viewModel: VehiculeViewmodel ,
-    navController : NavController
+    navController : NavHostController
 
 
 ) {
@@ -46,7 +46,7 @@ fun Autoauswahl(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Topbar("Carsharing", navController as NavHostController)
+        Topbar("Carsharing", navController)
 
         Column(
             modifier = Modifier

@@ -21,18 +21,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ui_elemente.components.DriverInfo
 import ui_elemente.components.RideFacts
 import ui_elemente.components.RideRouteInfo
 import ui_elemente.components.RouteMapPreview
 import ui_elemente.model.Ride
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+
+import ui_elemente.navigation.Topbar
+
 
 
 @Composable
 fun RideDetailsScreen(
     tripId: String,
-    onBackClick: () -> Unit = {}
+    navController: NavHostController
 ) {
     val context = LocalContext.current
 
@@ -50,6 +53,7 @@ fun RideDetailsScreen(
 
     )
 
+
     Scaffold { paddingValues ->
 
         Column(
@@ -58,6 +62,8 @@ fun RideDetailsScreen(
                 .padding(paddingValues)
                 .background(Color.White)
         ) {
+            Topbar("RideDetails", navController)
+
 
             // Obere Leiste
             Row(
@@ -67,15 +73,7 @@ fun RideDetailsScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
-                    onClick = onBackClick
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back",
-                        tint = Color.Black
-                    )
-                }
+
 
                 IconButton(
                     onClick = {

@@ -15,6 +15,7 @@ import ui_elemente.screens.HomeScreen
 import ui_elemente.screens.LoginScreen
 import ui_elemente.screens.ProfileScreen
 import ui_elemente.screens.RideDetailsScreen
+import ui_elemente.screens.SearchRideScreen
 import ui_elemente.viewModel.VehiculeViewmodel
 import ui_elemente.screens.ChatScreen
 
@@ -79,9 +80,9 @@ fun AppNavHost(
             val tripId = backStackEntry.arguments?.getString("tripId") ?: ""
             RideDetailsScreen(
                 tripId = tripId,
-                onBackClick = { navController.popBackStack() }
-            )
+                navController)
         }
+
 
         composable("chat") {
             ChatScreen(
@@ -89,6 +90,11 @@ fun AppNavHost(
                     navController.popBackStack()
                 }
             )
+        }
+
+
+        composable("searchRide") {
+            SearchRideScreen(navController)
         }
 
     }

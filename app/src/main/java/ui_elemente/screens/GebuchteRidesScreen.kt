@@ -15,16 +15,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import ui_elemente.components.TabItem
 import ui_elemente.model.enums.TripsTab
 import ui_elemente.components.TripCard
+import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.GebuchteRidesViewModel
 
 
 @Composable
 fun GebuchteRidesScreen(
     viewModel: GebuchteRidesViewModel = viewModel(),
-    navController: NavController
+    navController: NavHostController
 ) {
 
     Column(
@@ -32,15 +34,16 @@ fun GebuchteRidesScreen(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        Text(
-            text = "My Trips",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 24.dp, bottom = 16.dp)
-        )
+//        Text(
+//            text = "My Trips",
+//            fontSize = 22.sp,
+//            fontWeight = FontWeight.Bold,
+//            textAlign = TextAlign.Center,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(top = 24.dp, bottom = 16.dp)
+//        )
+        Topbar("My Trips", navController)
 
         Row(
             modifier = Modifier

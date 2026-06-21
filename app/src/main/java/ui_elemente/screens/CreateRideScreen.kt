@@ -25,7 +25,7 @@ import ui_elemente.viewModel.VehiculeViewmodel
 
 @Composable
 fun CreateRideScreen(
-    navController : NavController
+    navController : NavHostController
 ) {
 
     Column(
@@ -36,7 +36,7 @@ fun CreateRideScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
-        Topbar("Create Ride", navController as NavHostController)
+        Topbar("Create Ride", navController)
 
         Spacer(modifier = Modifier.height(16.dp))
 

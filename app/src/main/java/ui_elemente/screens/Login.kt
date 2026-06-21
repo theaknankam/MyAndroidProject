@@ -1,5 +1,6 @@
 package ui_elemente.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -9,11 +10,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ui_elemente.viewModel.LoginViewModel
+import com.example.carsharing_app.R
+
 
 @Composable
 fun LoginScreen(
@@ -28,6 +33,12 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Image(
+            painter = painterResource(R.drawable.logo),
+            contentDescription = "Logo",
+            modifier = Modifier.size(200.dp)
+        )
+        Spacer(modifier = Modifier.height(10.dp))
 
         Text(
             text = "CarSharing Login",
@@ -74,7 +85,9 @@ fun LoginScreen(
 
             }
         ) {
-            Text("Login")
+            Text(
+                fontSize = 20.sp,
+                text = "Login")
         }
     }
 }

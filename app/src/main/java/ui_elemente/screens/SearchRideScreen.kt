@@ -23,11 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import ui_elemente.navigation.Topbar
 import ui_elemente.sections.CreateRideForm
 import ui_elemente.sections.SearchRideForm
 
 @Composable
-fun SearchRideScreen() {
+fun SearchRideScreen(
+    navController: NavHostController
+
+) {
 
     Column(
         modifier = Modifier
@@ -37,17 +42,13 @@ fun SearchRideScreen() {
             .background(Color.White)
         /*verticalArrangement = Arrangement.spacedBy(10.dp)*/
     ) {
+        Topbar("", navController)
 
         Row(
             modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "back"
-            )
 
             Text(
                 text = "Search Rides",

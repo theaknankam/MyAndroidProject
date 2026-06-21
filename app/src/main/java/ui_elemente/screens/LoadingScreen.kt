@@ -24,7 +24,7 @@ fun LoadingScreen() {
             Icon(
                 painter = painterResource( R.drawable.logo),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(80.dp)
             )
             Spacer(modifier = Modifier.height(30.dp))
 

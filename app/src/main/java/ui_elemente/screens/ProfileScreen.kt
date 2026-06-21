@@ -221,9 +221,13 @@ fun ProfileScreen(
                     fontWeight = FontWeight.SemiBold,
                     color = Color.DarkGray,
                     modifier = Modifier.clickable {
-                        Toast
-                            .makeText(context, "Alle Fahrten anzeigen", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(
+                            context,
+                            "See all Rides",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        navController.navigate("gebuchteRides")
                     }
                 )
             }
