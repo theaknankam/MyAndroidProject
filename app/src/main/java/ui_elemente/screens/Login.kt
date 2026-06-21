@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ui_elemente.viewModel.LoginViewModel
 import com.example.carsharing_app.R
@@ -37,7 +38,7 @@ fun LoginScreen(
             contentDescription = "Logo",
             modifier = Modifier.size(200.dp)
         )
-        Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Text(
             text = "CarSharing Login",
@@ -84,7 +85,9 @@ fun LoginScreen(
 
             }
         ) {
-            Text("Login")
+            Text(
+                fontSize = 20.sp,
+                text = "Login")
         }
     }
 }
