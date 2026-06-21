@@ -20,7 +20,7 @@ enum class AppDestinations(
     ),
 
     MESSAGE(
-        route = "createRide",
+        route = "chat",
         label = "Message",
         icon = R.drawable.ic_message_white
     ),

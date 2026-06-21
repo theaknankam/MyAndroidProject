@@ -4,7 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -26,6 +26,7 @@ import ui_elemente.components.RideFacts
 import ui_elemente.components.RideRouteInfo
 import ui_elemente.components.RouteMapPreview
 import ui_elemente.model.Ride
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 
 
 @Composable

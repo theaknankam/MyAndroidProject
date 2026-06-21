@@ -16,6 +16,7 @@ import ui_elemente.screens.LoginScreen
 import ui_elemente.screens.ProfileScreen
 import ui_elemente.screens.RideDetailsScreen
 import ui_elemente.viewModel.VehiculeViewmodel
+import ui_elemente.screens.ChatScreen
 
 @Composable
 fun AppNavHost(
@@ -79,6 +80,14 @@ fun AppNavHost(
             RideDetailsScreen(
                 tripId = tripId,
                 onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("chat") {
+            ChatScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
             )
         }
 
