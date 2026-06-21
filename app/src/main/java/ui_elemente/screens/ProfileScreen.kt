@@ -221,51 +221,63 @@ fun ProfileScreen(
                     fontWeight = FontWeight.SemiBold,
                     color = Color.DarkGray,
                     modifier = Modifier.clickable {
-                        Toast
-                            .makeText(context, "Alle Fahrten anzeigen", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(
+                            context,
+                            "See all Rides",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        navController.navigate("gebuchteRides")
                     }
                 )
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-            // Ride History Karte
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
-            ) {
-                Column {
-                    RideHistoryItem(
-                        date = "12 May 2024",
-                        route = "Cologne → Berlin",
-                        onClick = {
-                            Toast
-                                .makeText(context, "Fahrt Cologne → Berlin öffnen", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    )
+                // Ride History Karte
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+                ) {
+                    Column {
+                        RideHistoryItem(
+                            date = "12 May 2024",
+                            route = "Cologne → Berlin",
+                            onClick = {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "Fahrt Cologne → Berlin öffnen",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                    .show()
+                            }
+                        )
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .background(Color(0xFFE0E0E0))
-                    )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                                .background(Color(0xFFE0E0E0))
+                        )
 
-                    RideHistoryItem(
-                        date = "05 May 2024",
-                        route = "Düsseldorf → Frankfurt",
-                        onClick = {
-                            Toast
-                                .makeText(context, "Fahrt Düsseldorf → Frankfurt öffnen", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    )
+                        RideHistoryItem(
+                            date = "05 May 2024",
+                            route = "Düsseldorf → Frankfurt",
+                            onClick = {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "Fahrt Düsseldorf → Frankfurt öffnen",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                    .show()
+                            }
+                        )
+                    }
                 }
             }
         }
