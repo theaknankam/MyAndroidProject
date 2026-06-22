@@ -42,7 +42,6 @@ fun SearchRideScreen(
             .background(Color.White)
         /*verticalArrangement = Arrangement.spacedBy(10.dp)*/
     ) {
-        Topbar("", navController)
 
         Row(
             modifier = Modifier.fillMaxWidth().padding(top = 20.dp),

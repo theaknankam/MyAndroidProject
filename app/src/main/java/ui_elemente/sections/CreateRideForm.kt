@@ -89,7 +89,7 @@ fun CreateRideForm(
                     seats = seats,
                     price = price
                 )
-                navController.navigate("suggestedRides")
+                navController.navigate("searchRide")
             }
         )
     }

@@ -62,7 +62,7 @@ fun RideDetailsScreen(
                 .padding(paddingValues)
                 .background(Color.White)
         ) {
-            Topbar("RideDetails", navController)
+            //Topbar("RideDetails", navController)
 
 
             // Obere Leiste
