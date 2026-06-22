@@ -5,8 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2af908d-a2f5-4828-bc0b-6f9118b19078" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/Database.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/TripDao.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/TripEntity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/TripRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/TripViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/components/DatePickerField.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/DatePickerField.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/components/PriceField.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/PriceField.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/components/SeatSelector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/SeatSelector.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/navigation/AppNavHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/navigation/AppNavHost.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/CreateRideForm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/CreateRideForm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/SearchRideForm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/SearchRideForm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

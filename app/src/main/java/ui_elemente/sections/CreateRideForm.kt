@@ -16,7 +16,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.carsharing_app.data.TripViewModel
 import ui_elemente.components.DatePickerField
 import ui_elemente.components.LocationInput
 import ui_elemente.components.PriceField
@@ -26,7 +28,8 @@ import ui_elemente.components.SimpleMapPreview
 
 @Composable
 fun CreateRideForm(
-    navController : NavController
+    navController: NavController,
+    viewModel: TripViewModel = viewModel()
 ) {
 
     Column(
@@ -34,54 +37,60 @@ fun CreateRideForm(
     ) {
         var location1 by remember { mutableStateOf("") }
         var location2 by remember { mutableStateOf("") }
+        var date by remember { mutableStateOf("") }
+        var seats by remember { mutableStateOf(1) }
+        var price by remember { mutableStateOf(0) }
+
         LocationInput(
             label = "From",
             value = location1,
-            onValueChange = {location1= it}
+            onValueChange = { location1 = it }
         )
 
         LocationInput(
             label = "To",
             value = location2,
-            onValueChange = {location2= it}
+            onValueChange = { location2 = it }
         )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
             DatePickerField(
-                modifier = Modifier.weight(1f)
-            )
-
-           /*TimePickerField(
                 modifier = Modifier.weight(1f),
-                onConfirm = {}
-            )*/
+                value = date,
+                onValueChange = { date = it }
+            )
         }
 
-        SeatSelector()
+        SeatSelector(
+            seats = seats,
+            onSeatsChange = { seats = it }
+        )
 
-        PriceField()
+        PriceField(
+            price = price,
+            onPriceChange = { price = it }
+        )
 
-        //RoutePreview()
         SimpleMapPreview(
             fromLocation = location1,
-            toLocation = location2)
+            toLocation = location2
+        )
 
         PrimaryButton(
             text = "Publish Ride",
-            onClick = {}
-        )
-
-        Button(
             onClick = {
-                navController.navigate("autoauswahl")
+                viewModel.addTrip(
+                    fromCity = location1,
+                    toCity = location2,
+                    date = date,
+                    seats = seats,
+                    price = price
+                )
+                navController.navigate("suggestedRides")
             }
-        ) {
-            Text("Autoauswahl")
-        }
-
+        )
     }
 }

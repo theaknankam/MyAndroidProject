@@ -15,18 +15,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 @Composable
-fun PriceField() {
-    var price by remember {
-        mutableStateOf("")
-    }
-
+fun PriceField(
+    price: Int,
+    onPriceChange: (Int) -> Unit
+) {
     Column {
 
         Text(text = "Price per seat")
 
-        OutlinedTextField( /* Das ist das eigentliche Eingabefeld. */
-            value = price, /*der eingegebene text wird gezeigt*/
-            onValueChange = {price= it},
+        OutlinedTextField(
+            value = if (price == 0) "" else price.toString(),
+            onValueChange = { input ->
+                val digitsOnly = input.filter { it.isDigit() }
+                onPriceChange(digitsOnly.toIntOrNull() ?: 0)
+            },
             modifier = Modifier.fillMaxWidth(),
             leadingIcon = {
                 Icon(
@@ -40,4 +42,3 @@ fun PriceField() {
         )
     }
 }
-

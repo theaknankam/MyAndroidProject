@@ -18,19 +18,22 @@ import java.util.Date
 
 
 @Composable
-fun DatePickerField(modifier: Modifier=Modifier) {
+fun DatePickerField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit
+) {
     var showDialog by remember {
         mutableStateOf(false)
     }
-    var selectedDate by remember {
-        mutableStateOf("Select date")
-    }
+
     OutlinedTextField(
-        value = selectedDate,
+        value = value.ifEmpty { "Select date" },
         onValueChange = {},
         readOnly = true,
         label = { Text("Date") },
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .clickable { showDialog = true }
     )
     if (showDialog) {
@@ -41,13 +44,14 @@ fun DatePickerField(modifier: Modifier=Modifier) {
             confirmButton = {
                 TextButton(onClick = {
                     val millis = datePickerState.selectedDateMillis
-                    selectedDate =
+                    val newDate =
                         millis?.let {
                             java.text.DateFormat
                                 .getDateInstance()
                                 .format(Date(it))
                         } ?: "No date"
 
+                    onValueChange(newDate)
                     showDialog = false
                 }) {
                     Text("OK")

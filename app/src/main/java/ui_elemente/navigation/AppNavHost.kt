@@ -1,7 +1,6 @@
 package ui_elemente.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.R
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -17,16 +16,15 @@ import ui_elemente.screens.ProfileScreen
 import ui_elemente.screens.RideDetailsScreen
 import ui_elemente.screens.SearchRideScreen
 import ui_elemente.viewModel.VehiculeViewmodel
-import ui_elemente.screens.ChatScreen
 
 @Composable
 fun AppNavHost(
-    navController: NavHostController,
+    navController: NavHostController
 ) {
 
     NavHost(
         navController = navController,
-        startDestination = "login"
+        startDestination = "createRide"
     ) {
 
         composable("login") {
@@ -48,7 +46,7 @@ fun AppNavHost(
         }
 
         composable("home") {
-            HomeScreen(navController)
+            HomeScreen()
         }
 
         composable("createRide") {
@@ -60,13 +58,13 @@ fun AppNavHost(
             val viewModel: VehiculeViewmodel = viewModel()
 
             Autoauswahl(
-                viewModel,
-                navController
+                viewModel = viewModel,
+                navController = navController
             )
         }
 
         composable("profile") {
-            ProfileScreen(navController)
+            ProfileScreen()
         }
 
         composable("gebuchteRides") {
@@ -80,21 +78,12 @@ fun AppNavHost(
             val tripId = backStackEntry.arguments?.getString("tripId") ?: ""
             RideDetailsScreen(
                 tripId = tripId,
-                navController)
-        }
-
-
-        composable("chat") {
-            ChatScreen(
-                viewModel = viewModel(),
-                navController
+                onBackClick = {navController.popBackStack() }
             )
         }
 
-
-        composable("searchRide") {
-            SearchRideScreen(navController)
+        composable("suggestedRides") {
+            SearchRideScreen()
         }
-
     }
 }
