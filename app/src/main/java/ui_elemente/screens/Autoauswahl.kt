@@ -20,13 +20,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import ui_elemente.components.AutoCard
 import ui_elemente.components.SearchBar
 import ui_elemente.components.VehiculeDropdown
-import ui_elemente.model.Vehicule
 import ui_elemente.model.enums.VehiculeType
 import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.VehiculeViewmodel
@@ -72,6 +69,7 @@ fun Autoauswahl(
                 )
             }
             viewModel.loadCars()
+
             val vehicules by viewModel.vehicles
                 .observeAsState(emptyList())
 
@@ -82,6 +80,7 @@ fun Autoauswahl(
                     vehicules.filter {
                         it.type == selectedType
                     }
+
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier
@@ -90,8 +89,8 @@ fun Autoauswahl(
                     .clickable {}
             ) {
 
-                items(filteredCars) { car ->
-                    AutoCard(car)
+                items(filteredCars) { vehicle ->
+                    AutoCard(vehicle)
                 }
             }
         }

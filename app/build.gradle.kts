@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.room3.common.jvm)
     implementation(libs.androidx.ui)
     implementation(libs.material)
     implementation(libs.play.services.maps)

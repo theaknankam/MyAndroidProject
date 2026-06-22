@@ -23,7 +23,7 @@ class VehiculeViewmodel : ViewModel() {
         viewModelScope.launch {
 
             // Simulation d'un chargement
-            delay(1000)
+            delay(1000.milliseconds)
 
             _vehicles.value = listOf(
                 Vehicule(

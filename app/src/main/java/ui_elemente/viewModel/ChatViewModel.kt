@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ui_elemente.model.ChatMessage
+import kotlin.time.Duration.Companion.milliseconds
 
 class ChatViewModel : ViewModel() {
 
@@ -22,7 +23,7 @@ class ChatViewModel : ViewModel() {
             isLoading = true
 
             // simuliert Laden aus Internet / Datenbank
-            delay(1000)
+            delay(1000.milliseconds)
 
             messages = listOf(
                 ChatMessage(
@@ -57,7 +58,7 @@ class ChatViewModel : ViewModel() {
 
         viewModelScope.launch {
             // simuliert Nachricht senden
-            delay(500)
+            delay(500.milliseconds)
 
             val newMessage = ChatMessage(
                 id = System.currentTimeMillis().toString(),

@@ -8,5 +8,5 @@ data class User(
     val reviewCount: Int,
     val car: String,
     val verifiedInfo: String,
-    val city: String
+    val city: String,
 )
