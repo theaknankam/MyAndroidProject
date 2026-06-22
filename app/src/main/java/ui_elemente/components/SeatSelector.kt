@@ -30,19 +30,21 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun SeatSelector() {
-    // Speichert den Zustand der Anzahl
-    var seats by remember { mutableStateOf(1) }
-
+fun SeatSelector(
+    seats: Int,
+    onSeatsChange: (Int) -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
 
     ) {
-        Row (modifier= Modifier.fillMaxWidth(),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween){
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -55,20 +57,19 @@ fun SeatSelector() {
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                Text(text="Seats available", fontSize = 12.sp)
+                Text(text = "Seats available", fontSize = 12.sp)
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                // Anzahl verringern (Wert kann nicht kleiner als 1 werden)
-                IconButton(onClick = { if (seats > 1) seats-- }) {
+                IconButton(onClick = { if (seats > 1) onSeatsChange(seats - 1) }) {
                     Icon(Icons.Default.Remove, null)
                 }
 
                 Text(
                     text = seats.toString(), fontSize = 12.sp
                 )
-                // Anzahl erhöhen
-                IconButton(onClick = { seats++ }) {
+
+                IconButton(onClick = { onSeatsChange(seats + 1) }) {
                     Icon(Icons.Default.Add, null)
                 }
             }
