@@ -67,10 +67,11 @@ fun Autoauswahl(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 SearchBar(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    navController
                 )
             }
-
+            viewModel.loadCars()
             val vehicules by viewModel.vehicles
                 .observeAsState(emptyList())
 
