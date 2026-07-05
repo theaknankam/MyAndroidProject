@@ -47,9 +47,10 @@ import ui_elemente.viewModel.ChatViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
-    viewModel: ChatViewModel = viewModel(),
     navController: NavHostController
 ) {
+    val viewModel: ChatViewModel = viewModel()
+
     var messageText by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {

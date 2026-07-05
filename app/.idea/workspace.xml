@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="a2af908d-a2f5-4828-bc0b-6f9118b19078" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/components/CategoryCard.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/CategoryCard.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/navigation/AppNavHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/navigation/AppNavHost.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/CreateRideScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/CreateRideScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/RideDetailsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/RideDetailsScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/SearchRideScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/SearchRideScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/CreateRideForm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/CreateRideForm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/AuswahlBuchung.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/ChatScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/ChatScreen.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

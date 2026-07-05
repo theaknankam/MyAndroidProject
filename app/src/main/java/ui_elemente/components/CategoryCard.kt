@@ -83,5 +83,5 @@ enum class Category(
     BOOK("Book a Ride", R.drawable.ic_car_white, "searchRide"),
     BOOKINGS("Booked", R.drawable.ic_checklist_white, "gebuchteRides"),
     OFFER("My Rides", R.drawable.ic_plus,"createRide"),
-    ANNOUNCE("Contact", R.drawable.ic_contact,"chat")
+    ANNOUNCE("Contact", R.drawable.ic_contact,"message")
 }
