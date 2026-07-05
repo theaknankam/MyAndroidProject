@@ -1,11 +1,14 @@
 package ui_elemente.viewModel
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.carsharing_app.data.AppDatabase
+import ui_elemente.Repository.UserRepository
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(application: Context) : ViewModel() {
 
     var username by mutableStateOf("")
         private set
@@ -20,8 +23,14 @@ class LoginViewModel : ViewModel() {
     fun onPasswordChange(value: String) {
         password = value
     }
+    private val repository = UserRepository(
+        AppDatabase.getDatabase(application).userDao()
+    )
+    suspend fun login(): Boolean {
 
-    fun login(): Boolean {
-        return username.isNotBlank() && password.isNotBlank()
+        return repository.login(
+            username,
+            password
+        ) != null
     }
 }

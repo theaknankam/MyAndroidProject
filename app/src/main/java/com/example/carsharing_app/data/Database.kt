@@ -12,6 +12,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun tripDao(): TripDao
     abstract fun profileDao(): ProfileDao
     abstract fun chatDao(): ChatDao
+    abstract fun userDao() : UserDao
 
     companion object {
 

@@ -40,7 +40,7 @@ fun HomeScreen(
     if (viewModel.firstHomeLoading) {
 
         LaunchedEffect(Unit) {
-            delay(2000.milliseconds)
+            delay(300.milliseconds)
             viewModel.firstHomeLoading = false
         }
 

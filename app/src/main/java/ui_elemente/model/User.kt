@@ -2,11 +2,24 @@
 
 package ui_elemente.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.util.UUID
+
+@Entity(tableName = "users")
 data class User(
-    val name: String,
-    val rating: Double,
-    val reviewCount: Int,
-    val car: String,
-    val verifiedInfo: String,
-    val city: String,
+
+    @PrimaryKey(autoGenerate = true)
+    val userId: UUID,
+
+    val username: String,
+    val password: String,
+
+//    val name: String,
+//    val rating: Double,
+//    val reviewCount: Int,
+//    val car: String,
+//    val verifiedInfo: String,
+//    val city: String,
+    val email: String
 )

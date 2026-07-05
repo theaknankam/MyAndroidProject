@@ -200,7 +200,7 @@ fun ProfileScreen(
                         .background(Color(0xFFE0E0E0)),
                     contentAlignment = Alignment.Center
                 ) {
-giz                     if (imageUri != null) {
+                     if (imageUri != null) {
                         AsyncImage(
                             model = imageUri,
                             contentDescription = "Profile Image",
