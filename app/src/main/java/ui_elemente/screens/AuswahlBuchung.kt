@@ -25,10 +25,11 @@ fun AuswahlBuchung(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    val vieuwModelVehicule: VehiculeViewmodel = viewModel()
-    val vieuwModelReserve: ReserveVieuwModel = viewModel()
 
-    val vehicules = vieuwModelVehicule.vehicles.value
+    val reserveViewModel: ReserveVieuwModel = viewModel()
+
+    val reservation = reserveViewModel.reservation
+
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -45,12 +46,16 @@ fun AuswahlBuchung(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource( vehicules.image),
-                    contentDescription = "Logo",
-                    modifier = Modifier.size(80.dp)
-                )
+                if (reservation != null) {
+                    Image(
+                        painter = painterResource(id = reservation.vehicle.image),
+                        contentDescription = "Logo",
+                        modifier = Modifier.size(80.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
 
+
+                }
             }
         }
     }

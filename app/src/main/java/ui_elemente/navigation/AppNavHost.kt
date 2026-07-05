@@ -24,7 +24,7 @@ fun AppNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = "createRide"
+        startDestination = "login"
     ) {
 
         composable("login") {
@@ -46,7 +46,7 @@ fun AppNavHost(
         }
 
         composable("home") {
-            HomeScreen()
+            HomeScreen(navController)
         }
 
         composable("createRide") {
@@ -64,11 +64,14 @@ fun AppNavHost(
         }
 
         composable("profile") {
-            ProfileScreen()
+            ProfileScreen(navController)
         }
 
         composable("gebuchteRides") {
-            GebuchteRidesScreen(navController = navController)
+            GebuchteRidesScreen(
+                viewModel = viewModel(),
+                navController = navController
+            )
         }
 
         composable(
@@ -78,12 +81,13 @@ fun AppNavHost(
             val tripId = backStackEntry.arguments?.getString("tripId") ?: ""
             RideDetailsScreen(
                 tripId = tripId,
-                onBackClick = {navController.popBackStack() }
+                navController
             )
         }
 
         composable("suggestedRides") {
-            SearchRideScreen()
+            SearchRideScreen(navController)
         }
+
     }
 }

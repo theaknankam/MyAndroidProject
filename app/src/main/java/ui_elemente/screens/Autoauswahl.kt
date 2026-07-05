@@ -86,7 +86,9 @@ fun Autoauswahl(
                 modifier = Modifier
                     .weight(1f)
                     .padding(top = 8.dp)
-                    .clickable {}
+                    .clickable {
+                        navController.navigate("RideDetails")
+                    }
             ) {
 
                 items(filteredCars) { vehicle ->

@@ -8,7 +8,7 @@ import ui_elemente.model.enums.VehiculeType
 
 @Entity(tableName = "vehicule")
 data class Vehicule(
-    @PrimaryKey(autoGenerate = true)
+   @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val brand: Brands,
     val type: VehiculeType,
