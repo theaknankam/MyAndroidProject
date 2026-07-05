@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import ui_elemente.screens.Autoauswahl
+import ui_elemente.screens.ChatScreen
 import ui_elemente.screens.CreateRideScreen
 import ui_elemente.screens.GebuchteRidesScreen
 import ui_elemente.screens.HomeScreen
@@ -89,5 +90,9 @@ fun AppNavHost(
             SearchRideScreen(navController)
         }
 
+
+        composable("chat") {
+            ChatScreen(navController)
+        }
     }
 }
