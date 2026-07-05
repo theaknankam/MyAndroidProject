@@ -1,74 +1,59 @@
 package ui_elemente.viewModel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
+import com.example.carsharing_app.data.AppDatabase
+import com.example.carsharing_app.data.ChatMessageEntity
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ui_elemente.model.ChatMessage
-import kotlin.time.Duration.Companion.milliseconds
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-class ChatViewModel : ViewModel() {
+class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
-    var messages by mutableStateOf<List<ChatMessage>>(emptyList())
-        private set
+    private val chatDao =
+        AppDatabase.getDatabase(application).chatDao()
 
-    var isLoading by mutableStateOf(false)
-        private set
-
-    fun loadMessages() {
-        viewModelScope.launch {
-            isLoading = true
-
-            // simuliert Laden aus Internet / Datenbank
-            delay(1000.milliseconds)
-
-            messages = listOf(
+    val messages = chatDao.getAllMessages()
+        .map { list ->
+            list.map { entity ->
                 ChatMessage(
-                    id = "1",
-                    senderName = "John Doe",
-                    text = "Hi! Are you still available for the ride?",
-                    time = "10:30",
-                    isFromCurrentUser = false
-                ),
-                ChatMessage(
-                    id = "2",
-                    senderName = "Me",
-                    text = "Yes, I am!",
-                    time = "10:32",
-                    isFromCurrentUser = true
-                ),
-                ChatMessage(
-                    id = "3",
-                    senderName = "John Doe",
-                    text = "Great! See you at 13:45 then.",
-                    time = "10:33",
-                    isFromCurrentUser = false
+                    id = entity.id.toString(),
+                    senderName = entity.senderName,
+                    text = entity.text,
+                    time = entity.time,
+                    isFromCurrentUser = entity.isFromCurrentUser
                 )
-            )
-
-            isLoading = false
+            }
         }
-    }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            emptyList()
+        )
 
     fun sendMessage(text: String) {
         if (text.isBlank()) return
 
         viewModelScope.launch {
-            // simuliert Nachricht senden
-            delay(500.milliseconds)
-
-            val newMessage = ChatMessage(
-                id = System.currentTimeMillis().toString(),
-                senderName = "Me",
-                text = text,
-                time = "now",
-                isFromCurrentUser = true
+            chatDao.insertMessage(
+                ChatMessageEntity(
+                    senderName = "Me",
+                    text = text,
+                    time = getCurrentTime(),
+                    isFromCurrentUser = true
+                )
             )
-
-            messages = messages + newMessage
         }
+    }
+
+    private fun getCurrentTime(): String {
+        return SimpleDateFormat("HH:mm", Locale.getDefault())
+            .format(Date())
     }
 }

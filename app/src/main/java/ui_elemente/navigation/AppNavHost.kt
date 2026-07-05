@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import ui_elemente.screens.Autoauswahl
-import ui_elemente.screens.ChatScreen
 import ui_elemente.screens.CreateRideScreen
 import ui_elemente.screens.GebuchteRidesScreen
 import ui_elemente.screens.HomeScreen
@@ -24,7 +23,7 @@ fun AppNavHost(
 ) {
 
     NavHost(
-        navController,
+        navController = navController,
         startDestination = "login"
     ) {
 
@@ -65,11 +64,14 @@ fun AppNavHost(
         }
 
         composable("profile") {
-            ProfileScreen(navController= navController)
+            ProfileScreen(navController)
         }
 
         composable("gebuchteRides") {
-            GebuchteRidesScreen(navController = navController)
+            GebuchteRidesScreen(
+                viewModel = viewModel(),
+                navController = navController
+            )
         }
 
         composable(
@@ -77,17 +79,15 @@ fun AppNavHost(
             arguments = listOf(navArgument("tripId") { type = NavType.StringType })
         ) { backStackEntry ->
             val tripId = backStackEntry.arguments?.getString("tripId") ?: ""
-            RideDetailsScreen( tripId = tripId,
-                navController = navController)
-        }
-
-        composable("searchRide") {
-            SearchRideScreen(navController = navController)
-        }
-        composable("message") {
-            ChatScreen(
+            RideDetailsScreen(
+                tripId = tripId,
                 navController
             )
         }
+
+        composable("suggestedRides") {
+            SearchRideScreen(navController)
+        }
+
     }
 }

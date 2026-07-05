@@ -4,11 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import ui_elemente.model.User
 
-@Database(entities = [Trip::class], version = 1)
+@Database(entities = [Trip::class, ProfileEntity::class,
+    ChatMessageEntity::class, User::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun tripDao(): TripDao
+    abstract fun profileDao(): ProfileDao
+    abstract fun chatDao(): ChatDao
+    abstract fun userDao() : UserDao
 
     companion object {
 
@@ -20,8 +25,10 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "trip_db"
-                ).build()
+                    "carsharing_db"
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
 
                 INSTANCE = instance
                 instance

@@ -27,7 +27,8 @@ import ui_elemente.components.RideFacts
 import ui_elemente.components.RideRouteInfo
 import ui_elemente.components.RouteMapPreview
 import ui_elemente.model.Ride
-
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import ui_elemente.navigation.Topbar
 
 
@@ -61,34 +62,14 @@ fun RideDetailsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .background(Color.White)
+                .verticalScroll(rememberScrollState() )
+
         ) {
             //Topbar("RideDetails", navController)
 
 
-            // Obere Leiste
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 36.dp, start = 12.dp, end = 12.dp, bottom = 10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
 
 
-                IconButton(
-                    onClick = {
-                        Toast
-                            .makeText(context, "Mehr Optionen", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = "More",
-                        tint = Color.Black
-                    )
-                }
-            }
 
             DriverInfo(
                 driverName = ride.driverName,

@@ -1,5 +1,6 @@
 package ui_elemente.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -8,8 +9,10 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -18,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ui_elemente.viewModel.LoginViewModel
 import com.example.carsharing_app.R
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -75,19 +79,37 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        val scope = rememberCoroutineScope()
+        val context = LocalContext.current
+
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
 
-                if (viewModel.login()) {
-                    onLoginSuccess()
+                scope.launch {
+
+                    if (viewModel.login()) {
+
+                        onLoginSuccess()
+
+                    } else {
+
+                        Toast.makeText(
+                            context,
+                            "Username oder Passwort falsch",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
+
                 }
 
             }
         ) {
             Text(
-                fontSize = 20.sp,
-                text = "Login")
+                text = "Login",
+                fontSize = 20.sp
+            )
         }
     }
 }
