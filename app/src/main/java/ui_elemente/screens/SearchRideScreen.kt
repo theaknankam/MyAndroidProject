@@ -66,12 +66,12 @@ fun SearchRideScreen(
 
         Spacer(modifier = Modifier.height(5.dp))
 
-        Text(
+      /*  Text(
             text = "Available Rides",
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Left,
             style = MaterialTheme.typography.titleSmall
-        )
+        )*/
 
     }
 }

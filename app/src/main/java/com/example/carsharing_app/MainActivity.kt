@@ -43,13 +43,14 @@ class MainActivity : ComponentActivity() {
                         email = "admin@test.de"
                     )
                 )
+
             }
-        }
 
-        enableEdgeToEdge()
+            enableEdgeToEdge()
 
-        setContent {
-            Navigation()
+            setContent {
+                Navigation()
+            }
         }
     }
 }

@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.carsharing_app.Karte.MapScreen
+import org.osmdroid.util.GeoPoint
 import ui_elemente.navigation.Topbar
 import ui_elemente.sections.CreateRideForm
 import ui_elemente.viewModel.VehiculeViewmodel
@@ -43,6 +45,7 @@ fun CreateRideScreen(
         CreateRideForm(
             navController = navController
         )
+
 
     }
 }

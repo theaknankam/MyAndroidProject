@@ -85,7 +85,7 @@ fun AppNavHost(
             )
         }
 
-        composable("suggestedRides") {
+        composable("searchRide") {
             SearchRideScreen(navController)
         }
 
