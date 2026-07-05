@@ -40,8 +40,7 @@ class MainActivity : ComponentActivity() {
                     User(
                         username = "admin",
                         password = "1234",
-                        email = "admin@test.de",
-                        userId = java.util.UUID.randomUUID()
+                        email = "admin@test.de"
                     )
                 )
             }

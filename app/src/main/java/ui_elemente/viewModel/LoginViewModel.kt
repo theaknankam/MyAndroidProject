@@ -1,14 +1,14 @@
 package ui_elemente.viewModel
 
-import android.content.Context
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import com.example.carsharing_app.data.AppDatabase
 import ui_elemente.Repository.UserRepository
 
-class LoginViewModel(application: Context) : ViewModel() {
+class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     var username by mutableStateOf("")
         private set

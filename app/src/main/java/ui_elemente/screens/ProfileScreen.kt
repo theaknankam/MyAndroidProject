@@ -519,6 +519,24 @@ fun ProfileScreen(
                     )
                 }
             }
+            Column{
+
+                Spacer(modifier = Modifier.height(40.dp))
+
+                Button(
+                    onClick = {
+                        navController.navigate("login")
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp)
+                ) {
+                    Text(text = "Log Out",
+                        fontSize = 20.sp)
+                }
+            }
+
+
 
             Spacer(modifier = Modifier.height(32.dp))
         }
