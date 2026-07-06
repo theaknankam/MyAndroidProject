@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.carsharing_app.data.Trip
 import ui_elemente.model.GebuchteRides
 import ui_elemente.model.enums.TripStatus
 import ui_elemente.model.enums.TripsTab
@@ -13,34 +14,7 @@ class GebuchteRidesViewModel : ViewModel() {
 
     // aktuell ausgewählter Tab
     var selectedTab by mutableStateOf(TripsTab.UPCOMING)
-
-    // Liste der kommenden Fahrten
-    var upcomingTrips by mutableStateOf(
-        listOf(
-            GebuchteRides(
-                id = "1",
-                month = "MAY",
-                day = "12",
-                from = "Cologne",
-                to = "Berlin",
-                time = "14:00",
-                driver = "John Doe",
-                status = TripStatus.CONFIRMED
-            ),
-            GebuchteRides(
-                id = "2",
-                month = "MAY",
-                day = "20",
-                from = "Berlin",
-                to = "Hamburg",
-                time = "10:00",
-                driver = "Anna Smith",
-                status = TripStatus.PENDING
-            )
-        )
-    )
-
-    // Liste der vergangenen Fahrten
+    var upcomingTrips by mutableStateOf(listOf<GebuchteRides>())
     var pastTrips by mutableStateOf(listOf<GebuchteRides>())
 
     fun onTabSelected(tab: TripsTab) {
@@ -49,5 +23,21 @@ class GebuchteRidesViewModel : ViewModel() {
 
     fun visibleTrips(): List<GebuchteRides> {
         return if (selectedTab == TripsTab.UPCOMING) upcomingTrips else pastTrips
+    }
+
+    fun syncFromRoom(trips: List<Trip>) {
+        upcomingTrips = trips.map { trip ->
+            val dateParts = trip.date.split(" ")
+            GebuchteRides(
+                id = trip.id.toString(),
+                month = dateParts.getOrElse(1) { "" }.uppercase(),
+                day = dateParts.getOrElse(0) { "" },
+                from = trip.fromCity,
+                to = trip.toCity,
+                time = "",
+                driver = "You",
+                status = TripStatus.CONFIRMED
+            )
+        }
     }
 }

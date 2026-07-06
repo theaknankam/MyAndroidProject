@@ -29,6 +29,18 @@ import ui_elemente.components.RouteMapPreview
 import ui_elemente.model.Ride
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.carsharing_app.Karte.MapScreen
+import com.example.carsharing_app.Karte.geocode
+import com.example.carsharing_app.data.TripViewModel
+import org.osmdroid.util.GeoPoint
 import ui_elemente.navigation.Topbar
 
 
@@ -36,62 +48,52 @@ import ui_elemente.navigation.Topbar
 @Composable
 fun RideDetailsScreen(
     tripId: String,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: TripViewModel = viewModel()
 ) {
     val context = LocalContext.current
+    val trips by viewModel.allTrips.collectAsState()
+    val trip = trips.find { it.id.toString() == tripId }
 
-    val ride = Ride(
-        driverName = "John Doe",
-        rating = 4.7,
-        memberSince = "2022",
-        startTime = "14:00",
-        from = "Cologne, Germany",
-        endTime = "18:30",
-        to = "Berlin, Germany",
-        date = "12 May 2024",
-        seatsLeft = 3,
-        pricePerSeat = 20
-
-    )
-
+    if (trip == null) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+        return
+    }
 
     Scaffold { paddingValues ->
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .background(Color.White)
-                .verticalScroll(rememberScrollState() )
-
+                .verticalScroll(rememberScrollState())
         ) {
-            //Topbar("RideDetails", navController)
-
-
-
-
-
             DriverInfo(
-                driverName = ride.driverName,
-                rating = ride.rating,
-                memberSince = ride.memberSince
+                driverName = "You",
+                rating = 5.0,
+                memberSince = "2024"
             )
 
             Divider(color = Color(0xFFE0E0E0))
 
             RideRouteInfo(
-                startTime = ride.startTime,
-                startLocation = ride.from,
-                endTime = ride.endTime,
-                endLocation = ride.to
+                startTime = "",
+                startLocation = trip.fromCity,
+                endTime = "",
+                endLocation = trip.toCity
             )
 
             Divider(color = Color(0xFFE0E0E0))
 
             RideFacts(
-                date = ride.date,
-                seatsLeft = ride.seatsLeft,
-                pricePerSeat = ride.pricePerSeat
+                date = trip.date,
+                seatsLeft = trip.seats,
+                pricePerSeat = trip.price
             )
 
             Text(
@@ -101,19 +103,38 @@ fun RideDetailsScreen(
                 modifier = Modifier.padding(start = 24.dp, bottom = 12.dp)
             )
 
-            Box(
-                modifier = Modifier.padding(horizontal = 24.dp)
-            ) {
-                RouteMapPreview()
+            // Karte mit echten Städten
+            var pointA by remember { mutableStateOf<GeoPoint?>(null) }
+            var pointB by remember { mutableStateOf<GeoPoint?>(null) }
+
+            LaunchedEffect(trip) {
+                pointA = geocode(trip.fromCity)
+                pointB = geocode(trip.toCity)
+            }
+
+            Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+                if (pointA != null && pointB != null) {
+                    MapScreen(
+                        pointA = pointA!!,
+                        pointB = pointB!!
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
                 onClick = {
-                    Toast
-                        .makeText(context, "Seat booked", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(context, "Seat booked", Toast.LENGTH_SHORT).show()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -124,11 +145,11 @@ fun RideDetailsScreen(
                     contentColor = Color.White
                 )
             ) {
-                Text(
+                /*Text(
                     text = "Book Seat",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
-                )
+                )*/
             }
         }
     }

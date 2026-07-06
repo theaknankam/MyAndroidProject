@@ -94,5 +94,14 @@ fun AppNavHost(
         composable("chat") {
             ChatScreen(navController)
         }
+
+        composable("gebuchteRides") {
+            GebuchteRidesScreen(
+                viewModel = viewModel(),
+                tripViewModel = viewModel(),// gibt jetzt TripViewModel zurück
+                navController = navController
+            )
+        }
+
     }
 }

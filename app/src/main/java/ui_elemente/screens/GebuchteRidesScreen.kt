@@ -6,6 +6,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,9 +22,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.carsharing_app.data.TripViewModel
 import ui_elemente.components.TabItem
 import ui_elemente.model.enums.TripsTab
 import ui_elemente.components.TripCard
+import ui_elemente.model.GebuchteRides
+import ui_elemente.model.enums.TripStatus
 import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.GebuchteRidesViewModel
 
@@ -26,23 +35,21 @@ import ui_elemente.viewModel.GebuchteRidesViewModel
 @Composable
 fun GebuchteRidesScreen(
     viewModel: GebuchteRidesViewModel = viewModel(),
+    tripViewModel: TripViewModel = viewModel(),
     navController: NavHostController
 ) {
+    val allTrips by tripViewModel.allTrips.collectAsState()
+
+    // Sync Room → GebuchteRidesViewModel
+    LaunchedEffect(allTrips) {
+        viewModel.syncFromRoom(allTrips)
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-//        Text(
-//            text = "My Trips",
-//            fontSize = 22.sp,
-//            fontWeight = FontWeight.Bold,
-//            textAlign = TextAlign.Center,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(top = 24.dp, bottom = 16.dp)
-//        )
         Topbar("My Trips", navController)
 
         Row(
