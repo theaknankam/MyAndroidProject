@@ -5,16 +5,23 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carsharing_app.data.AppDatabase
 import com.example.carsharing_app.data.ProfileEntity
+import com.example.carsharing_app.data.ProfileRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class ProfileViewModel(application: Application) : AndroidViewModel(application) {
+class ProfileViewModel(
+    application: Application
+) : AndroidViewModel(application) {
 
-    private val profileDao =
-        AppDatabase.getDatabase(application).profileDao()
+    private val repository = ProfileRepository(
+        AppDatabase
+            .getDatabase(application)
+            .profileDao()
+    )
 
-    val profile = profileDao.getProfile()
+    val profile = repository
+        .getProfile()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -30,17 +37,17 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         imageUri: String?
     ) {
         viewModelScope.launch {
-            profileDao.saveProfile(
-                ProfileEntity(
-                    id = 1,
-                    name = name,
-                    email = email,
-                    phone = phone,
-                    city = city,
-                    car = car,
-                    imageUri = imageUri
-                )
+            val profileEntity = ProfileEntity(
+                id = 1,
+                name = name,
+                email = email,
+                phone = phone,
+                city = city,
+                car = car,
+                imageUri = imageUri
             )
+
+            repository.saveProfile(profileEntity)
         }
     }
 }
