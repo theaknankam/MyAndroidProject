@@ -3,6 +3,7 @@ package ui_elemente.sections
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carsharing_app.data.TripViewModel
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseAuth
 
 import ui_elemente.components.DatePickerField
 import ui_elemente.components.LocationInput
@@ -32,10 +36,14 @@ import ui_elemente.components.PriceField
 import ui_elemente.components.PrimaryButton
 import ui_elemente.components.RoutePreview
 import ui_elemente.components.SeatSelector
+import ui_elemente.components.TripCard
+import ui_elemente.model.GebuchteRides
+import ui_elemente.model.enums.TripStatus
 
 @Composable
 fun SearchRideForm(
-    viewModel: TripViewModel = viewModel()
+    viewModel: TripViewModel = viewModel(),
+    navController: NavHostController,
 ) {
 
     Column(
@@ -47,7 +55,17 @@ fun SearchRideForm(
         var seats by remember { mutableStateOf(1) }
         var price by remember { mutableStateOf(0) }
 
-        val allTrips by viewModel.allTrips.collectAsState()
+
+        val firestoreTrips = viewModel.firestoreTrips
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+        // Filter: nur Rides von anderen Nutzern
+        val filteredTrips = firestoreTrips.filter { trip ->
+            trip.createdBy != currentUserId &&
+                    (location1.isEmpty() || trip.fromCity.contains(location1, ignoreCase = true)) &&
+                    (location2.isEmpty() || trip.toCity.contains(location2, ignoreCase = true)) &&
+                    (date.isEmpty() || trip.date == date)
+        }
 
         LocationInput(
             label = "From",
@@ -101,7 +119,7 @@ fun SearchRideForm(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Column(
+       /* Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             allTrips.forEach { trip ->
@@ -123,8 +141,50 @@ fun SearchRideForm(
                         fontSize = 14.sp
                     )
                 }
+            }*/
+
+        if (filteredTrips.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("No rides available", color = Color.Gray)
+            }
+        } else {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                filteredTrips.forEach { trip ->
+                    val dateParts = trip.date.split(" ")
+                    TripCard(
+                        ride = GebuchteRides(
+                            id = trip.id.toString(),
+                            month = dateParts.getOrElse(1) { "" }.uppercase(),
+                            day = dateParts.getOrElse(0) { "" },
+                            from = trip.fromCity,
+                            to = trip.toCity,
+                            time = "",
+                            driver = "User",
+                            status = TripStatus.CONFIRMED
+                        ),
+                        onClick = {
+                            navController.navigate("rideDetails/${trip.id}/false")
+                        }
+                    )
+                }
             }
         }
     }
 }
+
+/*filteredTrips leer?
+↓
+JA → "No rides available" anzeigen
+↓
+NEIN → für jeden Trip:
+Datum splitten →
+TripCard erstellen →
+bei Klick zu RideDetails navigieren*/
 

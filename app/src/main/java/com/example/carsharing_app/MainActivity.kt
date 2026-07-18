@@ -1,6 +1,9 @@
 package com.example.carsharing_app
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.preference.PreferenceManager
+import org.osmdroid.config.Configuration
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +19,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.carsharing_app.data.AppDatabase
 import com.example.carsharing_app.ui.theme.Carsharing_appTheme
+import com.google.android.gms.dynamite.DynamiteModule.load
 import kotlinx.coroutines.launch
 import ui_elemente.Repository.UserRepository
 import ui_elemente.model.User
@@ -47,7 +51,10 @@ class MainActivity : ComponentActivity() {
             }
 
             enableEdgeToEdge()
-
+            Configuration.getInstance().apply {
+                load(applicationContext, PreferenceManager.getDefaultSharedPreferences(applicationContext))
+                userAgentValue = "CarSharingApp/1.0"  // ← das war bisher nicht gesetzt!
+            }
             setContent {
                 Navigation()
             }

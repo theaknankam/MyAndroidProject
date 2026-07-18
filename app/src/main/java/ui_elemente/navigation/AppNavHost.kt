@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import ui_elemente.screens.Autoauswahl
+import ui_elemente.screens.ChatListScreen
 import ui_elemente.screens.ChatScreen
 import ui_elemente.screens.CreateRideScreen
 import ui_elemente.screens.GebuchteRidesScreen
@@ -68,21 +69,21 @@ fun AppNavHost(
             ProfileScreen(navController)
         }
 
-        composable("gebuchteRides") {
-            GebuchteRidesScreen(
-                viewModel = viewModel(),
-                navController = navController
-            )
-        }
 
         composable(
-            route = "rideDetails/{tripId}",
-            arguments = listOf(navArgument("tripId") { type = NavType.StringType })
-        ) { backStackEntry ->
+            route = "rideDetails/{tripId}/{isBooked}",
+            arguments = listOf(
+                navArgument("tripId") { type = NavType.StringType },
+                navArgument("isBooked") { type = NavType.BoolType }
+            )
+        )
+            { backStackEntry ->
             val tripId = backStackEntry.arguments?.getString("tripId") ?: ""
-            RideDetailsScreen(
+            val isBooked = backStackEntry.arguments?.getBoolean("isBooked") ?: false
+                RideDetailsScreen(
                 tripId = tripId,
-                navController
+                    isBooked = isBooked,
+                navController= navController
             )
         }
 
@@ -92,7 +93,20 @@ fun AppNavHost(
 
 
         composable("chat") {
-            ChatScreen(navController)
+            ChatListScreen(navController = navController)  // ← war ChatScreen
+        }
+
+        composable(
+            route = "chat/{driverId}",
+            arguments = listOf(
+                navArgument("driverId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val driverId = backStackEntry.arguments?.getString("driverId") ?: ""
+            ChatScreen(
+                navController = navController,
+                driverId = driverId
+            )
         }
 
         composable("gebuchteRides") {

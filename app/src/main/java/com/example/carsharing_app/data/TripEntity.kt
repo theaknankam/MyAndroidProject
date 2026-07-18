@@ -14,5 +14,7 @@ data class Trip(
     val toCity: String,
     val price: Int,
     val date: String,
-    val seats: Int
+    val seats: Int,
+    val status: String = "UPCOMING",    // ← neu
+    val createdBy: String = ""
 )

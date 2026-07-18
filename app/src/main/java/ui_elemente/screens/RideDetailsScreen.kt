@@ -41,6 +41,7 @@ import com.example.carsharing_app.Karte.MapScreen
 import com.example.carsharing_app.Karte.geocode
 import com.example.carsharing_app.data.TripViewModel
 import org.osmdroid.util.GeoPoint
+import ui_elemente.components.RideDetailsButton
 import ui_elemente.navigation.Topbar
 
 
@@ -49,11 +50,16 @@ import ui_elemente.navigation.Topbar
 fun RideDetailsScreen(
     tripId: String,
     navController: NavHostController,
-    viewModel: TripViewModel = viewModel()
+    viewModel: TripViewModel = viewModel(),
+    isBooked: Boolean = false,
 ) {
     val context = LocalContext.current
     val trips by viewModel.allTrips.collectAsState()
+    val firestoreTrips = viewModel.firestoreTrips
+
+    // ← erst in Room suchen, dann in Firestore
     val trip = trips.find { it.id.toString() == tripId }
+        ?: firestoreTrips.find { it.id.toString() == tripId }
 
     if (trip == null) {
         Box(
@@ -132,25 +138,19 @@ fun RideDetailsScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Button(
+            RideDetailsButton(
+                isBooked = isBooked,
                 onClick = {
-                    Toast.makeText(context, "Seat booked", Toast.LENGTH_SHORT).show()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 24.dp)
-                    .height(56.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.DarkGray,
-                    contentColor = Color.White
-                )
-            ) {
-                /*Text(
-                    text = "Book Seat",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )*/
-            }
+                    if (isBooked) {
+                        navController.navigate("chat/${trip.createdBy}")
+                    } else {
+                        viewModel.bookTrip(trip)
+                        Toast.makeText(context, "Seat booked!", Toast.LENGTH_SHORT).show()
+                        navController.navigate("gebuchteRides")
+                    }
+                }
+            )
+
         }
     }
 }

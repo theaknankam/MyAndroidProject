@@ -26,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,6 +38,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseAuth
+import ui_elemente.components.ChatBubble
+import ui_elemente.components.ChatInputBar
 import ui_elemente.model.ChatMessage
 import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.ChatViewModel
@@ -44,12 +48,20 @@ import ui_elemente.viewModel.ChatViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    driverId: String = ""
 ) {
     val viewModel: ChatViewModel = viewModel()
+    val currentUser = FirebaseAuth.getInstance().currentUser
 
     var messageText by remember { mutableStateOf("") }
     val messages by viewModel.messages.collectAsState()
+
+    LaunchedEffect(driverId) {
+        if (driverId.isNotEmpty()) {
+            viewModel.initChat(driverId)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -59,12 +71,12 @@ fun ChatScreen(
                         Topbar("Chat", navController)
 
                         Text(
-                            text = "John Doe",
+                            text = currentUser?.email ?: "User",  // ← echte Email
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
-                            text = "Driver",
+                            text = "Online",  // ← statt "Driver"
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -98,88 +110,3 @@ fun ChatScreen(
     }
 }
 
-@Composable
-fun ChatBubble(
-    message: ChatMessage
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = if (message.isFromCurrentUser) {
-            Arrangement.End
-        } else {
-            Arrangement.Start
-        }
-    ) {
-        Column(
-            modifier = Modifier
-                .widthIn(max = 260.dp)
-                .background(
-                    color = if (message.isFromCurrentUser) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.surfaceVariant
-                    },
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(12.dp)
-        ) {
-            Text(
-                text = message.text,
-                color = if (message.isFromCurrentUser) {
-                    MaterialTheme.colorScheme.onPrimary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                }
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = message.time,
-                style = MaterialTheme.typography.bodySmall,
-                color = if (message.isFromCurrentUser) {
-                    MaterialTheme.colorScheme.onPrimary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-                modifier = Modifier.align(Alignment.End)
-            )
-        }
-    }
-}
-
-@Composable
-fun ChatInputBar(
-    messageText: String,
-    onMessageChange: (String) -> Unit,
-    onSendClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        OutlinedTextField(
-            value = messageText,
-            onValueChange = onMessageChange,
-            modifier = Modifier.weight(1f),
-            placeholder = {
-                Text("Type a message...")
-            },
-            shape = RoundedCornerShape(24.dp),
-            singleLine = true
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        IconButton(
-            onClick = onSendClick
-        ) {
-            Icon(
-                imageVector = Icons.Default.Send,
-                contentDescription = "Send"
-            )
-        }
-    }
-}

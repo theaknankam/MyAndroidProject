@@ -94,7 +94,7 @@ fun GebuchteRidesScreen(
                     TripCard(
                         ride = trip,
                         onClick = {
-                            navController.navigate("rideDetails/${trip.id}")
+                            navController.navigate("rideDetails/${trip.id}/true")
                         }
                     )
                 }

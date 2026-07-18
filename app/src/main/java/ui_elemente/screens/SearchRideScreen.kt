@@ -31,7 +31,6 @@ import ui_elemente.sections.SearchRideForm
 @Composable
 fun SearchRideScreen(
     navController: NavHostController
-
 ) {
 
     Column(
@@ -40,7 +39,6 @@ fun SearchRideScreen(
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
             .background(Color.White)
-        /*verticalArrangement = Arrangement.spacedBy(10.dp)*/
     ) {
 
         Row(
@@ -62,9 +60,7 @@ fun SearchRideScreen(
         }
         //Spacer(modifier = Modifier.height(3.dp))
 
-       SearchRideForm()
-
-        Spacer(modifier = Modifier.height(5.dp))
+       SearchRideForm(navController = navController)
 
       /*  Text(
             text = "Available Rides",
