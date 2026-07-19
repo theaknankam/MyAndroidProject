@@ -1,5 +1,7 @@
 package ui_elemente.navigation
 
+import android.R.attr.onClick
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -55,10 +57,15 @@ fun Topbar(lable: String,
             )
 
         Icon(
-            painter = painterResource(id = R.drawable.ic_setting_black),
+            painter = painterResource(
+                id = R.drawable.ic_setting_black,
+            ),
             contentDescription = null,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(24.dp)
+                .clickable{ navController.navigate("settings") }
 
         )
+
     }
 }

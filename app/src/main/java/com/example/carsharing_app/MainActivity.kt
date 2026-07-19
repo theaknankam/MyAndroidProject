@@ -1,8 +1,8 @@
 package com.example.carsharing_app
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.activity.compose.setContent
-import androidx.preference.PreferenceManager
 import org.osmdroid.config.Configuration
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
