@@ -46,28 +46,17 @@ fun SearchRideScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            //Spacer(modifier = Modifier.height(3.dp))
 
-            Text(
-                text = "Search Rides",
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleMedium
-            )
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription= "Settings"
-            )
-        }
-        //Spacer(modifier = Modifier.height(3.dp))
+            SearchRideForm(navController = navController)
 
-       SearchRideForm(navController = navController)
-
-      /*  Text(
+            /*  Text(
             text = "Available Rides",
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Left,
             style = MaterialTheme.typography.titleSmall
         )*/
 
+        }
     }
 }

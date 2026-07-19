@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.carsharing_app.Karte.MapScreen
 import com.example.carsharing_app.Karte.geocode
 import com.example.carsharing_app.data.TripViewModel
@@ -35,6 +36,7 @@ import ui_elemente.components.PriceField
 import ui_elemente.components.PrimaryButton
 import ui_elemente.components.SeatSelector
 import ui_elemente.components.SimpleMapPreview
+import ui_elemente.navigation.Topbar
 
 @Composable
 fun CreateRideForm(
@@ -45,6 +47,7 @@ fun CreateRideForm(
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        Topbar("Create Ride", navController as NavHostController)
         var location1 by remember { mutableStateOf("") }
         var location2 by remember { mutableStateOf("") }
         var date by remember { mutableStateOf("") }

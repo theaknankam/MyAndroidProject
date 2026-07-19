@@ -39,6 +39,7 @@ import ui_elemente.components.SeatSelector
 import ui_elemente.components.TripCard
 import ui_elemente.model.GebuchteRides
 import ui_elemente.model.enums.TripStatus
+import ui_elemente.navigation.Topbar
 
 @Composable
 fun SearchRideForm(
@@ -49,6 +50,8 @@ fun SearchRideForm(
     Column(
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
+        Topbar("Search Ride", navController as NavHostController)
+
         var location1 by remember { mutableStateOf("") }
         var location2 by remember { mutableStateOf("") }
         var date by remember { mutableStateOf("") }
