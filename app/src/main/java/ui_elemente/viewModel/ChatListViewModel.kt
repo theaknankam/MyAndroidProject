@@ -48,12 +48,15 @@ class ChatListViewModel : ViewModel() {
                         val otherUserId = participants.find { it != currentUserId }
                             ?: return@mapNotNull null
                         
+                        // Namen-Map aus Firestore holen
+                        val names = doc.get("names") as? Map<String, String>
+                        
                         // Vorschau-Daten zusammenbauen
                         ChatPreview(
                             chatId = doc.id,
                             otherUserId = otherUserId,
-                            // Anzeige-Name (Email als Fallback)
-                            otherUserEmail = doc.getString("otherUserEmail") ?: "User $otherUserId",
+                            // Anzeige-Name des Partners aus der Map oder ID als Fallback
+                            otherUserEmail = names?.get(otherUserId) ?: "User $otherUserId",
                             lastMessage = doc.getString("lastMessage") ?: "No messages yet",
                             lastMessageTime = doc.getString("lastMessageTime") ?: ""
                         )

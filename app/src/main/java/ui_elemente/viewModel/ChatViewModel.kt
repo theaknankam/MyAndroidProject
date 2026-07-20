@@ -33,6 +33,7 @@ class ChatViewModel : ViewModel() {
      */
     fun initChat(otherUserId: String) {
         val currentUserId = auth.currentUser?.uid ?: return
+        val myEmail = auth.currentUser?.email ?: "User"
         
         // Eindeutige ID erstellen: Immer die kleinere ID zuerst, damit beide Nutzer 
         // im selben "Raum" landen (z.B. "A_B" ist dasselbe wie "B_A").
@@ -43,12 +44,16 @@ class ChatViewModel : ViewModel() {
         }
         
         // Chat-Metadaten in Firestore sicherstellen (Teilnehmerliste)
+        // Wir speichern auch unseren eigenen Namen in einer Map, damit der Partner
+        // uns in seiner Chat-Liste identifizieren kann.
         val chatData = hashMapOf(
             "participants" to listOf(currentUserId, otherUserId),
+            "names" to mapOf(currentUserId to myEmail),
             "lastActive" to System.currentTimeMillis()
         )
         
-        // "Set" mit Merge-Option überschreibt keine bestehenden Daten
+        // "Set" mit Merge-Option: Fügt neue Felder hinzu oder aktualisiert sie,
+        // ohne andere Teilnehmer-Daten in der 'names' Map zu löschen.
         db.collection("chats").document(chatId).set(chatData, com.google.firebase.firestore.SetOptions.merge())
 
         // Echtzeit-Überwachung der Nachrichten starten
