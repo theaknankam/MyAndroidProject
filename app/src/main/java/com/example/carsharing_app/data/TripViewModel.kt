@@ -71,7 +71,7 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
                 if (snapshot != null) {
                     bookedTrips.value = snapshot.documents.mapNotNull { doc ->
                         Trip(
-                            id = doc.id.hashCode(),
+                            id = doc.getLong("originalTripId")?.toInt() ?: doc.id.hashCode(),
                             fromCity = doc.getString("fromCity") ?: "",
                             toCity = doc.getString("toCity") ?: "",
                             date = doc.getString("date") ?: "",
@@ -156,6 +156,7 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
         // In Firestore als gebuchte Fahrt speichern
         db.collection("bookedTrips").add(
             hashMapOf(
+                "originalTripId" to trip.id,
                 "bookedBy" to userId,
                 "fromCity" to trip.fromCity,
                 "toCity" to trip.toCity,

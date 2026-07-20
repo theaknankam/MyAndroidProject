@@ -19,11 +19,10 @@ class ProfileViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val repository = ProfileRepository(
-        AppDatabase
-            .getDatabase(application)
-            .profileDao()
+    private val repository =ProfileRepository(
+        AppDatabase.getDatabase(application).profileDao()
     )
+
 
     val profile = repository
         .getProfile()
@@ -33,30 +32,48 @@ class ProfileViewModel(
             initialValue = null
         )
 
-    private val tripDao = AppDatabase.getDatabase(application).tripDao()
     private val auth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
 
+    private val _citiesVisited = MutableStateFlow(0)
+    val citiesVisited: StateFlow<Int> = _citiesVisited
+
+    private val _co2Saved = MutableStateFlow(0.0)
+    val co2Saved: StateFlow<Double> = _co2Saved
+
     // Cities visited: distinct destination cities across this user's trips
-    val citiesVisited: StateFlow<Int> = tripDao.getAllTrips()
+    /*val citiesVisited: StateFlow<Int> = tripDao.getAllTrips()
         .map { trips ->
             val uid = auth.currentUser?.uid ?: return@map 0
             trips.filter { it.createdBy == uid }
                 .map { it.toCity }
                 .distinct()
                 .size
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+        }*
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)*/
 
-    // CO2 saved: lives in Firestore now, not derivable from trip data
-    private val _co2Saved = MutableStateFlow(0.0)
-    val co2Saved: StateFlow<Double> = _co2Saved
 
+
+    // ← nur ein init Block!
     init {
         auth.currentUser?.uid?.let { uid ->
+
+            // CO2 aus Firestore
             firestore.collection("users").document(uid)
                 .addSnapshotListener { snapshot, _ ->
                     _co2Saved.value = snapshot?.getDouble("co2Saved") ?: 0.0
+                }
+
+            // Cities visited aus Firestore
+            firestore.collection("trips")
+                .whereEqualTo("createdBy", uid)
+                .addSnapshotListener { snapshot, _ ->
+                    if (snapshot != null) {
+                        _citiesVisited.value = snapshot.documents
+                            .mapNotNull { it.getString("toCity") }
+                            .distinct()
+                            .size
+                    }
                 }
         }
     }
@@ -69,17 +86,17 @@ class ProfileViewModel(
         imageUri: String?
     ) {
         viewModelScope.launch {
-            val profileEntity = ProfileEntity(
-                id = 1,
-                name = name,
-                email = email,
-                phone = phone,
-                city = city,
-                car = car,
-                imageUri = imageUri
+            repository.saveProfile(
+                ProfileEntity(
+                    id = 1,
+                    name = name,
+                    email = email,
+                    phone = phone,
+                    city = city,
+                    car = car,
+                    imageUri = imageUri
+                )
             )
-
-            repository.saveProfile(profileEntity)
         }
     }
 }
