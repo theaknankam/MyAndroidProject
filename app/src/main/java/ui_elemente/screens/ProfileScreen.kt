@@ -74,14 +74,20 @@ import java.io.File
 import java.io.FileOutputStream
 
 
+import com.example.carsharing_app.data.TripViewModel
+
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
-    viewModel: ProfileViewModel = viewModel()
+    viewModel: ProfileViewModel = viewModel(),
+    tripViewModel: TripViewModel = viewModel() // ← Hinzugefügt für echte Trip-Daten
 ) {
     val context = LocalContext.current
     val profile by viewModel.profile.collectAsState()
+    
+    // Alle Trips aus der Room-Datenbank beobachten
+    val allTrips by tripViewModel.allTrips.collectAsState()
 
     var name by remember { mutableStateOf("John Doe") }
     var email by remember { mutableStateOf("john@email.com") }
@@ -492,6 +498,8 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
+            // --- ABSCHNITT: FAHRTHISTORIE (Ride History) ---
+            // Dieser Teil wurde korrigiert, um echte Daten aus der lokalen Datenbank anzuzeigen.
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -503,6 +511,7 @@ fun ProfileScreen(
                     fontWeight = FontWeight.Bold
                 )
 
+                // Navigation zur vollständigen Liste aller gebuchten Fahrten
                 Text(
                     text = "See all",
                     fontSize = 15.sp,
@@ -516,6 +525,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Karte für die kompakte Anzeige der letzten Fahrten
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(14.dp),
@@ -525,34 +535,46 @@ fun ProfileScreen(
                 elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
                 Column {
-                    RideHistoryItem(
-                        date = "12 May 2024",
-                        route = "Cologne → Berlin",
-                        onClick = {
-                            Toast
-                                .makeText(context, "Fahrt Cologne → Berlin öffnen", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    )
+                    // Logik: Wir zeigen die letzten 3 Fahrten aus der Room-Datenbank an.
+                    // 'reversed()' sorgt dafür, dass die aktuellste Fahrt oben steht.
+                    val historyDisplayList = allTrips.takeLast(3).reversed()
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .background(Color(0xFFE0E0E0))
-                    )
-
-                    RideHistoryItem(
-                        date = "05 May 2024",
-                        route = "Düsseldorf → Frankfurt",
-                        onClick = {
-                            Toast
-                                .makeText(context, "Fahrt Düsseldorf → Frankfurt öffnen", Toast.LENGTH_SHORT)
-                                .show()
+                    if (historyDisplayList.isEmpty()) {
+                        // Falls die Datenbank leer ist, zeigen wir eine freundliche Nachricht.
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text("No rides in history", color = Color.Gray)
                         }
-                    )
+                    } else {
+                        // Wir iterieren über die Liste und erstellen dynamisch die Einträge.
+                        historyDisplayList.forEachIndexed { index, trip ->
+                            RideHistoryItem(
+                                date = trip.date,
+                                route = "${trip.fromCity} → ${trip.toCity}",
+                                onClick = {
+                                    // Klick öffnet die Detailansicht der Fahrt
+                                    navController.navigate("rideDetails/${trip.id}/true")
+                                }
+                            )
+
+                            // Zeichnet eine dünne Trennlinie zwischen den Fahrten, außer nach der letzten.
+                            if (index < historyDisplayList.size - 1) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(1.dp)
+                                        .background(Color(0xFFE0E0E0))
+                                )
+                            }
+                        }
+                    }
                 }
             }
+            // --- ENDE DES FAHRTHISTORIE-ABSCHNITTS ---
             Column{
 
                 Spacer(modifier = Modifier.height(40.dp))
