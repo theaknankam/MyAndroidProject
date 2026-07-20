@@ -1,62 +1,43 @@
 package ui_elemente.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Send
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.google.firebase.auth.FirebaseAuth
 import ui_elemente.components.ChatBubble
 import ui_elemente.components.ChatInputBar
-import ui_elemente.model.ChatMessage
 import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.ChatViewModel
 
+/**
+ * Der Bildschirm für eine private 1-zu-1 Konversation.
+ * Dieser Screen wird aufgerufen, wenn man in der RideDetails auf "Chat" klickt
+ * oder einen bestehenden Chat in der Nachrichten-Liste auswählt.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
     navController: NavHostController,
-    driverId: String = ""
+    driverId: String = "" // Die ID des Empfängers
 ) {
+    // ViewModel zur Verwaltung der Geschäftslogik
     val viewModel: ChatViewModel = viewModel()
-    val currentUser = FirebaseAuth.getInstance().currentUser
 
+    // Status für das Textfeld (Eingabe)
     var messageText by remember { mutableStateOf("") }
+    
+    // Die Nachrichtenliste aus dem ViewModel abonnieren
     val messages by viewModel.messages.collectAsState()
 
+    // Initialisierung: Chat-ID basierend auf Teilnehmern berechnen
     LaunchedEffect(driverId) {
         if (driverId.isNotEmpty()) {
             viewModel.initChat(driverId)
@@ -65,48 +46,62 @@ fun ChatScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Topbar("Chat", navController)
-
-                        Text(
-                            text = currentUser?.email ?: "User",  // ← echte Email
-                            fontWeight = FontWeight.Bold
+            Column {
+                Topbar("Chat", navController)
+                
+                // Status-Leiste unter der Topbar
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.surface,
+                    shadowElevation = 1.dp
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Grüner Punkt zur Visualisierung (Simulation)
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .background(Color(0xFF4CAF50), shape = androidx.compose.foundation.shape.CircleShape)
                         )
-
+                        Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = "Online",  // ← statt "Driver"
-                            style = MaterialTheme.typography.bodySmall
+                            text = "Direct Message",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Gray
                         )
                     }
                 }
-            )
+            }
         },
         bottomBar = {
+            // Komponente für das Tippen und Absenden
             ChatInputBar(
                 messageText = messageText,
                 onMessageChange = { messageText = it },
                 onSendClick = {
-                    viewModel.sendMessage(messageText)
-                    messageText = ""
+                    if (messageText.isNotBlank()) {
+                        viewModel.sendMessage(messageText)
+                        messageText = "" // Feld nach dem Senden leeren
+                    }
                 }
             )
         }
     ) { paddingValues ->
-
+        // Nachrichtenverlauf anzeigen
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 12.dp),
+                .background(Color(0xFFFAFAFA)), // Heller Hintergrund
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(vertical = 12.dp)
+            contentPadding = PaddingValues(16.dp)
         ) {
+            // Jede Nachricht wird als ChatBubble gerendert
             items(messages) { message ->
                 ChatBubble(message = message)
             }
         }
     }
 }
-

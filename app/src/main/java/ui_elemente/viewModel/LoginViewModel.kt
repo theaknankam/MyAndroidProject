@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
 class LoginViewModel : ViewModel() {  // ← kein AndroidViewModel mehr nötig
@@ -27,17 +28,22 @@ class LoginViewModel : ViewModel() {  // ← kein AndroidViewModel mehr nötig
             auth.signInWithEmailAndPassword(username, password).await()
             true
         } catch (e: Exception) {
-            errorMessage = e.message ?: "Login fehlgeschlagen"
+            errorMessage = e.message ?: "Login failed"
             false
         }
     }
 
     suspend fun register(): Boolean {
         return try {
-            auth.createUserWithEmailAndPassword(username, password).await()
+            val result = auth.createUserWithEmailAndPassword(username, password).await()
+            result.user?.uid?.let { uid ->
+                FirebaseFirestore.getInstance().collection("users")
+                    .document(uid)
+                    .set(mapOf("co2Saved" to 0.0))
+            }
             true
         } catch (e: Exception) {
-            errorMessage = e.message ?: "Registrierung fehlgeschlagen"
+            errorMessage = e.message ?: "Register failed"
             false
         }
     }

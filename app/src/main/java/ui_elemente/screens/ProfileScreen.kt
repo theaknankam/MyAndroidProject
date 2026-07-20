@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.core.content.ContextCompat
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -66,11 +67,14 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import ui_elemente.components.InfoRow
 import ui_elemente.components.RideHistoryItem
+import ui_elemente.model.Ride
 import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.ProfileViewModel
 import java.io.File
 import java.io.FileOutputStream
 
+
+@RequiresApi(Build.VERSION_CODES.KITKAT)
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
@@ -85,8 +89,10 @@ fun ProfileScreen(
     var city by remember { mutableStateOf("Cologne, Germany") }
     var car by remember { mutableStateOf("Toyota Corolla 2020") }
     var imageUri by remember { mutableStateOf<String?>(null) }
-    var walletBalance by remember { mutableStateOf(42.50) }
-    var co2Saved by remember { mutableStateOf(18.3) }
+
+    //###to be edited in a model and new Sreens for edit###
+    val citiesVisited by viewModel.citiesVisited.collectAsState()
+    val co2Saved by viewModel.co2Saved.collectAsState()
 
     LaunchedEffect(profile) {
         if (profile != null) {
@@ -338,16 +344,16 @@ fun ProfileScreen(
             ) {
                 StatCard(
                     modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically),
-                    icon = Icons.Default.AccountBalanceWallet,
-                    label = "Wallet",
-                    value = "€$walletBalance"
+                        .align(Alignment.CenterVertically)
+                        .weight(1f),
+                    icon = Icons.Default.LocationOn,
+                    label = "Cities Visited",
+                    value = "$citiesVisited"
                 )
                 StatCard(
                     modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically),
+                        .align(Alignment.CenterVertically)
+                        .weight(1f),
                     icon = Icons.Default.Eco,
                     label = "CO² Saved",
                     value = "$co2Saved kg"
