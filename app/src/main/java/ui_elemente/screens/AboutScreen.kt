@@ -55,7 +55,8 @@ fun AboutScreen(navController: NavHostController) {
             Spacer(modifier = Modifier.weight(1f))
             
             Text(
-                text = "© 2024 CarSharing Team",
+                text = "© 2025 CarSharing Team" +
+                        "Liya, Diana & Thea",
                 fontSize = 14.sp,
                 color = Color.LightGray
             )
