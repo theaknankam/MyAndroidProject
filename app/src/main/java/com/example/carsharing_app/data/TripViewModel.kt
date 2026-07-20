@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-
 class TripViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: TripRepository
@@ -23,7 +22,7 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
 
     var firestoreTrips by mutableStateOf(listOf<Trip>())
 
-    init {  // ← alles was beim Start passiert kommt hierher
+    init {
         val dao = AppDatabase.getDatabase(application).tripDao()
         repository = TripRepository(dao)
 
@@ -33,9 +32,8 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
             initialValue = emptyList()
         )
 
-        loadFirestoreTrips()  // ← hier aufrufen, nicht außerhalb
+        loadFirestoreTrips()
     }
-
 
     private fun loadFirestoreTrips() {
         db.collection("trips")
@@ -50,30 +48,46 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
                             seats = doc.getLong("seats")?.toInt() ?: 0,
                             price = doc.getLong("price")?.toInt() ?: 0,
                             status = doc.getString("status") ?: "UPCOMING",
-                            createdBy = doc.getString("createdBy") ?: ""
+                            createdBy = doc.getString("createdBy") ?: "",
+                            allowSmoking = doc.getBoolean("allowSmoking") ?: false,
+                            allowPets = doc.getBoolean("allowPets") ?: false,
+                            allowMusic = doc.getBoolean("allowMusic") ?: true,
+                            ladiesOnly = doc.getBoolean("ladiesOnly") ?: false
                         )
                     }
                 }
             }
     }
 
-    fun addTrip(fromCity: String, toCity: String, date: String, seats: Int, price: Int) {
+    fun addTrip(
+        fromCity: String, 
+        toCity: String, 
+        date: String, 
+        seats: Int, 
+        price: Int,
+        allowSmoking: Boolean = false,
+        allowPets: Boolean = false,
+        allowMusic: Boolean = true,
+        ladiesOnly: Boolean = false
+    ) {
         viewModelScope.launch {
-            // Lokal in Room speichern
-            repository.insertTrip(
-                Trip(
-                    fromCity = fromCity,
-                    toCity = toCity,
-                    date = date,
-                    seats = seats,
-                    price = price,
-                    status = "UPCOMING",
-                    createdBy = auth.currentUser?.uid ?: ""
-                )
+            val trip = Trip(
+                fromCity = fromCity,
+                toCity = toCity,
+                date = date,
+                seats = seats,
+                price = price,
+                status = "UPCOMING",
+                createdBy = auth.currentUser?.uid ?: "",
+                allowSmoking = allowSmoking,
+                allowPets = allowPets,
+                allowMusic = allowMusic,
+                ladiesOnly = ladiesOnly
             )
+            
+            repository.insertTrip(trip)
 
-            // In Firestore speichern damit andere Nutzer es sehen
-            val userId = auth.currentUser?.uid ?: return@launch
+            val userId = auth.currentUser?.uid ?: "anonymous"
             db.collection("trips").add(
                 hashMapOf(
                     "fromCity" to fromCity,
@@ -82,7 +96,11 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
                     "seats" to seats,
                     "price" to price,
                     "status" to "UPCOMING",
-                    "createdBy" to userId
+                    "createdBy" to userId,
+                    "allowSmoking" to allowSmoking,
+                    "allowPets" to allowPets,
+                    "allowMusic" to allowMusic,
+                    "ladiesOnly" to ladiesOnly
                 )
             )
         }
@@ -90,12 +108,11 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
 
     fun bookTrip(trip: Trip) {
         viewModelScope.launch {
-            // In Room speichern als gebuchte Fahrt
             repository.insertTrip(
                 trip.copy(
-                    id = 0,  // neue ID generieren
+                    id = 0,
                     status = "UPCOMING",
-                    createdBy = auth.currentUser?.uid ?: ""
+                    createdBy = auth.currentUser?.uid ?: "me"
                 )
             )
         }

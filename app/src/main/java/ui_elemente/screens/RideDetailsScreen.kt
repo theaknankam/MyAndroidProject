@@ -4,16 +4,9 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,8 +18,6 @@ import androidx.navigation.NavHostController
 import ui_elemente.components.DriverInfo
 import ui_elemente.components.RideFacts
 import ui_elemente.components.RideRouteInfo
-import ui_elemente.components.RouteMapPreview
-import ui_elemente.model.Ride
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -44,8 +35,6 @@ import org.osmdroid.util.GeoPoint
 import ui_elemente.components.RideDetailsButton
 import ui_elemente.navigation.Topbar
 
-
-
 @Composable
 fun RideDetailsScreen(
     tripId: String,
@@ -57,21 +46,17 @@ fun RideDetailsScreen(
     val trips by viewModel.allTrips.collectAsState()
     val firestoreTrips = viewModel.firestoreTrips
 
-    // ← erst in Room suchen, dann in Firestore
     val trip = trips.find { it.id.toString() == tripId }
         ?: firestoreTrips.find { it.id.toString() == tripId }
 
     if (trip == null) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         return
     }
 
-    Scaffold { paddingValues ->
+    Scaffold(
+        topBar = { Topbar("Ride Details", navController) }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -80,21 +65,32 @@ fun RideDetailsScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             DriverInfo(
-                driverName = "You",
-                rating = 5.0,
+                driverName = if (trip.createdBy == "me") "You" else "Driver",
+                rating = 4.8,
                 memberSince = "2024"
             )
 
-            Divider(color = Color(0xFFE0E0E0))
+            // Preference Icons (2)
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                PreferenceIcon(icon = Icons.Default.SmokingRooms, enabled = trip.allowSmoking, label = "Smoking")
+                PreferenceIcon(icon = Icons.Default.Pets, enabled = trip.allowPets, label = "Pets")
+                PreferenceIcon(icon = Icons.Default.MusicNote, enabled = trip.allowMusic, label = "Music")
+                if (trip.ladiesOnly) PreferenceIcon(icon = Icons.Default.Female, enabled = true, label = "Ladies")
+            }
+
+            HorizontalDivider(color = Color(0xFFE0E0E0))
 
             RideRouteInfo(
-                startTime = "",
+                startTime = "08:30",
                 startLocation = trip.fromCity,
-                endTime = "",
+                endTime = "11:45",
                 endLocation = trip.toCity
             )
 
-            Divider(color = Color(0xFFE0E0E0))
+            HorizontalDivider(color = Color(0xFFE0E0E0))
 
             RideFacts(
                 date = trip.date,
@@ -109,7 +105,6 @@ fun RideDetailsScreen(
                 modifier = Modifier.padding(start = 24.dp, bottom = 12.dp)
             )
 
-            // Karte mit echten Städten
             var pointA by remember { mutableStateOf<GeoPoint?>(null) }
             var pointB by remember { mutableStateOf<GeoPoint?>(null) }
 
@@ -118,25 +113,15 @@ fun RideDetailsScreen(
                 pointB = geocode(trip.toCity)
             }
 
-            Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+            Box(modifier = Modifier.padding(horizontal = 24.dp).height(200.dp)) {
                 if (pointA != null && pointB != null) {
-                    MapScreen(
-                        pointA = pointA!!,
-                        pointB = pointB!!
-                    )
+                    MapScreen(pointA = pointA!!, pointB = pointB!!)
                 } else {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(24.dp))
 
             RideDetailsButton(
                 isBooked = isBooked,
@@ -145,12 +130,26 @@ fun RideDetailsScreen(
                         navController.navigate("chat/${trip.createdBy}")
                     } else {
                         viewModel.bookTrip(trip)
-                        Toast.makeText(context, "Seat booked!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Payment of €${trip.price} via Wallet confirmed!", Toast.LENGTH_LONG).show()
                         navController.navigate("gebuchteRides")
                     }
                 }
             )
-
+            
+            Spacer(modifier = Modifier.height(24.dp))
         }
+    }
+}
+
+@Composable
+fun PreferenceIcon(icon: androidx.compose.ui.graphics.vector.ImageVector, enabled: Boolean, label: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint = if (enabled) MaterialTheme.colorScheme.primary else Color.LightGray,
+            modifier = Modifier.size(28.dp)
+        )
+        Text(text = label, fontSize = 10.sp, color = if (enabled) Color.Black else Color.LightGray)
     }
 }

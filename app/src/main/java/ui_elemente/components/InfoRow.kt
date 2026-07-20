@@ -32,9 +32,7 @@ fun InfoRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-                onClick()
-            },
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -72,7 +70,7 @@ fun InfoRow(
             Icon(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = "Verified",
-                tint = Color.DarkGray,
+                tint = Color(0xFF4CAF50), // Green for verified
                 modifier = Modifier.size(22.dp)
             )
         }

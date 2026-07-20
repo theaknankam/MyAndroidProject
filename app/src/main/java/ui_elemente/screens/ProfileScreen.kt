@@ -9,7 +9,6 @@ import android.widget.Toast
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.core.content.ContextCompat
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,8 +29,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PhotoLibrary
@@ -41,6 +42,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -83,6 +85,8 @@ fun ProfileScreen(
     var city by remember { mutableStateOf("Cologne, Germany") }
     var car by remember { mutableStateOf("Toyota Corolla 2020") }
     var imageUri by remember { mutableStateOf<String?>(null) }
+    var walletBalance by remember { mutableStateOf(42.50) }
+    var co2Saved by remember { mutableStateOf(18.3) }
 
     LaunchedEffect(profile) {
         if (profile != null) {
@@ -200,7 +204,7 @@ fun ProfileScreen(
                         .background(Color(0xFFE0E0E0)),
                     contentAlignment = Alignment.Center
                 ) {
-                     if (imageUri != null) {
+                    if (imageUri != null) {
                         AsyncImage(
                             model = imageUri,
                             contentDescription = "Profile Image",
@@ -323,6 +327,30 @@ fun ProfileScreen(
                     text = "4.8 (32 reviews)",
                     fontSize = 15.sp,
                     color = Color.DarkGray
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                StatCard(
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically),
+                    icon = Icons.Default.AccountBalanceWallet,
+                    label = "Wallet",
+                    value = "€$walletBalance"
+                )
+                StatCard(
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically),
+                    icon = Icons.Default.Eco,
+                    label = "CO² Saved",
+                    value = "$co2Saved kg"
                 )
             }
 
@@ -560,5 +588,33 @@ fun getGalleryPermission(): String {
         Manifest.permission.READ_MEDIA_IMAGES
     } else {
         Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+}
+
+@Composable
+fun StatCard(
+    modifier: Modifier = Modifier,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    value: String
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Text(text = label, fontSize = 12.sp, color = Color.Gray)
+            Text(text = value, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        }
     }
 }
