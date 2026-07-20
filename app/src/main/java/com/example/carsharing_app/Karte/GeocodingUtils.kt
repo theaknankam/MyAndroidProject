@@ -15,7 +15,8 @@ suspend fun geocode(cityName: String): GeoPoint? {
             val url = URL("https://nominatim.openstreetmap.org/search?q=$encoded&format=json&limit=1")
 
             val connection = url.openConnection() as HttpURLConnection
-            connection.setRequestProperty("User-Agent", "CarSharingApp/1.0")
+            connection.setRequestProperty("User-Agent", "CarSharingApp/1.0 (your@email.com)")  // ← Email hinzufügen!
+            connection.setRequestProperty("Accept-Language", "de")
             connection.connectTimeout = 5000
             connection.readTimeout = 5000
 

@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -21,6 +22,7 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
     private val auth = FirebaseAuth.getInstance()
 
     var firestoreTrips by mutableStateOf(listOf<Trip>())
+    val bookedTrips = MutableStateFlow<List<Trip>>(emptyList())
 
     init {
         val dao = AppDatabase.getDatabase(application).tripDao()
@@ -33,6 +35,7 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
         )
 
         loadFirestoreTrips()
+        loadBookedTrips()
     }
 
     private fun loadFirestoreTrips() {
@@ -58,6 +61,35 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
     }
+
+
+    private fun loadBookedTrips() {
+        val userId = auth.currentUser?.uid ?: return
+        db.collection("bookedTrips")
+            .whereEqualTo("bookedBy", userId)
+            .addSnapshotListener { snapshot, _ ->
+                if (snapshot != null) {
+                    bookedTrips.value = snapshot.documents.mapNotNull { doc ->
+                        Trip(
+                            id = doc.id.hashCode(),
+                            fromCity = doc.getString("fromCity") ?: "",
+                            toCity = doc.getString("toCity") ?: "",
+                            date = doc.getString("date") ?: "",
+                            seats = doc.getLong("seats")?.toInt() ?: 0,
+                            price = doc.getLong("price")?.toInt() ?: 0,
+                            status = doc.getString("status") ?: "UPCOMING",
+                            createdBy = doc.getString("createdBy") ?: "",
+                            allowSmoking = false,
+                            allowPets = false,
+                            allowMusic = true,
+                            ladiesOnly = false
+                        )
+                    }
+                }
+            }
+    }
+
+
 
     fun addTrip(
         fromCity: String, 
@@ -106,7 +138,7 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun bookTrip(trip: Trip) {
+   /* fun bookTrip(trip: Trip) {
         viewModelScope.launch {
             repository.insertTrip(
                 trip.copy(
@@ -116,6 +148,24 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
                 )
             )
         }
+    }*/
+
+    fun bookTrip(trip: Trip) {
+        val userId = auth.currentUser?.uid ?: return
+
+        // In Firestore als gebuchte Fahrt speichern
+        db.collection("bookedTrips").add(
+            hashMapOf(
+                "bookedBy" to userId,
+                "fromCity" to trip.fromCity,
+                "toCity" to trip.toCity,
+                "date" to trip.date,
+                "seats" to trip.seats,
+                "price" to trip.price,
+                "createdBy" to trip.createdBy,  // ← originaler Fahrer bleibt!
+                "status" to "UPCOMING"
+            )
+        )
     }
 
     fun deleteTrip(trip: Trip) {

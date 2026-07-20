@@ -80,7 +80,6 @@ fun AppNavHost(
         composable("gebuchteRides") {
             GebuchteRidesScreen(
                 viewModel = viewModel(),
-                tripViewModel = viewModel(),
                 navController = navController
             )
         }

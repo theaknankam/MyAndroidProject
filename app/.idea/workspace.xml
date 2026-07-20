@@ -5,35 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2af908d-a2f5-4828-bc0b-6f9118b19078" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/google-services.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/google-services.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/ChatBubble.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/ChatInputBar.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/ChatListKomponent.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/components/RideDetailsButton.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/model/ChatPreview.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/ChatListScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/viewModel/ChatListViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/deploymentTargetSelector.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/ChatMessageEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/ChatMessageEntity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/Database.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/Database.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/TripEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/TripEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/Karte/GeocodingUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/Karte/GeocodingUtils.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/TripViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/TripViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/navigation/AppNavHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/navigation/AppNavHost.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/ChatScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/ChatScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/GebuchteRidesScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/GebuchteRidesScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/Login.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/Login.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/RideDetailsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/RideDetailsScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/SearchRideScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/SearchRideScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/SearchRideForm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/sections/SearchRideForm.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/viewModel/ChatViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/viewModel/ChatViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/viewModel/LoginViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/viewModel/LoginViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hs_err_pid12704.log" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

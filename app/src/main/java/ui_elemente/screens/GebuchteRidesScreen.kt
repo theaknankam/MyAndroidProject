@@ -34,16 +34,17 @@ import ui_elemente.viewModel.GebuchteRidesViewModel
 
 @Composable
 fun GebuchteRidesScreen(
-    viewModel: GebuchteRidesViewModel = viewModel(),
-    tripViewModel: TripViewModel = viewModel(),
+    viewModel: TripViewModel = viewModel(),
     navController: NavHostController
 ) {
-    val allTrips by tripViewModel.allTrips.collectAsState()
+    val bookedTrips by viewModel.bookedTrips.collectAsState()
+    var selectedTab by remember { mutableStateOf(TripsTab.UPCOMING) }
 
-    // Sync Room → GebuchteRidesViewModel
-    LaunchedEffect(allTrips) {
-        viewModel.syncFromRoom(allTrips)
-    }
+    val trips = if (selectedTab == TripsTab.UPCOMING)
+        bookedTrips.filter { it.status == "UPCOMING" }
+    else
+        bookedTrips.filter { it.status == "PAST" }
+
 
     Column(
         modifier = Modifier
@@ -59,20 +60,20 @@ fun GebuchteRidesScreen(
         ) {
             TabItem(
                 text = "Upcoming",
-                selected = viewModel.selectedTab == TripsTab.UPCOMING,
+                selected = selectedTab == TripsTab.UPCOMING,
                 modifier = Modifier.weight(1f)
-            ) { viewModel.onTabSelected(TripsTab.UPCOMING) }
+            ) { selectedTab = TripsTab.UPCOMING }
 
             TabItem(
                 text = "Past",
-                selected = viewModel.selectedTab == TripsTab.PAST,
+                selected = selectedTab == TripsTab.PAST,
                 modifier = Modifier.weight(1f)
-            ) { viewModel.onTabSelected(TripsTab.PAST) }
+            ) {selectedTab = TripsTab.PAST }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        val trips = viewModel.visibleTrips()
+      //  val trips = viewModel.visibleTrips()
 
         if (trips.isEmpty()) {
             Box(
@@ -90,11 +91,19 @@ fun GebuchteRidesScreen(
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(trips, key = { it.id }) { trip ->
+                items(trips, key = { it.id }) { trip ->     val dateParts = trip.date.split(" ")
                     TripCard(
-                        ride = trip,
-                        onClick = {
-                            navController.navigate("rideDetails/${trip.id}/true")
+                        ride = GebuchteRides(
+                            id = trip.id.toString(),
+                            month = dateParts.getOrElse(1) { "" }.uppercase(),
+                            day = dateParts.getOrElse(0) { "" },
+                            from = trip.fromCity,
+                            to = trip.toCity,
+                            time = "",
+                            driver = trip.createdBy,
+                            status = TripStatus.CONFIRMED
+                        ),
+                          onClick={  navController.navigate("rideDetails/${trip.id}/true")
                         }
                     )
                 }
