@@ -8,8 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/Karte/GeocodingUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/Karte/GeocodingUtils.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/TripViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/carsharing_app/data/TripViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/navigation/AppNavHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/navigation/AppNavHost.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/GebuchteRidesScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/screens/GebuchteRidesScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ui_elemente/viewModel/ProfileViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ui_elemente/viewModel/ProfileViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

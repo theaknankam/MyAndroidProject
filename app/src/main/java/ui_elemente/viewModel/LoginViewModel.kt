@@ -39,7 +39,7 @@ class LoginViewModel : ViewModel() {  // ← kein AndroidViewModel mehr nötig
             result.user?.uid?.let { uid ->
                 FirebaseFirestore.getInstance().collection("users")
                     .document(uid)
-                    .set(mapOf("co2Saved" to 0.0))
+                    .set(mapOf("co2Saved" to 0.0, "walletBalance" to 50.0)) // solde fictif de départ
             }
             true
         } catch (e: Exception) {

@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -85,7 +86,7 @@ fun ProfileScreen(
 ) {
     val context = LocalContext.current
     val profile by viewModel.profile.collectAsState()
-    
+
     // Alle Trips aus der Room-Datenbank beobachten
     val allTrips by tripViewModel.allTrips.collectAsState()
 
@@ -95,10 +96,13 @@ fun ProfileScreen(
     var city by remember { mutableStateOf("Cologne, Germany") }
     var car by remember { mutableStateOf("Toyota Corolla 2020") }
     var imageUri by remember { mutableStateOf<String?>(null) }
+    var showRechargeDialog by remember { mutableStateOf(false) }
+    var rechargeInput by remember { mutableStateOf("") }
 
     //###to be edited in a model and new Sreens for edit###
     val citiesVisited by viewModel.citiesVisited.collectAsState()
     val co2Saved by viewModel.co2Saved.collectAsState()
+    val walletBalance by viewModel.walletBalance.collectAsState()
 
     LaunchedEffect(profile) {
         if (profile != null) {
@@ -343,6 +347,114 @@ fun ProfileScreen(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
+
+            // --- Portefeuille fictif ---
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(18.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.AccountBalanceWallet,
+                            contentDescription = "Wallet",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+                            Text("Solde du portefeuille", fontSize = 13.sp, color = Color.Gray)
+                            Text(
+                                text = "€${"%.2f".format(walletBalance)}",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+
+                    Button(onClick = { showRechargeDialog = true }) {
+                        Text("Recharger")
+                    }
+                }
+            }
+
+            if (showRechargeDialog) {
+                AlertDialog(
+                    onDismissRequest = {
+                        showRechargeDialog = false
+                        rechargeInput = ""
+                    },
+                    title = { Text("Recharger le portefeuille") },
+                    text = {
+                        Column {
+                            Text(
+                                "Ceci est un solde fictif — aucune vraie carte n'est débitée.",
+                                fontSize = 13.sp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            // Montants rapides
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                listOf(10.0, 20.0, 50.0).forEach { amount ->
+                                    Button(onClick = { rechargeInput = amount.toInt().toString() }) {
+                                        Text("€${amount.toInt()}")
+                                    }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            OutlinedTextField(
+                                value = rechargeInput,
+                                onValueChange = { input ->
+                                    rechargeInput = input.filter { it.isDigit() }
+                                },
+                                label = { Text("Montant (€)") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
+                    confirmButton = {
+                        Button(onClick = {
+                            val amount = rechargeInput.toDoubleOrNull()
+                            if (amount == null || amount <= 0.0) {
+                                Toast.makeText(context, "Entre un montant valide", Toast.LENGTH_SHORT).show()
+                            } else {
+                                tripViewModel.rechargeWallet(amount) { success ->
+                                    Toast.makeText(
+                                        context,
+                                        if (success) "€${"%.2f".format(amount)} ajoutés (fictif)" else "Échec de la recharge",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                showRechargeDialog = false
+                                rechargeInput = ""
+                            }
+                        }) {
+                            Text("Confirmer")
+                        }
+                    },
+                    dismissButton = {
+                        Button(onClick = {
+                            showRechargeDialog = false
+                            rechargeInput = ""
+                        }) {
+                            Text("Annuler")
+                        }
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
