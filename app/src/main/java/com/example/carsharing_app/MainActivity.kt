@@ -22,34 +22,42 @@ class MainActivity : ComponentActivity() {
                 AppDatabase.getDatabase(this@MainActivity).userDao()
             )
 
-            if (repository.getUserCount() == 0) {
-                repository.insertUser(
-                    User(
-                        username = "admin",
-                        password = "1234",
-                        email = "admin@test.de",
-                        isVerified = true,
-                        rating = 4.9f,
-                        reviewCount = 24,
-                        walletBalance = 50.0,
-                        co2Saved = 12.5,
-                        kmShared = 1200.0
-                    )
-                )
-                repository.insertUser(
-                    User(
-                        username = "user2",
-                        password = "1234",
-                        email = "user2@test.de",
-                        isVerified = false,
-                        rating = 4.5f,
-                        reviewCount = 5,
-                        walletBalance = 10.0,
-                        co2Saved = 2.1,
-                        kmShared = 150.0
-                    )
-                )
-            }
+//            if (repository.getUserCount() == 0) {
+//                repository.insertUser(
+//                    User(
+//                        username = "admin",
+//                        password = "1234",
+//                        email = "admin@test.de",
+//                        isVerified = true,
+//                        rating = 4.9f,
+//                        reviewCount = 24,
+//                        walletBalance = 50.0,
+//                        co2Saved = 12.5,
+//                        kmShared = 1200.0,
+//                        userId = TODO(),
+//                        number = 444444444444444444,
+//                        age = 44,
+//                        address = "md"
+//                    )
+//                )
+//                repository.insertUser(
+//                    User(
+//                        username = "user2",
+//                        password = "1234",
+//                        email = "user2@test.de",
+//                        isVerified = false,
+//                        rating = 4.5f,
+//                        reviewCount = 5,
+//                        walletBalance = 10.0,
+//                        co2Saved = 2.1,
+//                        kmShared = 150.0,
+//                        userId = TODO(),
+//                        number = 38632792,
+//                        age = 22,
+//                        address = "md"
+//                    )
+//                )
+//            }
 
             enableEdgeToEdge()
             Configuration.getInstance().apply {

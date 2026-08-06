@@ -10,6 +10,9 @@ data class User(
     val username: String,
     val password: String,
     val email: String,
+    val number: Long,
+    val age: Int,
+    val address: String,
     
     // Safety & Trust (1)
     val isVerified: Boolean = false,
