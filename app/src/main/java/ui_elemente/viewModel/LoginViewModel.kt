@@ -23,9 +23,12 @@ class LoginViewModel : ViewModel() {  // ← kein AndroidViewModel mehr nötig
     fun onUsernameChange(value: String) { username = value }
     fun onPasswordChange(value: String) { password = value }
 
+
+    //supend means they must be called from a coroutine
     suspend fun login(): Boolean {
         return try {
             auth.signInWithEmailAndPassword(username, password).await()
+            //await() (from Kotlin Coroutines) wait for the Firebase result without blocking the main thread.
             true
         } catch (e: Exception) {
             errorMessage = e.message ?: "Login failed"

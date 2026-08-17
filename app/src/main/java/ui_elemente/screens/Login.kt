@@ -24,12 +24,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ui_elemente.viewModel.LoginViewModel
 import com.example.carsharing_app.R
 import kotlinx.coroutines.launch
+import ui_elemente.viewModel.RegistrationViewModel
 
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
-    viewModel: LoginViewModel = viewModel()
+    viewModel: LoginViewModel = viewModel(),
+    registerviewModel: RegistrationViewModel = viewModel()
+
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
