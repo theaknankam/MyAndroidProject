@@ -51,11 +51,15 @@ class ProfileViewModel(
     private val _co2Saved = MutableStateFlow(0.0)
     val co2Saved: StateFlow<Double> = _co2Saved
 
+    private val _walletBalance = MutableStateFlow(0.0)
+    val walletBalance: StateFlow<Double> = _walletBalance
+
     init {
         auth.currentUser?.uid?.let { uid ->
             firestore.collection("users").document(uid)
                 .addSnapshotListener { snapshot, _ ->
                     _co2Saved.value = snapshot?.getDouble("co2Saved") ?: 0.0
+                    _walletBalance.value = snapshot?.getDouble("walletBalance") ?: 0.0
                 }
         }
     }

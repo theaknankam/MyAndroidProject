@@ -71,7 +71,7 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
                 if (snapshot != null) {
                     bookedTrips.value = snapshot.documents.mapNotNull { doc ->
                         Trip(
-                            id = doc.id.hashCode(),
+                            id = doc.getLong("originalTripId")?.toInt() ?: doc.id.hashCode(),
                             fromCity = doc.getString("fromCity") ?: "",
                             toCity = doc.getString("toCity") ?: "",
                             date = doc.getString("date") ?: "",
@@ -150,22 +150,94 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
         }
     }*/
 
-    fun bookTrip(trip: Trip) {
-        val userId = auth.currentUser?.uid ?: return
+    /**
+     * Réserve un trajet en débitant le portefeuille fictif de l'utilisateur.
+     * Utilise une transaction Firestore pour garantir qu'on ne peut pas
+     * réserver deux fois avec le même solde (double clic, etc.).
+     *
+     * onResult(success, message) est appelé avec le résultat pour que l'UI
+     * affiche le bon message (succès ou solde insuffisant / erreur).
+     */
+    fun bookTrip(trip: Trip, onResult: (success: Boolean, message: String) -> Unit) {
+        val userId = auth.currentUser?.uid
+        if (userId == null) {
+            onResult(false, "Vous devez être connecté pour réserver")
+            return
+        }
 
-        // In Firestore als gebuchte Fahrt speichern
-        db.collection("bookedTrips").add(
-            hashMapOf(
-                "bookedBy" to userId,
-                "fromCity" to trip.fromCity,
-                "toCity" to trip.toCity,
-                "date" to trip.date,
-                "seats" to trip.seats,
-                "price" to trip.price,
-                "createdBy" to trip.createdBy,  // ← originaler Fahrer bleibt!
-                "status" to "UPCOMING"
+        val userRef = db.collection("users").document(userId)
+        val bookingRef = db.collection("bookedTrips").document()
+
+        db.runTransaction { transaction ->
+            val snapshot = transaction.get(userRef)
+            val balance = snapshot.getDouble("walletBalance") ?: 0.0
+
+            if (balance < trip.price) {
+                throw IllegalStateException("Solde insuffisant (€$balance disponible, €${trip.price} requis)")
+            }
+
+            transaction.update(userRef, "walletBalance", balance - trip.price)
+
+            transaction.set(
+                bookingRef,
+                hashMapOf(
+                    "originalTripId" to trip.id,
+                    "bookedBy" to userId,
+                    "fromCity" to trip.fromCity,
+                    "toCity" to trip.toCity,
+                    "date" to trip.date,
+                    "seats" to trip.seats,
+                    "price" to trip.price,
+                    "createdBy" to trip.createdBy, // ← originaler Fahrer bleibt!
+                    "status" to "UPCOMING"
+                )
             )
-        )
+
+            // Trace de la transaction pour un futur historique de paiement
+            transaction.set(
+                db.collection("walletTransactions").document(),
+                hashMapOf(
+                    "userId" to userId,
+                    "type" to "DEBIT",
+                    "amount" to trip.price,
+                    "reason" to "Booking ${trip.fromCity} → ${trip.toCity}",
+                    "timestamp" to System.currentTimeMillis()
+                )
+            )
+        }.addOnSuccessListener {
+            onResult(true, "Paiement de €${trip.price} confirmé (portefeuille)")
+        }.addOnFailureListener { e ->
+            onResult(false, e.message ?: "Échec du paiement")
+        }
+    }
+
+    /**
+     * Recharge fictive du portefeuille (pas de vraie carte, juste +montant).
+     */
+    fun rechargeWallet(amount: Double, onResult: (success: Boolean) -> Unit) {
+        val userId = auth.currentUser?.uid ?: return onResult(false)
+        val userRef = db.collection("users").document(userId)
+
+        db.runTransaction { transaction ->
+            val snapshot = transaction.get(userRef)
+            val balance = snapshot.getDouble("walletBalance") ?: 0.0
+            transaction.update(userRef, "walletBalance", balance + amount)
+
+            transaction.set(
+                db.collection("walletTransactions").document(),
+                hashMapOf(
+                    "userId" to userId,
+                    "type" to "CREDIT",
+                    "amount" to amount,
+                    "reason" to "Wallet top-up",
+                    "timestamp" to System.currentTimeMillis()
+                )
+            )
+        }.addOnSuccessListener {
+            onResult(true)
+        }.addOnFailureListener {
+            onResult(false)
+        }
     }
 
     fun deleteTrip(trip: Trip) {

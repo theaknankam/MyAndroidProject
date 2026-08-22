@@ -61,11 +61,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import androidx.compose.ui.platform.LocalInspectionMode
+import com.example.carsharing_app.data.ProfileEntity
+import com.example.carsharing_app.data.Trip
 import ui_elemente.components.InfoRow
 import ui_elemente.components.RideHistoryItem
 import ui_elemente.model.Ride
@@ -73,23 +78,67 @@ import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.ProfileViewModel
 import java.io.File
 import java.io.FileOutputStream
-
-
 import com.example.carsharing_app.data.TripViewModel
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
-    viewModel: ProfileViewModel = viewModel(),
-    tripViewModel: TripViewModel = viewModel() // ← Hinzugefügt für echte Trip-Daten
+    viewModel: ProfileViewModel? = null,
+    tripViewModel: TripViewModel? = null
 ) {
+    if (LocalInspectionMode.current) {
+        ProfileScreenContent(
+            navController = navController,
+            profile = null,
+            allTrips = emptyList(),
+            citiesVisited = 0,
+            co2Saved = 0.0,
+            walletBalance = 0.0,
+            onSaveProfile = { _, _, _, _, _, _ -> },
+            onRechargeWallet = { _, _ -> }
+        )
+    } else {
+        val vm: ProfileViewModel = viewModel ?: viewModel()
+        val tvm: TripViewModel = tripViewModel ?: viewModel()
+
+        val profile by vm.profile.collectAsState()
+        val allTrips by tvm.allTrips.collectAsState()
+        val citiesVisited by vm.citiesVisited.collectAsState()
+        val co2Saved by vm.co2Saved.collectAsState()
+        val walletBalance by vm.walletBalance.collectAsState()
+
+        ProfileScreenContent(
+            navController = navController,
+            profile = profile,
+            allTrips = allTrips,
+            citiesVisited = citiesVisited,
+            co2Saved = co2Saved,
+            walletBalance = walletBalance,
+            onSaveProfile = { name, email, phone, city, car, uri ->
+                vm.saveProfile(name, email, phone, city, car, uri)
+            },
+            onRechargeWallet = { amount, onResult ->
+                tvm.rechargeWallet(amount, onResult)
+            }
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.KITKAT)
+@Composable
+fun ProfileScreenContent(
+    navController: NavHostController,
+    profile: ProfileEntity?,
+    allTrips: List<Trip>,
+    citiesVisited: Int,
+    co2Saved: Double,
+    walletBalance: Double,
+    onSaveProfile: (String, String, String, String, String, String?) -> Unit,
+    onRechargeWallet: (Double, (Boolean) -> Unit) -> Unit
+) {
+
     val context = LocalContext.current
-    val profile by viewModel.profile.collectAsState()
-
-    // Alle Trips aus der Room-Datenbank beobachten
-    val allTrips by tripViewModel.allTrips.collectAsState()
-
     var name by remember { mutableStateOf("John Doe") }
     var email by remember { mutableStateOf("john@email.com") }
     var phone by remember { mutableStateOf("+49 123456789") }
@@ -99,19 +148,14 @@ fun ProfileScreen(
     var showRechargeDialog by remember { mutableStateOf(false) }
     var rechargeInput by remember { mutableStateOf("") }
 
-    //###to be edited in a model and new Sreens for edit###
-    val citiesVisited by viewModel.citiesVisited.collectAsState()
-    val co2Saved by viewModel.co2Saved.collectAsState()
-    val walletBalance by viewModel.walletBalance.collectAsState()
-
     LaunchedEffect(profile) {
         if (profile != null) {
-            name = profile!!.name
-            email = profile!!.email
-            phone = profile!!.phone
-            city = profile!!.city
-            car = profile!!.car
-            imageUri = profile!!.imageUri
+            name = profile.name
+            email = profile.email
+            phone = profile.phone
+            city = profile.city
+            car = profile.car
+            imageUri = profile.imageUri
         }
     }
 
@@ -127,13 +171,13 @@ fun ProfileScreen(
 
                 imageUri = uri.toString()
 
-                viewModel.saveProfile(
-                    name = name,
-                    email = email,
-                    phone = phone,
-                    city = city,
-                    car = car,
-                    imageUri = imageUri
+                onSaveProfile(
+                    name,
+                    email,
+                    phone,
+                    city,
+                    car,
+                    imageUri
                 )
 
                 Toast
@@ -166,13 +210,13 @@ fun ProfileScreen(
 
                 imageUri = savedUri
 
-                viewModel.saveProfile(
-                    name = name,
-                    email = email,
-                    phone = phone,
-                    city = city,
-                    car = car,
-                    imageUri = imageUri
+                onSaveProfile(
+                    name,
+                    email,
+                    phone,
+                    city,
+                    car,
+                    imageUri
                 )
 
                 Toast
@@ -202,7 +246,8 @@ fun ProfileScreen(
                 .padding(paddingValues)
                 .background(Color.White)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
             Topbar("Profile", navController)
@@ -371,7 +416,7 @@ fun ProfileScreen(
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Column {
-                            Text("Solde du portefeuille", fontSize = 13.sp, color = Color.Gray)
+                            Text("Funds in the Wallet", fontSize = 13.sp, color = Color.Gray)
                             Text(
                                 text = "€${"%.2f".format(walletBalance)}",
                                 fontSize = 20.sp,
@@ -380,102 +425,38 @@ fun ProfileScreen(
                         }
                     }
 
-                    Button(onClick = { showRechargeDialog = true }) {
-                        Text("Recharger")
+                    Button(onClick = { navController.navigate("wallet") }) {
+                        Text("Add Funds")
                     }
                 }
             }
 
-            if (showRechargeDialog) {
-                AlertDialog(
-                    onDismissRequest = {
-                        showRechargeDialog = false
-                        rechargeInput = ""
-                    },
-                    title = { Text("Recharger le portefeuille") },
-                    text = {
-                        Column {
-                            Text(
-                                "Ceci est un solde fictif — aucune vraie carte n'est débitée.",
-                                fontSize = 13.sp,
-                                color = Color.Gray
-                            )
-                            Spacer(modifier = Modifier.height(12.dp))
-
-                            // Montants rapides
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                listOf(10.0, 20.0, 50.0).forEach { amount ->
-                                    Button(onClick = { rechargeInput = amount.toInt().toString() }) {
-                                        Text("€${amount.toInt()}")
-                                    }
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(12.dp))
-
-                            OutlinedTextField(
-                                value = rechargeInput,
-                                onValueChange = { input ->
-                                    rechargeInput = input.filter { it.isDigit() }
-                                },
-                                label = { Text("Montant (€)") },
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                    },
-                    confirmButton = {
-                        Button(onClick = {
-                            val amount = rechargeInput.toDoubleOrNull()
-                            if (amount == null || amount <= 0.0) {
-                                Toast.makeText(context, "Entre un montant valide", Toast.LENGTH_SHORT).show()
-                            } else {
-                                tripViewModel.rechargeWallet(amount) { success ->
-                                    Toast.makeText(
-                                        context,
-                                        if (success) "€${"%.2f".format(amount)} ajoutés (fictif)" else "Échec de la recharge",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                                showRechargeDialog = false
-                                rechargeInput = ""
-                            }
-                        }) {
-                            Text("Confirmer")
-                        }
-                    },
-                    dismissButton = {
-                        Button(onClick = {
-                            showRechargeDialog = false
-                            rechargeInput = ""
-                        }) {
-                            Text("Annuler")
-                        }
-                    }
-                )
-            }
-
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            Column( horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                StatCard(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .weight(1f),
-                    icon = Icons.Default.LocationOn,
-                    label = "Cities Visited",
-                    value = "$citiesVisited"
-                )
-                StatCard(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .weight(1f),
-                    icon = Icons.Default.Eco,
-                    label = "CO² Saved",
-                    value = "$co2Saved kg"
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+
+                    ) {
+                    StatCard(
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .weight(1f),
+                        icon = Icons.Default.LocationOn,
+                        label = "Cities Visited",
+                        value = "$citiesVisited"
+                    )
+                    StatCard(
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .weight(1f),
+                        icon = Icons.Default.Eco,
+                        label = "CO² Saved",
+                        value = "$co2Saved kg"
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -590,13 +571,13 @@ fun ProfileScreen(
 
             Button(
                 onClick = {
-                    viewModel.saveProfile(
-                        name = name,
-                        email = email,
-                        phone = phone,
-                        city = city,
-                        car = car,
-                        imageUri = imageUri
+                    onSaveProfile(
+                        name,
+                        email,
+                        phone,
+                        city,
+                        car,
+                        imageUri
                     )
 
                     Toast
@@ -741,10 +722,13 @@ fun StatCard(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
-    ) {
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+
+        ) {
         Column(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
@@ -757,4 +741,12 @@ fun StatCard(
             Text(text = value, fontSize = 16.sp, fontWeight = FontWeight.Bold)
         }
     }
+}
+
+@RequiresApi(Build.VERSION_CODES.KITKAT)
+@Preview(name = "profileScreen", showBackground = true)
+@Composable
+fun ProfileScreenPreview() {
+    val navController = rememberNavController()
+    ProfileScreen(navController = navController)
 }

@@ -92,5 +92,7 @@ fun AppNavHost(
         
         composable("about") { AboutScreen(navController) }
 
+        composable("wallet") { WalletScreen(navController) }
+
     }
 }

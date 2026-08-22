@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-class LoginViewModel : ViewModel() {  // ← kein AndroidViewModel mehr nötig
+class LoginViewModel : ViewModel() {
 
     var username by mutableStateOf("")
         private set
