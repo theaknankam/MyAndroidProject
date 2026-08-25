@@ -39,29 +39,40 @@ fun SearchRideForm(
     var location1 by remember { mutableStateOf("") }
     var location2 by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
-    
+
     // Preference Filters (2)
     var filterSmoking by remember { mutableStateOf(false) }
     var filterPets by remember { mutableStateOf(false) }
 
+    // Bestätigte Suchparameter — werden erst beim Klick auf "Search" gesetzt
+    var searchedLocation1 by remember { mutableStateOf<String?>(null) }
+    var searchedLocation2 by remember { mutableStateOf<String?>(null) }
+    var hasSearched by remember { mutableStateOf(false) }
+
     val firestoreTrips = viewModel.firestoreTrips
     val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
-    val filteredTrips = firestoreTrips.filter { trip ->
-        trip.createdBy != currentUserId &&
-                (location1.isEmpty() || trip.fromCity.contains(location1, ignoreCase = true)) &&
-                (location2.isEmpty() || trip.toCity.contains(location2, ignoreCase = true)) &&
-                (date.isEmpty() || trip.date == date) &&
-                (!filterSmoking || trip.allowSmoking) &&
-                (!filterPets || trip.allowPets)
+    val filteredTrips = if (hasSearched) {
+        firestoreTrips.filter { trip ->
+            trip.createdBy != currentUserId &&
+                    trip.fromCity.equals(searchedLocation1, ignoreCase = true) &&
+                    trip.toCity.equals(searchedLocation2, ignoreCase = true) &&
+                    (date.isEmpty() || trip.date == date) &&
+                    (!filterSmoking || trip.allowSmoking) &&
+                    (!filterPets || trip.allowPets)
+        }
+    } else {
+        emptyList()
     }
-
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Topbar("Search Ride", navController)
 
         LocationInput(label = "From", value = location1, onValueChange = { location1 = it })
         LocationInput(label = "To", value = location2, onValueChange = { location2 = it })
-        DatePickerField(modifier = Modifier.fillMaxWidth(), value = date, onValueChange = { date = it })
+        DatePickerField(
+            modifier = Modifier.fillMaxWidth(),
+            value = date,
+            onValueChange = { date = it })
 
         // Quick Filters (2)
         Text("Quick Filters", style = MaterialTheme.typography.labelLarge)
@@ -78,33 +89,56 @@ fun SearchRideForm(
             )
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            enabled = location1.isNotBlank() && location2.isNotBlank(),
+            onClick = {
+                searchedLocation1 = location1
+                searchedLocation2 = location2
+                hasSearched = true
+            }
+        ) {
+            Text("Search")
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Rides Found (${filteredTrips.size})", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        if (hasSearched) {
+            Text(
+                text = "Rides Found (${filteredTrips.size})",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
 
-        if (filteredTrips.isEmpty()) {
-            Box(modifier = Modifier.fillMaxWidth().padding(top = 16.dp), contentAlignment = Alignment.Center) {
-                Text("No rides match your filters", color = Color.Gray)
-            }
-        } else {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                filteredTrips.forEach { trip ->
-                    val dateParts = trip.date.split(" ")
-                    TripCard(
-                        ride = GebuchteRides(
-                            id = trip.id.toString(),
-                            month = dateParts.getOrElse(1) { "" }.uppercase(),
-                            day = dateParts.getOrElse(0) { "" },
-                            from = trip.fromCity,
-                            to = trip.toCity,
-                            time = "",
-                            driver = "User",
-                            status = TripStatus.CONFIRMED
-                        ),
-                        onClick = {
-                            navController.navigate("rideDetails/${trip.id}/false")
-                        }
-                    )
+            if (filteredTrips.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("No rides match your filters", color = Color.Gray)
+                }
+            } else {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    filteredTrips.forEach { trip ->
+                        val dateParts = trip.date.split(" ")
+                        TripCard(
+                            ride = GebuchteRides(
+                                id = trip.id.toString(),
+                                month = dateParts.getOrElse(1) { "" }.uppercase(),
+                                day = dateParts.getOrElse(0) { "" },
+                                from = trip.fromCity,
+                                to = trip.toCity,
+                                time = "",
+                                driver = "User",
+                                status = TripStatus.CONFIRMED
+                            ),
+                            onClick = {
+                                navController.navigate("rideDetails/${trip.id}/false")
+                            }
+                        )
+                    }
                 }
             }
         }

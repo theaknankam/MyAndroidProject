@@ -31,8 +31,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carsharing_app.Karte.MapScreen
 import com.example.carsharing_app.Karte.geocode
 import com.example.carsharing_app.data.TripViewModel
+import com.google.firebase.auth.FirebaseAuth
 import org.osmdroid.util.GeoPoint
 import ui_elemente.components.RideDetailsButton
+import ui_elemente.components.getUserName
 import ui_elemente.navigation.Topbar
 
 @Composable
@@ -54,6 +56,17 @@ fun RideDetailsScreen(
         return
     }
 
+    val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+    var driverName by remember { mutableStateOf("Loading...") }
+
+    LaunchedEffect(trip.createdBy) {
+        driverName = if (trip.createdBy == currentUserId) {
+            "You"
+        } else {
+            getUserName(trip.createdBy)
+        }
+    }
+
     Scaffold(
         topBar = { Topbar("Ride Details", navController) }
     ) { paddingValues ->
@@ -65,7 +78,7 @@ fun RideDetailsScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             DriverInfo(
-                driverName = if (trip.createdBy == "me") "You" else "Driver",
+                driverName = driverName,
                 rating = 4.8,
                 memberSince = "2024"
             )

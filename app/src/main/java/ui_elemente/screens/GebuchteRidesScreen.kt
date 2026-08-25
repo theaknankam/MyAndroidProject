@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -26,6 +27,7 @@ import com.example.carsharing_app.data.TripViewModel
 import ui_elemente.components.TabItem
 import ui_elemente.model.enums.TripsTab
 import ui_elemente.components.TripCard
+import ui_elemente.components.getUserName
 import ui_elemente.model.GebuchteRides
 import ui_elemente.model.enums.TripStatus
 import ui_elemente.navigation.Topbar
@@ -45,6 +47,7 @@ fun GebuchteRidesScreen(
     else
         bookedTrips.filter { it.status == "PAST" }
 
+    val driverNames = remember { mutableStateMapOf<String, String>() }
 
     Column(
         modifier = Modifier
@@ -91,7 +94,15 @@ fun GebuchteRidesScreen(
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(trips, key = { it.id }) { trip ->     val dateParts = trip.date.split(" ")
+                items(trips, key = { it.id }) { trip ->
+                    val dateParts = trip.date.split(" ")
+
+                    LaunchedEffect(trip.createdBy) {
+                        if (!driverNames.containsKey(trip.createdBy)) {
+                            driverNames[trip.createdBy] = getUserName(trip.createdBy)
+                        }
+                    }
+
                     TripCard(
                         ride = GebuchteRides(
                             id = trip.id.toString(),
@@ -100,14 +111,15 @@ fun GebuchteRidesScreen(
                             from = trip.fromCity,
                             to = trip.toCity,
                             time = "",
-                            driver = trip.createdBy,
+                            driver = driverNames[trip.createdBy] ?: "Loading...",
                             status = TripStatus.CONFIRMED
                         ),
-                          onClick={  navController.navigate("rideDetails/${trip.id}/true")
+                        onClick = {
+                            navController.navigate("rideDetails/${trip.id}/true")
                         }
                     )
+                }
                 }
             }
         }
     }
-}

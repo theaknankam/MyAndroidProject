@@ -16,12 +16,19 @@ class LoginViewModel : ViewModel() {  // ← kein AndroidViewModel mehr nötig
     var password by mutableStateOf("")
         private set
 
+    var name by mutableStateOf("")
+       private set
+
+    var mobileNumber by mutableStateOf("")
+       private set
     var errorMessage by mutableStateOf("")
 
     private val auth = FirebaseAuth.getInstance()
 
     fun onUsernameChange(value: String) { username = value }
     fun onPasswordChange(value: String) { password = value }
+    fun onNameChange(value: String) { name = value }
+    fun onMobileNumberChange(value: String) { mobileNumber = value }
 
     suspend fun login(): Boolean {
         return try {
@@ -34,12 +41,28 @@ class LoginViewModel : ViewModel() {  // ← kein AndroidViewModel mehr nötig
     }
 
     suspend fun register(): Boolean {
+        // Einfache Validierung der Pflichtfelder
+        if (name.isBlank()) {
+            errorMessage = "Bitte Namen eingeben"
+            return false
+        }
+        if (mobileNumber.isBlank()) {
+            errorMessage = "Bitte Mobilnummer eingeben"
+            return false
+        }
         return try {
             val result = auth.createUserWithEmailAndPassword(username, password).await()
             result.user?.uid?.let { uid ->
                 FirebaseFirestore.getInstance().collection("users")
                     .document(uid)
-                    .set(mapOf("co2Saved" to 0.0))
+                    .set(
+                        mapOf(
+                            "name" to name,
+                            "mobileNumber" to mobileNumber,
+                            "email" to username,
+                            "co2Saved" to 0.0
+                        )
+                    )
             }
             true
         } catch (e: Exception) {
