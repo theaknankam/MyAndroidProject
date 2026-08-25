@@ -142,13 +142,16 @@ fun RideDetailsScreen(
                     if (isBooked) {
                         navController.navigate("chat/${trip.createdBy}")
                     } else {
-                        viewModel.bookTrip(trip)
-                        Toast.makeText(context, "Payment of €${trip.price} via Wallet confirmed!", Toast.LENGTH_LONG).show()
-                        navController.navigate("gebuchteRides")
+                        viewModel.bookTrip(trip) { success, message ->
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                            if (success) {
+                                navController.navigate("gebuchteRides")
+                            }
+                        }
                     }
                 }
             )
-            
+
             Spacer(modifier = Modifier.height(24.dp))
         }
     }

@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -60,11 +61,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import androidx.compose.ui.platform.LocalInspectionMode
+import com.example.carsharing_app.data.ProfileEntity
+import com.example.carsharing_app.data.Trip
 import ui_elemente.components.InfoRow
 import ui_elemente.components.RideHistoryItem
 import ui_elemente.model.Ride
@@ -72,42 +78,84 @@ import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.ProfileViewModel
 import java.io.File
 import java.io.FileOutputStream
-
-
 import com.example.carsharing_app.data.TripViewModel
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
-    viewModel: ProfileViewModel = viewModel(),
-    tripViewModel: TripViewModel = viewModel() // ← Hinzugefügt für echte Trip-Daten
+    viewModel: ProfileViewModel? = null,
+    tripViewModel: TripViewModel? = null
 ) {
-    val context = LocalContext.current
-    val profile by viewModel.profile.collectAsState()
-    
-    // Alle Trips aus der Room-Datenbank beobachten
-    val allTrips by tripViewModel.allTrips.collectAsState()
+    if (LocalInspectionMode.current) {
+        ProfileScreenContent(
+            navController = navController,
+            profile = null,
+            allTrips = emptyList(),
+            citiesVisited = 0,
+            co2Saved = 0.0,
+            walletBalance = 0.0,
+            onSaveProfile = { _, _, _, _, _, _ -> },
+            onRechargeWallet = { _, _ -> }
+        )
+    } else {
+        val vm: ProfileViewModel = viewModel ?: viewModel()
+        val tvm: TripViewModel = tripViewModel ?: viewModel()
 
+        val profile by vm.profile.collectAsState()
+        val allTrips by tvm.allTrips.collectAsState()
+        val citiesVisited by vm.citiesVisited.collectAsState()
+        val co2Saved by vm.co2Saved.collectAsState()
+        val walletBalance by vm.walletBalance.collectAsState()
+
+        ProfileScreenContent(
+            navController = navController,
+            profile = profile,
+            allTrips = allTrips,
+            citiesVisited = citiesVisited,
+            co2Saved = co2Saved,
+            walletBalance = walletBalance,
+            onSaveProfile = { name, email, phone, city, car, uri ->
+                vm.saveProfile(name, email, phone, city, car, uri)
+            },
+            onRechargeWallet = { amount, onResult ->
+                tvm.rechargeWallet(amount, onResult)
+            }
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.KITKAT)
+@Composable
+fun ProfileScreenContent(
+    navController: NavHostController,
+    profile: ProfileEntity?,
+    allTrips: List<Trip>,
+    citiesVisited: Int,
+    co2Saved: Double,
+    walletBalance: Double,
+    onSaveProfile: (String, String, String, String, String, String?) -> Unit,
+    onRechargeWallet: (Double, (Boolean) -> Unit) -> Unit
+) {
+
+    val context = LocalContext.current
     var name by remember { mutableStateOf("John Doe") }
     var email by remember { mutableStateOf("john@email.com") }
     var phone by remember { mutableStateOf("+49 123456789") }
     var city by remember { mutableStateOf("Cologne, Germany") }
     var car by remember { mutableStateOf("Toyota Corolla 2020") }
     var imageUri by remember { mutableStateOf<String?>(null) }
-
-    //###to be edited in a model and new Sreens for edit###
-    val citiesVisited by viewModel.citiesVisited.collectAsState()
-    val co2Saved by viewModel.co2Saved.collectAsState()
+    var showRechargeDialog by remember { mutableStateOf(false) }
+    var rechargeInput by remember { mutableStateOf("") }
 
     LaunchedEffect(profile) {
         if (profile != null) {
-            name = profile!!.name
-            email = profile!!.email
-            phone = profile!!.phone
-            city = profile!!.city
-            car = profile!!.car
-            imageUri = profile!!.imageUri
+            name = profile.name
+            email = profile.email
+            phone = profile.phone
+            city = profile.city
+            car = profile.car
+            imageUri = profile.imageUri
         }
     }
 
@@ -123,13 +171,13 @@ fun ProfileScreen(
 
                 imageUri = uri.toString()
 
-                viewModel.saveProfile(
-                    name = name,
-                    email = email,
-                    phone = phone,
-                    city = city,
-                    car = car,
-                    imageUri = imageUri
+                onSaveProfile(
+                    name,
+                    email,
+                    phone,
+                    city,
+                    car,
+                    imageUri
                 )
 
                 Toast
@@ -162,13 +210,13 @@ fun ProfileScreen(
 
                 imageUri = savedUri
 
-                viewModel.saveProfile(
-                    name = name,
-                    email = email,
-                    phone = phone,
-                    city = city,
-                    car = car,
-                    imageUri = imageUri
+                onSaveProfile(
+                    name,
+                    email,
+                    phone,
+                    city,
+                    car,
+                    imageUri
                 )
 
                 Toast
@@ -198,7 +246,8 @@ fun ProfileScreen(
                 .padding(paddingValues)
                 .background(Color.White)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
             Topbar("Profile", navController)
@@ -344,26 +393,70 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Row(
+            // --- Portefeuille fictif ---
+            Card(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
-                StatCard(
+                Row(
                     modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .weight(1f),
-                    icon = Icons.Default.LocationOn,
-                    label = "Cities Visited",
-                    value = "$citiesVisited"
-                )
-                StatCard(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .weight(1f),
-                    icon = Icons.Default.Eco,
-                    label = "CO² Saved",
-                    value = "$co2Saved kg"
-                )
+                        .fillMaxWidth()
+                        .padding(18.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.AccountBalanceWallet,
+                            contentDescription = "Wallet",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+                            Text("Funds in the Wallet", fontSize = 13.sp, color = Color.Gray)
+                            Text(
+                                text = "€${"%.2f".format(walletBalance)}",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+
+                    Button(onClick = { navController.navigate("wallet") }) {
+                        Text("Add Funds")
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Column( horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+
+                    ) {
+                    StatCard(
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .weight(1f),
+                        icon = Icons.Default.LocationOn,
+                        label = "Cities Visited",
+                        value = "$citiesVisited"
+                    )
+                    StatCard(
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .weight(1f),
+                        icon = Icons.Default.Eco,
+                        label = "CO² Saved",
+                        value = "$co2Saved kg"
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -478,13 +571,13 @@ fun ProfileScreen(
 
             Button(
                 onClick = {
-                    viewModel.saveProfile(
-                        name = name,
-                        email = email,
-                        phone = phone,
-                        city = city,
-                        car = car,
-                        imageUri = imageUri
+                    onSaveProfile(
+                        name,
+                        email,
+                        phone,
+                        city,
+                        car,
+                        imageUri
                     )
 
                     Toast
@@ -629,10 +722,13 @@ fun StatCard(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
-    ) {
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+
+        ) {
         Column(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
@@ -645,4 +741,12 @@ fun StatCard(
             Text(text = value, fontSize = 16.sp, fontWeight = FontWeight.Bold)
         }
     }
+}
+
+@RequiresApi(Build.VERSION_CODES.KITKAT)
+@Preview(name = "profileScreen", showBackground = true)
+@Composable
+fun ProfileScreenPreview() {
+    val navController = rememberNavController()
+    ProfileScreen(navController = navController)
 }
