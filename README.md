@@ -20,7 +20,7 @@ Eine Carsharing-App für Stidenten auf Android, die im Rahmen des Moduls **Mobil
 | Backend / Authentifizierung | Firebase (Firestore, Authentifizierung) |
 | Lokaler Speicher | Room |
 | Karten & Routenplanung |##placeholder## |
-| IDE | IntelliJ IDEA / Android Studio |
+| IDE | Android Studio |
 
 ## Architektur
 
