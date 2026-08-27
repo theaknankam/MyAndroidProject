@@ -84,15 +84,30 @@ fun AppNavHost(
             )
         }
 
-        composable("settings") { SettingsScreen(navController) }
+        composable("settings") {
+            SettingsScreen(navController)
+        }
         
-        composable("notificationSettings") { NotificationSettingsScreen(navController) }
+        composable("notificationSettings") {
+            NotificationSettingsScreen(navController)
+        }
         
-        composable("privacySettings") { PrivacySettingsScreen(navController) }
+        composable("privacySettings") {
+            PrivacySettingsScreen(navController)
+        }
         
-        composable("about") { AboutScreen(navController) }
+        composable("about") {
+            AboutScreen(navController)
 
-        composable("wallet") { WalletScreen(navController) }
+        }
+
+        composable("wallet") {
+            WalletScreen(navController)
+        }
+
+        composable("SOS") {
+            SOSScreen(navController)
+        }
 
     }
 }

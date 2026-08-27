@@ -16,8 +16,6 @@ import ui_elemente.navigation.Navigation
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        org.osmdroid.config.Configuration.getInstance().userAgentValue = packageName
-
 
         lifecycleScope.launch {
             val repository = UserRepository(
