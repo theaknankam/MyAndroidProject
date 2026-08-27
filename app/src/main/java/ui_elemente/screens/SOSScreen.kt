@@ -1,5 +1,12 @@
 package ui_elemente.screens
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +33,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,24 +41,107 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.carsharing_app.Karte.reverseGeocode
 import com.example.carsharing_app.R
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import kotlinx.coroutines.tasks.await
 import ui_elemente.navigation.Topbar
+
+private fun hasLocationPermission(context: android.content.Context): Boolean {
+    val fine = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+    val coarse = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+    return fine == PackageManager.PERMISSION_GRANTED || coarse == PackageManager.PERMISSION_GRANTED
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SOSScreen(navController: NavHostController) {
+    val context = LocalContext.current
+    val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
+
+    var hasPermission by remember { mutableStateOf(hasLocationPermission(context)) }
+    var latitude by remember { mutableStateOf<Double?>(null) }
+    var longitude by remember { mutableStateOf<Double?>(null) }
+    var address by remember { mutableStateOf<String?>(null) }
+    var isLoadingLocation by remember { mutableStateOf(false) }
+    var locationError by remember { mutableStateOf<String?>(null) }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        hasPermission = permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) ||
+                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)
+        if (!hasPermission) {
+            locationError = "Location permission denied. We can't show your position to emergency services."
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if (!hasPermission) {
+            permissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
+    LaunchedEffect(hasPermission) {
+        if (hasPermission) {
+            isLoadingLocation = true
+            locationError = null
+            try {
+                @Suppress("MissingPermission")
+                val location = fusedLocationClient
+                    .getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+                    .await()
+
+                if (location != null) {
+                    latitude = location.latitude
+                    longitude = location.longitude
+                    address = reverseGeocode(location.latitude, location.longitude)
+                } else {
+                    locationError = "Couldn't determine your current location. Make sure GPS is enabled."
+                }
+            } catch (e: Exception) {
+                locationError = "Couldn't determine your current location. Make sure GPS is enabled."
+            } finally {
+                isLoadingLocation = false
+            }
+        }
+    }
+
+    fun makeCall(number: String) {
+        val u = Uri.parse("tel:$number")
+        val i = Intent(Intent.ACTION_DIAL, u)
+        try {
+            context.startActivity(i)
+        } catch (e: Exception) {
+            Toast.makeText(context, "Unable to open dialer", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     Scaffold(
         topBar = {
             Topbar("Emergency Assistance", navController)
@@ -83,7 +174,10 @@ fun SOSScreen(navController: NavHostController) {
                     )
                     Spacer(Modifier.width(12.dp))
                     Text(
-                        text = "Your location is being shared with emergency services.",
+                        text = if (hasPermission)
+                            "Your location is being shared with emergency services."
+                        else
+                            "Allow location access so emergency services can find you.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color(0xFFB71C1C),
                         fontWeight = FontWeight.SemiBold
@@ -112,7 +206,7 @@ fun SOSScreen(navController: NavHostController) {
 
                 // Actual Button
                 Button(
-                    onClick = { /* Call Emergency */ },
+                    onClick = { makeCall("112") },
                     modifier = Modifier.size(140.dp),
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
@@ -139,12 +233,12 @@ fun SOSScreen(navController: NavHostController) {
 
             // Help Message
             Text(
-                text = "You’re not alone. We’re here to help.",
+                text = "You're not alone. We're here to help.",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
-            
+
             Spacer(Modifier.height(32.dp))
 
             // Quick Help Section
@@ -163,19 +257,22 @@ fun SOSScreen(navController: NavHostController) {
                     modifier = Modifier.weight(1f),
                     label = "Police",
                     icon = Icons.Default.LocalPolice,
-                    color = Color(0xFF1976D2)
+                    color = Color(0xFF1976D2),
+                    onClick = { makeCall("110") }
                 )
                 EmergencyActionCard(
                     modifier = Modifier.weight(1f),
                     label = "Ambulance",
                     icon = Icons.Default.LocalHospital,
-                    color = Color(0xFF388E3C)
+                    color = Color(0xFF388E3C),
+                    onClick = { makeCall("112") }
                 )
                 EmergencyActionCard(
                     modifier = Modifier.weight(1f),
                     label = "Roadside",
                     icon = Icons.Default.Engineering,
-                    color = Color(0xFFF57C00)
+                    color = Color(0xFFF57C00),
+                    onClick = { makeCall("123456789") } // Placeholder for roadside assistance
                 )
             }
 
@@ -199,23 +296,51 @@ fun SOSScreen(navController: NavHostController) {
                         )
                     }
                     Spacer(Modifier.height(8.dp))
-                    Text(
-                        text = "123 Alexanderplatz, Berlin, Germany",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(Modifier.height(4.dp))
-                    Text(
-                        text = "Lat: 52.5219, Long: 13.4132",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
-                    )
+
+                    when {
+                        !hasPermission -> {
+                            Text(
+                                text = "Location permission not granted.",
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        isLoadingLocation -> {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
+                                Spacer(Modifier.width(8.dp))
+                                Text(
+                                    text = "Locating you…",
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                        }
+                        locationError != null -> {
+                            Text(
+                                text = locationError ?: "",
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        latitude != null && longitude != null -> {
+                            Text(
+                                text = address ?: "Address unavailable",
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(Modifier.height(4.dp))
+                            Text(
+                                text = "Lat: %.4f, Long: %.4f".format(latitude, longitude),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray
+                            )
+                        }
+                    }
                 }
             }
 
             Spacer(Modifier.height(24.dp))
 
-            // Instructions Text
             Text(
                 text = "Important Information",
                 style = MaterialTheme.typography.titleLarge,
@@ -240,10 +365,12 @@ fun EmergencyActionCard(
     modifier: Modifier,
     label: String,
     icon: ImageVector,
-    color: Color
+    color: Color,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = modifier.height(100.dp),
+        onClick = onClick,
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape = RoundedCornerShape(12.dp)

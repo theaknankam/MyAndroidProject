@@ -214,14 +214,27 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * Recharge fictive du portefeuille (pas de vraie carte, juste +montant).
      */
-    fun rechargeWallet(amount: Double, onResult: (success: Boolean) -> Unit) {
-        val userId = auth.currentUser?.uid ?: return onResult(false)
+    fun rechargeWallet(amount: Double, onResult: (Boolean) -> Unit) {
+        val userId = auth.currentUser?.uid
+
+        if (userId == null) {
+            onResult(false)
+            return
+        }
+
         val userRef = db.collection("users").document(userId)
 
         db.runTransaction { transaction ->
             val snapshot = transaction.get(userRef)
             val balance = snapshot.getDouble("walletBalance") ?: 0.0
-            transaction.update(userRef, "walletBalance", balance + amount)
+
+            transaction.set(
+                userRef,
+                mapOf(
+                    "walletBalance" to (balance + amount)
+                ),
+                com.google.firebase.firestore.SetOptions.merge()
+            )
 
             transaction.set(
                 db.collection("walletTransactions").document(),
@@ -235,7 +248,8 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
             )
         }.addOnSuccessListener {
             onResult(true)
-        }.addOnFailureListener {
+        }.addOnFailureListener { e ->
+            e.printStackTrace()
             onResult(false)
         }
     }
