@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ui_elemente.model.User
 
-@Database(entities = [Trip::class, ProfileEntity::class, ChatMessageEntity::class, User::class], version = 6)
+@Database(entities = [Trip::class, ProfileEntity::class, ChatMessageEntity::class, User::class], version = 7)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

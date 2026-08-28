@@ -44,7 +44,7 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
                 if (snapshot != null) {
                     firestoreTrips = snapshot.documents.mapNotNull { doc ->
                         Trip(
-                            id = doc.getLong("id")?.toInt() ?: 0,
+                            id = doc.id.hashCode(),
                             fromCity = doc.getString("fromCity") ?: "",
                             toCity = doc.getString("toCity") ?: "",
                             date = doc.getString("date") ?: "",
