@@ -1,6 +1,7 @@
 package ui_elemente.screens
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -41,6 +42,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -59,6 +61,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -96,8 +99,7 @@ fun ProfileScreen(
             co2Saved = 0.0,
             walletBalance = 0.0,
             onSaveProfile = { _, _, _, _, _, _ -> },
-            onRechargeWallet = { _, _ -> }
-        )
+            onRechargeWallet = { _, _ -> })
     } else {
         val vm: ProfileViewModel = viewModel ?: viewModel()
         val tvm: TripViewModel = tripViewModel ?: viewModel()
@@ -120,8 +122,7 @@ fun ProfileScreen(
             },
             onRechargeWallet = { amount, onResult ->
                 tvm.rechargeWallet(amount, onResult)
-            }
-        )
+            })
     }
 }
 
@@ -159,84 +160,60 @@ fun ProfileScreenContent(
         }
     }
 
-    val galleryLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.OpenDocument()
-        ) { uri: Uri? ->
-            if (uri != null) {
-                context.contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            context.contentResolver.takePersistableUriPermission(
+                uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
 
-                imageUri = uri.toString()
+            imageUri = uri.toString()
 
-                onSaveProfile(
-                    name,
-                    email,
-                    phone,
-                    city,
-                    car,
-                    imageUri
-                )
+            onSaveProfile(
+                name, email, phone, city, car, imageUri
+            )
 
-                Toast
-                    .makeText(context, "Bild aus Galerie gespeichert", Toast.LENGTH_SHORT)
-                    .show()
-            }
+            Toast.makeText(context, "Bild aus Galerie gespeichert", Toast.LENGTH_SHORT).show()
         }
-    val galleryPermissionLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            if (isGranted) {
-                galleryLauncher.launch(arrayOf("image/*"))
-            } else {
-                Toast
-                    .makeText(context, "Galerie-Erlaubnis wurde abgelehnt", Toast.LENGTH_SHORT)
-                    .show()
-            }
+    }
+    val galleryPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            galleryLauncher.launch(arrayOf("image/*"))
+        } else {
+            Toast.makeText(context, "Galerie-Erlaubnis wurde abgelehnt", Toast.LENGTH_SHORT).show()
         }
+    }
 
-    val cameraLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.TakePicturePreview()
-        ) { bitmap: Bitmap? ->
-            if (bitmap != null) {
-                val savedUri = saveBitmapToInternalStorage(
-                    context = context,
-                    bitmap = bitmap
-                )
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview()
+    ) { bitmap: Bitmap? ->
+        if (bitmap != null) {
+            val savedUri = saveBitmapToInternalStorage(
+                context = context, bitmap = bitmap
+            )
 
-                imageUri = savedUri
+            imageUri = savedUri
 
-                onSaveProfile(
-                    name,
-                    email,
-                    phone,
-                    city,
-                    car,
-                    imageUri
-                )
+            onSaveProfile(
+                name, email, phone, city, car, imageUri
+            )
 
-                Toast
-                    .makeText(context, "Kamerabild gespeichert", Toast.LENGTH_SHORT)
-                    .show()
-            }
+            Toast.makeText(context, "Kamerabild gespeichert", Toast.LENGTH_SHORT).show()
         }
+    }
 
-    val cameraPermissionLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            if (isGranted) {
-                cameraLauncher.launch(null)
-            } else {
-                Toast
-                    .makeText(context, "Kamera-Erlaubnis wurde abgelehnt", Toast.LENGTH_SHORT)
-                    .show()
-            }
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            cameraLauncher.launch(null)
+        } else {
+            Toast.makeText(context, "Kamera-Erlaubnis wurde abgelehnt", Toast.LENGTH_SHORT).show()
         }
+    }
 
     Scaffold { paddingValues ->
 
@@ -255,15 +232,13 @@ fun ProfileScreenContent(
             Spacer(modifier = Modifier.height(10.dp))
 
             Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
             ) {
                 Box(
                     modifier = Modifier
                         .size(120.dp)
                         .clip(CircleShape)
-                        .background(Color(0xFFE0E0E0)),
-                    contentAlignment = Alignment.Center
+                        .background(Color(0xFFE0E0E0)), contentAlignment = Alignment.Center
                 ) {
                     if (imageUri != null) {
                         AsyncImage(
@@ -304,16 +279,14 @@ fun ProfileScreenContent(
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
             ) {
                 Button(
                     onClick = {
                         val galleryPermission = getGalleryPermission()
 
                         val permissionStatus = ContextCompat.checkSelfPermission(
-                            context,
-                            galleryPermission
+                            context, galleryPermission
                         )
 
                         if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
@@ -321,11 +294,9 @@ fun ProfileScreenContent(
                         } else {
                             galleryPermissionLauncher.launch(galleryPermission)
                         }
-                    }
-                ) {
+                    }) {
                     Icon(
-                        imageVector = Icons.Default.PhotoLibrary,
-                        contentDescription = "Gallery"
+                        imageVector = Icons.Default.PhotoLibrary, contentDescription = "Gallery"
                     )
 
                     Spacer(modifier = Modifier.width(6.dp))
@@ -338,8 +309,7 @@ fun ProfileScreenContent(
                 Button(
                     onClick = {
                         val permission = ContextCompat.checkSelfPermission(
-                            context,
-                            Manifest.permission.CAMERA
+                            context, Manifest.permission.CAMERA
                         )
 
                         if (permission == PackageManager.PERMISSION_GRANTED) {
@@ -347,11 +317,9 @@ fun ProfileScreenContent(
                         } else {
                             cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                         }
-                    }
-                ) {
+                    }) {
                     Icon(
-                        imageVector = Icons.Default.CameraAlt,
-                        contentDescription = "Camera"
+                        imageVector = Icons.Default.CameraAlt, contentDescription = "Camera"
                     )
 
                     Spacer(modifier = Modifier.width(6.dp))
@@ -385,9 +353,7 @@ fun ProfileScreenContent(
                 Spacer(modifier = Modifier.width(6.dp))
 
                 Text(
-                    text = "4.8 (32 reviews)",
-                    fontSize = 15.sp,
-                    color = Color.DarkGray
+                    text = "4.8 (32 reviews)", fontSize = 15.sp, color = Color.DarkGray
                 )
             }
 
@@ -433,7 +399,8 @@ fun ProfileScreenContent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Column( horizontalAlignment = Alignment.CenterHorizontally,
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -459,6 +426,30 @@ fun ProfileScreenContent(
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+
+                    ) {
+                    Button(
+                        onClick = { navController.navigate("SOSScreen") },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
+                    ){
+                        Text(
+                            text = "Emergency", fontSize = 20.sp
+                        )}
+
+                }
+            }
+
             Spacer(modifier = Modifier.height(30.dp))
 
             Card(
@@ -478,11 +469,8 @@ fun ProfileScreenContent(
                         value = car,
                         showArrow = true,
                         onClick = {
-                            Toast
-                                .makeText(context, "Auto bearbeiten", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    )
+                            Toast.makeText(context, "Auto bearbeiten", Toast.LENGTH_SHORT).show()
+                        })
 
                     Spacer(modifier = Modifier.height(24.dp))
 
@@ -492,11 +480,9 @@ fun ProfileScreenContent(
                         value = "$email, $phone",
                         showCheck = true,
                         onClick = {
-                            Toast
-                                .makeText(context, "Verifizierung öffnen", Toast.LENGTH_SHORT)
+                            Toast.makeText(context, "Verifizierung öffnen", Toast.LENGTH_SHORT)
                                 .show()
-                        }
-                    )
+                        })
 
                     Spacer(modifier = Modifier.height(24.dp))
 
@@ -506,20 +492,15 @@ fun ProfileScreenContent(
                         value = city,
                         showArrow = true,
                         onClick = {
-                            Toast
-                                .makeText(context, "Wohnort bearbeiten", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    )
+                            Toast.makeText(context, "Wohnort bearbeiten", Toast.LENGTH_SHORT).show()
+                        })
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Profil bearbeiten",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
+                text = "Profil bearbeiten", fontSize = 22.sp, fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -572,19 +553,12 @@ fun ProfileScreenContent(
             Button(
                 onClick = {
                     onSaveProfile(
-                        name,
-                        email,
-                        phone,
-                        city,
-                        car,
-                        imageUri
+                        name, email, phone, city, car, imageUri
                     )
 
-                    Toast
-                        .makeText(context, "Profil dauerhaft gespeichert", Toast.LENGTH_SHORT)
+                    Toast.makeText(context, "Profil dauerhaft gespeichert", Toast.LENGTH_SHORT)
                         .show()
-                },
-                modifier = Modifier.fillMaxWidth()
+                }, modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Save Profile")
             }
@@ -599,9 +573,7 @@ fun ProfileScreenContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Ride History",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
+                    text = "Ride History", fontSize = 22.sp, fontWeight = FontWeight.Bold
                 )
 
                 // Navigation zur vollständigen Liste aller gebuchten Fahrten
@@ -612,8 +584,7 @@ fun ProfileScreenContent(
                     color = Color.DarkGray,
                     modifier = Modifier.clickable {
                         navController.navigate("gebuchteRides")
-                    }
-                )
+                    })
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -651,8 +622,7 @@ fun ProfileScreenContent(
                                 onClick = {
                                     // Klick öffnet die Detailansicht der Fahrt
                                     navController.navigate("rideDetails/${trip.id}/true")
-                                }
-                            )
+                                })
 
                             // Zeichnet eine dünne Trennlinie zwischen den Fahrten, außer nach der letzten.
                             if (index < historyDisplayList.size - 1) {
@@ -668,20 +638,20 @@ fun ProfileScreenContent(
                 }
             }
             // --- ENDE DES FAHRTHISTORIE-ABSCHNITTS ---
-            Column{
+            Column {
 
                 Spacer(modifier = Modifier.height(40.dp))
 
                 Button(
                     onClick = {
                         navController.navigate("login")
-                    },
-                    modifier = Modifier
+                    }, modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp)
                 ) {
-                    Text(text = "Log Out",
-                        fontSize = 20.sp)
+                    Text(
+                        text = "Log Out", fontSize = 20.sp
+                    )
                 }
             }
 
@@ -693,8 +663,7 @@ fun ProfileScreenContent(
 }
 
 fun saveBitmapToInternalStorage(
-    context: android.content.Context,
-    bitmap: Bitmap
+    context: Context, bitmap: Bitmap
 ): String {
     val file = File(context.filesDir, "profile_image.png")
 
@@ -704,6 +673,7 @@ fun saveBitmapToInternalStorage(
 
     return Uri.fromFile(file).toString()
 }
+
 fun getGalleryPermission(): String {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         Manifest.permission.READ_MEDIA_IMAGES
@@ -714,10 +684,7 @@ fun getGalleryPermission(): String {
 
 @Composable
 fun StatCard(
-    modifier: Modifier = Modifier,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    label: String,
-    value: String
+    modifier: Modifier = Modifier, icon: ImageVector, label: String, value: String
 ) {
     Card(
         modifier = modifier,
