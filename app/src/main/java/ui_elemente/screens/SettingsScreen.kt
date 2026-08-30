@@ -46,7 +46,7 @@ fun SettingsScreen(navController: NavHostController) {
             )
             SettingsItem(
                 icon = Icons.Default.Info,
-                title = "About",
+                title = "About Us",
                 subtitle = "App version and terms",
                 onClick = { navController.navigate("about") }
             )
