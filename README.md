@@ -1,13 +1,17 @@
 # Carsharing-App
 
-Eine Carsharing-App für Stidenten auf Android, die im Rahmen des Moduls **Mobile Computing (MOCO)** an der TH Köln (SoSe 2026) ertsellt wurde. Mit der App können Nutzer an angebotene Fahrten teilnehmen gegen eine fairen preis, die Route wird auf einer Karte angezeigt.
+Eine Carsharing-App für Studierende auf Android, die im Rahmen des **Moduls Mobile Computing (MOCO)** an der TH Köln im Sommersemester 2026 entwickelt wurde. Mit der App können Studierende gegenseitig Fahrten anbieten, nach passenden Mitfahrangebote zu einem fairen Preis suchen und diese buchen. Nach der Buchung können sie sich über die Karte über die Route informieren und direkt mit dem Fahrer bzw. der Fahrerin chatten.
 
 ## Funktionen
 
 - **Authentifizierung** — Registrierung und Anmeldung über Firebase Authentifizierung
 - **Fahrzeuge durchsuchen** — Liste der verfügbaren Fahrzeuge mit Details (Modell, Preis, Verfügbarkeit, Ladys only, Raucher , etc) anzeigen
+- **Fahrten anbieten** – Neue Fahrten mit Start- und Zielort, Datum, verfügbaren Sitzplätzen, Preis und zusätzlichen Präferenzen erstellen
+- **Fahrten suchen** – Nach Fahrten suchen, die den angegebenen Suchparametern entsprechen
 - **Kartenansicht** — Interaktiven Karte mit Routen anzeigen
-- **Buchung** — eine angebotene Fahrt für ein Zeitfenster reservieren
+- **Buchung** — Eine angebotene Fahrt für ein Zeitfenster reservieren
+- **Wallet** - Jedes Konto verfügt über ein In-App-Wallet, das online aufgeladen werden kann
+- **Chat** - Echtzeit-Chat zwischen Fahrer und Mitfahrer über Firestore
 - **SOS / Notfall** — Schnellzugriff auf die Notruf-Schaltfläche
 
 ## Tech-Stack
@@ -40,8 +44,9 @@ ui_elemente/
 > _Screenshots folgen in Kürze_
 
 | Startseite / Durchsuchen | Kartenansicht | Buchung | SOS |
-|---|---|---|---|
-| _Platzhalter_ | _Platzhalter_ | _Platzhalter_ | _Platzhalter_ |
+
+
+
 
 
 ### Voraussetzungen
