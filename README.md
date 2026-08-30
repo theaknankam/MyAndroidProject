@@ -54,12 +54,12 @@ ui_elemente/
 
 ## Team
 
-| Name | Rolle |
-|---|---|
-| Diana Sukiiazova | _TODO_ |
-| Liya Aklil | _TODO_ |
-| Thea E. Kamdoum-Nankam | _TODO_ |
+| Name |
+|---|
+| Diana Sukiiazova |
+| Liya Aklil |
+| Thea E. Kamdoum-Nankam |
 
 ## Kurskontext
 
-Dieses Projekt wurde für das Modul **Mobile Computing** (MI/WPF)(MOCO) an der TH Köln entwickelt.
+Dieses Projekt wurde für das Modul **Mobile Computing** (MI/WPF)(MOCO) an der TH Köln entwickelt, im So26. 
