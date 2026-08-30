@@ -45,7 +45,10 @@ ui_elemente/
 
 | Startseite / Durchsuchen | Kartenansicht | Buchung | SOS |
 
-
+![Screenshot](image.png)
+![Screenshot](images/screenshot.png)
+![Screenshot](images/screenshot.png)
+![Screenshot](images/screenshot.png)
 
 
 
