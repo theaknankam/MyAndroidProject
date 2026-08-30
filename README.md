@@ -38,8 +38,10 @@ ui_elemente/
 ├── data/            # Repositories, Room-DAOs/Entitäten, Firestore-Zugriff
 └── model/           # Datenklassen (Auto, Buchung, Benutzer usw.)
 ```
-
 ## Screenshots
+| Screenshots |
+
+|---|
 
 | <img width="300" height="800" alt="Screenshot_20260830_212400" src="https://github.com/user-attachments/assets/1c3effa2-bd81-4965-a5ef-e8ddcf523e85" /> |
 | <img width="300" height="800" alt="Screenshot_20260830_212531" src="https://github.com/user-attachments/assets/f0b4475a-ff74-4ab4-be22-5e96e84c8563" /> |
