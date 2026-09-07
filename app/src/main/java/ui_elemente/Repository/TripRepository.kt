@@ -1,5 +1,7 @@
-package com.example.carsharing_app.data
+package ui_elemente.Repository
 
+import ui_elemente.model.enums.Trip
+import com.example.carsharing_app.data.TripDao
 import kotlinx.coroutines.flow.Flow
 
 class TripRepository(val tripDao: TripDao) {

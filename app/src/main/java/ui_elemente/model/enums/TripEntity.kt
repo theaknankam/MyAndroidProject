@@ -1,4 +1,4 @@
-package com.example.carsharing_app.data
+package ui_elemente.model.enums
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

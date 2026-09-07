@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.carsharing_app.data.Trip
+import ui_elemente.model.enums.Trip
 import ui_elemente.model.GebuchteRides
 import ui_elemente.model.enums.TripStatus
 import ui_elemente.model.enums.TripsTab

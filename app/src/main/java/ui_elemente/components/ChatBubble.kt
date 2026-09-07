@@ -16,8 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.carsharing_app.data.ChatMessageEntity
-import ui_elemente.model.ChatMessage
+import ui_elemente.model.ChatMessageEntity
 
 @Composable
 fun ChatBubble(

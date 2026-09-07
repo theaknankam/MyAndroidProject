@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carsharing_app.data.AppDatabase
-import com.example.carsharing_app.data.ProfileEntity
+import ui_elemente.model.ProfileEntity
 import com.example.carsharing_app.data.ProfileRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

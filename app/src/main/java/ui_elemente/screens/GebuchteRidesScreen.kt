@@ -16,14 +16,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.carsharing_app.data.TripViewModel
+import ui_elemente.viewModel.TripViewModel
 import ui_elemente.components.TabItem
 import ui_elemente.model.enums.TripsTab
 import ui_elemente.components.TripCard
@@ -31,7 +27,6 @@ import ui_elemente.components.getUserName
 import ui_elemente.model.GebuchteRides
 import ui_elemente.model.enums.TripStatus
 import ui_elemente.navigation.Topbar
-import ui_elemente.viewModel.GebuchteRidesViewModel
 
 
 @Composable

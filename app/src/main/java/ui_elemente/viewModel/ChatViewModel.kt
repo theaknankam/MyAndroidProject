@@ -1,7 +1,7 @@
 package ui_elemente.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.carsharing_app.data.ChatMessageEntity
+import ui_elemente.model.ChatMessageEntity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow

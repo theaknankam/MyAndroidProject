@@ -5,7 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import ui_elemente.model.ChatMessageEntity
+import ui_elemente.model.ProfileEntity
 import ui_elemente.model.User
+import ui_elemente.model.enums.Trip
 
 @Database(entities = [Trip::class, ProfileEntity::class, ChatMessageEntity::class, User::class], version = 7)
 @TypeConverters(Converters::class)

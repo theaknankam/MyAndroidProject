@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.carsharing_app.Karte.MapScreen
 import com.example.carsharing_app.Karte.geocode
-import com.example.carsharing_app.data.TripViewModel
+import ui_elemente.viewModel.TripViewModel
 import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 import ui_elemente.components.DatePickerField

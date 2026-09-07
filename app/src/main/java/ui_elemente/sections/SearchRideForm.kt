@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,13 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.carsharing_app.data.TripViewModel
+import ui_elemente.viewModel.TripViewModel
 import com.google.firebase.auth.FirebaseAuth
 import ui_elemente.components.DatePickerField
 import ui_elemente.components.LocationInput
-import ui_elemente.components.PriceField
-import ui_elemente.components.PrimaryButton
-import ui_elemente.components.SeatSelector
 import ui_elemente.components.TripCard
 import ui_elemente.model.GebuchteRides
 import ui_elemente.model.enums.TripStatus

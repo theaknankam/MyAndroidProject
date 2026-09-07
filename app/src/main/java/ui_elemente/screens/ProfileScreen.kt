@@ -41,7 +41,6 @@ import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -72,16 +71,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import androidx.compose.ui.platform.LocalInspectionMode
-import com.example.carsharing_app.data.ProfileEntity
-import com.example.carsharing_app.data.Trip
+import ui_elemente.model.ProfileEntity
+import ui_elemente.model.enums.Trip
 import ui_elemente.components.InfoRow
 import ui_elemente.components.RideHistoryItem
-import ui_elemente.model.Ride
 import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.ProfileViewModel
 import java.io.File
 import java.io.FileOutputStream
-import com.example.carsharing_app.data.TripViewModel
+import ui_elemente.viewModel.TripViewModel
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 @Composable
