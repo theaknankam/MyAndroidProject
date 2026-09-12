@@ -1,4 +1,4 @@
-package ui_elemente.sections
+package ui_elemente.screensView.sections
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

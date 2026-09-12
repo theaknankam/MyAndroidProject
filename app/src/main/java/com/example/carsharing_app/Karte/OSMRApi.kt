@@ -13,7 +13,11 @@ data class OsrmResponse(val routes: List<OsrmRoute>)
 data class OsrmRoute(val geometry: OsrmGeometry)
 data class OsrmGeometry(val coordinates: List<List<Double>>)
 
-
+/**
+ * Retrofit-Interface für die OpenStreetMap Routing API.
+ * Open Source Routing Machine
+ * berechnet die kürzeste Route zwischen zwei Punkten auf der Karte.
+ */
 interface OSMRApi {@GET("route/v1/driving/{coords}")
 suspend fun getRoute(
     @Path("coords") coords: String,
@@ -21,6 +25,10 @@ suspend fun getRoute(
     @Query("overview") overview: String = "full"
 ): OsrmResponse
 }
+
+/**
+ * Retrofit-Client für die OpenStreetMap Routing API.
+ */
 
 object OsrmClient {
     val api: OSMRApi = Retrofit.Builder()

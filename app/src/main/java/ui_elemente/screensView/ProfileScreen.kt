@@ -1,4 +1,4 @@
-package ui_elemente.screens
+package ui_elemente.screensView
 
 import android.Manifest
 import android.content.Context

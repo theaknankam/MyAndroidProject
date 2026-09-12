@@ -7,8 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import ui_elemente.screens.*
-import ui_elemente.viewModel.VehiculeViewmodel
+import ui_elemente.screensView.*
 
 @Composable
 fun AppNavHost(

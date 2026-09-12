@@ -1,4 +1,4 @@
-package ui_elemente.screens
+package ui_elemente.screensView
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

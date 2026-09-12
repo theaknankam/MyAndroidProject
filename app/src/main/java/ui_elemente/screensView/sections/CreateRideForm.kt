@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package ui_elemente.sections
+package ui_elemente.screensView.sections
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
