@@ -45,12 +45,11 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
 
-
+    implementation(libs.play.services.location)
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation(libs.androidx.compose.foundation.layout)
-    implementation(libs.play.services.location)
     implementation("org.osmdroid:osmdroid-android:6.1.18")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -83,7 +82,6 @@ dependencies {
     implementation(libs.androidx.room3.common.jvm)
     implementation(libs.androidx.ui)
     implementation(libs.material)
-    implementation(libs.play.services.maps)
 
     testImplementation(libs.junit)
 

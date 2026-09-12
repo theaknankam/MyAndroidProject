@@ -22,13 +22,11 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 
 
-private val CartoVoyager = XYTileSource(
-    "CartoVoyager",
-    0, 20, 256, ".png",
+private val WikimediaOSM = XYTileSource(
+    "WikimediaOSM",
+    0, 19, 256, ".png",
     arrayOf(
-        "https://a.basemaps.cartocdn.com/rastertiles/voyager/",
-        "https://b.basemaps.cartocdn.com/rastertiles/voyager/",
-        "https://c.basemaps.cartocdn.com/rastertiles/voyager/"
+        "https://maps.wikimedia.org/osm-intl/"
     )
 )
 
@@ -57,7 +55,7 @@ fun MapScreen(
     AndroidView(
         factory = {
             MapView(context).apply {
-                setTileSource(CartoVoyager)
+                setTileSource(WikimediaOSM)
                 setMultiTouchControls(true)
                 controller.setZoom(10.0)
                 controller.setCenter(pointA)
