@@ -30,7 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.carsharing_app.Karte.MapScreen
 import com.example.carsharing_app.Karte.geocode
-import com.example.carsharing_app.data.TripViewModel
+import ui_elemente.viewModel.TripViewModel
 import com.google.firebase.auth.FirebaseAuth
 import org.osmdroid.util.GeoPoint
 import ui_elemente.components.RideDetailsButton

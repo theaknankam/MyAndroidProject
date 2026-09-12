@@ -17,7 +17,7 @@ import ui_elemente.navigation.Topbar
 fun AboutScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
-            Topbar("About", navController)
+            Topbar("About Us", navController)
         }
     ) { paddingValues ->
         Column(

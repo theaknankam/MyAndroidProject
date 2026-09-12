@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
+import ui_elemente.model.ProfileEntity
 
 @Dao
 interface ProfileDao {

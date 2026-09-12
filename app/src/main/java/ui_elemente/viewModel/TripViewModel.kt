@@ -1,4 +1,4 @@
-package com.example.carsharing_app.data
+package ui_elemente.viewModel
 
 import android.app.Application
 import androidx.compose.runtime.getValue
@@ -6,13 +6,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.carsharing_app.data.AppDatabase
+import ui_elemente.model.enums.Trip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import ui_elemente.Repository.TripRepository
 
 class TripViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -92,10 +96,10 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun addTrip(
-        fromCity: String, 
-        toCity: String, 
-        date: String, 
-        seats: Int, 
+        fromCity: String,
+        toCity: String,
+        date: String,
+        seats: Int,
         price: Int,
         allowSmoking: Boolean = false,
         allowPets: Boolean = false,
@@ -116,7 +120,7 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
                 allowMusic = allowMusic,
                 ladiesOnly = ladiesOnly
             )
-            
+
             repository.insertTrip(trip)
 
             val userId = auth.currentUser?.uid ?: "anonymous"
@@ -233,7 +237,7 @@ class TripViewModel(application: Application) : AndroidViewModel(application) {
                 mapOf(
                     "walletBalance" to (balance + amount)
                 ),
-                com.google.firebase.firestore.SetOptions.merge()
+                SetOptions.merge()
             )
 
             transaction.set(
