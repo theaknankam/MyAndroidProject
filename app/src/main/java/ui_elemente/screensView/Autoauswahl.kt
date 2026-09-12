@@ -1,4 +1,4 @@
-package ui_elemente.screens
+package ui_elemente.screensView
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -32,8 +32,6 @@ import ui_elemente.viewModel.VehiculeViewmodel
 fun Autoauswahl(
     viewModel: VehiculeViewmodel ,
     navController : NavHostController
-
-
 ) {
 
     var selectedType  by remember {

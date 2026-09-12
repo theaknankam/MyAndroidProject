@@ -5,5 +5,5 @@ import ui_elemente.model.Price
 
 class ReserveVieuwModel: ViewModel() {
 
-    var reservation : Price? = null
+    var  reservation : Price? = null
 }

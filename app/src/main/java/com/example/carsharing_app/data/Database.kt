@@ -11,6 +11,10 @@ import ui_elemente.model.User
 import ui_elemente.model.enums.Trip
 
 @Database(entities = [Trip::class, ProfileEntity::class, ChatMessageEntity::class, User::class], version = 7)
+/*Room can only store primitive types (Strings, Integers, etc.).
+If your entities contain complex objects (like a Date or a custom Enum),
+you need a Converters class to tell Room how to convert those objects
+into a format it can store and back again.*/
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

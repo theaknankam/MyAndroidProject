@@ -1,4 +1,4 @@
-package ui_elemente.screens
+package ui_elemente.screensView
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -15,10 +15,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.carsharing_app.R
 import ui_elemente.navigation.Topbar
 import ui_elemente.viewModel.ReserveVieuwModel
-import ui_elemente.viewModel.VehiculeViewmodel
 
 @Composable
 fun AuswahlBuchung(

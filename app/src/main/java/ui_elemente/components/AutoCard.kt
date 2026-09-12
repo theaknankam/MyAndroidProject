@@ -22,7 +22,6 @@ import ui_elemente.model.Vehicule
 @Composable
 fun AutoCard(
     vehicule: Vehicule
-//    price: String
 
 ) {
 

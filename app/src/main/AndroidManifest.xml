@@ -5,6 +5,9 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps"
+        android:required="false" />
+
 
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -51,7 +54,5 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-feature android:name="android.hardware.location.gps"
-        android:required="false" />
 
 </manifest>
